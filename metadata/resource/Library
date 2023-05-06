@@ -1,0 +1,23 @@
+{
+    "type": "libraryresource",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "basePath": "ext/",
+        "designer|userClassName": "Library",
+        "libraryRequires": [
+            "font-awesome"
+        ],
+        "theme": "MyTritonTheme"
+    },
+    "configAlternates": {
+        "designer|userClassName": "string",
+        "theme": "string",
+        "basePath": "uri",
+        "libraryRequires": "typedarray"
+    },
+    "designerId": "d6a53836-080b-4f82-8772-33c644640c03"
+}

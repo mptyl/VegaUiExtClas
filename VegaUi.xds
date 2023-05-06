@@ -1,0 +1,53 @@
+{
+    "name": "VegaUi",
+    "settings": {
+        "cmd": {
+            "license": "commercial",
+            "cmdVersion": "7.6.0.87",
+            "frameworkVersion": "7.6.0.41"
+        },
+        "canvasControls": {
+            "viewportSize": {
+                "name": "Auto Expand",
+                "builtIn": true,
+                "height": null,
+                "width": null
+            }
+        },
+        "urlPrefix": "http://localhost:64913/",
+        "exportPath": "",
+        "lockUrlPrefix": true,
+        "buildShouldOverwriteIndex": true,
+        "generateArchitectVersion": true,
+        "spacesToIndent": 4,
+        "lineEnding": "LF",
+        "genTimestamps": false,
+        "cacheBust": false,
+        "installStatus": "Not Installed",
+        "urlPrefixTemplate": "http://localhost:{port}/{path}",
+        "sdkPath": ""
+    },
+    "xdsVersion": "4.3.2",
+    "xdsBuild": 19,
+    "schemaVersion": 1,
+    "upgradeVersion": 310000000001,
+    "framework": "ext76",
+    "viewOrderMap": {
+        "view": [
+            "35c69714-67c2-4b23-b866-4b95489c7ddb",
+            "dc427b0a-b147-4a29-a415-953572ee4c96",
+            "74a938a0-e0ed-4f22-9d21-07f2763be39d"
+        ],
+        "store": [],
+        "controller": [],
+        "model": [],
+        "resource": [
+            "7bcd94de-cd49-4d65-8de3-8c508bc2330c",
+            "d6a53836-080b-4f82-8772-33c644640c03",
+            "038e3565-416f-4130-a136-e7328545700c"
+        ],
+        "app": [
+            "application"
+        ]
+    }
+}
