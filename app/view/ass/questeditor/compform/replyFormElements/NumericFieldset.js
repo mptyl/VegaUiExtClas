@@ -3,24 +3,33 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.NumericFields
   alias: 'widget.qe-numericfieldset',
   fieldDefaults: {
     labelAlign: 'right',
-    labelWidth: 180,
+    labelWidth: 110,
   },
   title: 'Numero',
   items: [
     {
-      xtype: 'numberfield',
-      name: 'minNumValue',
-      fieldLabel: 'Valore numerico minimo ammesso:',
-      bind: '{replyRecord.minNumValue}',
-      anchor: '100%',
+      xtype: 'fieldcontainer',
+      layout: 'hbox',
+      items: [
+        {
+          xtype: 'numberfield',
+          name: 'minNumValue',
+          fieldLabel: 'Minimo',
+          bind: '{replyRecord.minNumValue}',
+          anchor: '100%',
+          flex:1
+        },
+        {
+          xtype: 'numberfield',
+          name: 'maxNumValue',
+          fieldLabel: 'Massimo',
+          bind: '{replyRecord.maxNumValue}',
+          anchor: '100%',
+          flex:1
+        },
+      ]
     },
-    {
-      xtype: 'numberfield',
-      name: 'maxNumValue',
-      fieldLabel: 'Valore numerico massimo ammesso:',
-      bind: '{replyRecord.maxNumValue}',
-      anchor: '100%',
-    },
+
     {
       xtype: 'textfield',
       fieldLabel: 'Placeholder:',

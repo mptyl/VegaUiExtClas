@@ -3,23 +3,31 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.IntegerFields
   alias: 'widget.qe-integerfieldset',
   fieldDefaults: {
     labelAlign: 'right',
-    labelWidth: 180,
+    labelWidth: 110,
   },
   title: 'Intero',
   items: [
     {
-      xtype: 'numberfield',
-      name: 'minValue',
-      fieldLabel: 'Valore intero minimo ammesso:',
-      bind: '{replyRecord.minValue}',
-      anchor:'100%'
-    },
-    {
-      xtype: 'numberfield',
-      name: 'maxValue',
-      fieldLabel: 'Valore intero massimo ammesso:',
-      bind: '{replyRecord.maxValue}',
-      anchor:'100%'
+      xtype: 'fieldcontainer',
+      layout: 'hbox',
+      items: [
+        {
+          xtype: 'numberfield',
+          name: 'minValue',
+          fieldLabel: 'Minimo:',
+          bind: '{replyRecord.minValue}',
+          anchor:'100%',
+          flex:1
+        },
+        {
+          xtype: 'numberfield',
+          name: 'maxValue',
+          fieldLabel: 'Massimo:',
+          bind: '{replyRecord.maxValue}',
+          anchor:'100%',
+          flex:1
+        },
+      ]
     },
     {
       xtype: 'textfield',

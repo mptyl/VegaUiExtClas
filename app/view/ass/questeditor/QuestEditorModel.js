@@ -13,7 +13,13 @@ Ext.define('VegaUi.view.ass.questeditor.QuestEditorModel', {
     jeRecord:null,
     groupRecord:null,
     parentNode:null,
-    nodeToExpand:null
+    nodeToExpand:null,
+    checkGroupHidden:true,
+    radioGroupHidden:true,
+    checkBoxFormHidden:true,
+    radioBoxFormHidden:true,
+    checkBoxModel:null,
+    radioBoxModel:null
   },
   stores: {
     treePanelStore: {

@@ -3,30 +3,43 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.TextAreaField
   alias: 'widget.qe-textareafieldset',
   fieldDefaults: {
     labelAlign: 'right',
-    labelWidth: 180,
+    labelWidth: 110,
   },
   title: 'TextArea',
   items: [
     {
-      xtype: 'numberfield',
-      name: 'rows',
-      label: 'Numero di righe della textarea:',
-      bind: '{replyRecord.rows}',
-      anchor:'100%'
+      xtype: 'fieldcontainer',
+      layout:{
+        type:'hbox',
+        align:'stretch'
+      },
+      items: [
+        {
+          xtype: 'numberfield',
+          name: 'rows',
+          fieldLabel: 'Righe:',
+          bind: '{replyRecord.rows}',
+          anchor:'100%',
+          flex:1
+        },
+        {
+          xtype: 'numberfield',
+          name: 'cols',
+          fieldLabel: 'Colonne:',
+          bind: '{replyRecord.cols}',
+          anchor:'100%',
+          flex:1
+        },
+        {
+          xtype: 'textfield',
+          fieldLabel: 'Placeholder:',
+          name: 'placeHolder',
+          bind: '{replyRecord.placeHolder}',
+          anchor:'100%',
+          flex:3
+        },
+      ]
     },
-    {
-      xtype: 'numberfield',
-      name: 'cols',
-      label: 'Numero di colonne della textarea:',
-      bind: '{replyRecord.cols}',
-      anchor:'100%'
-    },
-    {
-      xtype: 'textfield',
-      label: 'Placeholder:',
-      name: 'placeHolder',
-      bind: '{replyRecord.placeHolder}',
-      anchor:'100%'
-    },
+
   ]
 })

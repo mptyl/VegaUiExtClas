@@ -14,7 +14,7 @@ Ext.define('VegaUi.store.QeCheckBoxes', {
     const me = this;
     cfg = cfg || {};
     me.callParent([Ext.apply({
-      storeId: 'CheckBoxes',
+      storeId: 'QeCheckBoxes',
       autoLoad: true,
       model: 'VegaUi.model.questEditor.QeCheckBox',
       proxy: {

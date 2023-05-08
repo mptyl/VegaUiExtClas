@@ -98,7 +98,6 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
   },
 
   loadReply(record, form, questId, viewModel) {
-    //debugger;
     const reply = Ext.create('VegaUi.model.questEditor.QeFullReply');
     reply.getProxy().setExtraParams({id: record.get('id'), questId: questId});
     reply.load(

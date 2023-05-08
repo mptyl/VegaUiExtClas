@@ -38,7 +38,6 @@ Ext.application({
     'QuestionnaireTypes',
     'QuestEditorStore',
     'QeReplyTypes',
-    'QeRadioBoxes',
     'QeCheckBoxes',
   ],
 

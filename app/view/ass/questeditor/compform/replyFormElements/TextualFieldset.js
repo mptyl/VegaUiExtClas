@@ -3,33 +3,43 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.TextualFields
   alias: 'widget.qe-textualfieldset',
   fieldDefaults: {
     labelAlign: 'right',
-    labelWidth: 180,
+    labelWidth: 110,
   },
-  title: 'Testo',
   items: [
     {
-      xtype: 'numberfield',
-      name: 'minLength',
-      fieldLabel: 'Lunghezza minima:',
-      bind: '{replyRecord.minLength}',
-      anchor: '100%',
-      flex: 1
+      xtype:'fieldcontainer',
+      layout:{
+        type:'hbox',
+        align:'stretch'
+      },
+      items:[
+        {
+          xtype: 'numberfield',
+          name: 'minLength',
+          fieldLabel: 'Lunghezza minima:',
+          bind: '{replyRecord.minLength}',
+          anchor: '100%',
+          flex: 1
+        },
+        {
+          xtype: 'numberfield',
+          name: 'maxLength',
+          fieldLabel: 'Lunghezza massima:',
+          bind: '{replyRecord.maxLength}',
+          anchor: '100%',
+          flex: 1
+        },
+        {
+          xtype: 'textfield',
+          fieldLabel: 'Placeholder:',
+          name: 'placeHolder',
+          anchor: '100%',
+          bind: '{replyRecord.placeHolder}',
+          flex: 3
+        }
+      ]
     },
-    {
-      xtype: 'numberfield',
-      name: 'maxLength',
-      fieldLabel: 'Lunghezza massima:',
-      bind: '{replyRecord.maxLength}',
-      anchor: '100%',
-      flex: 1
-    },
-    {
-      xtype: 'textfield',
-      fieldLabel: 'Placeholder:',
-      name: 'placeHolder',
-      anchor: '100%',
-      bind: '{replyRecord.placeHolder}',
-      flex: 3
-    }
+
+
   ]
 })

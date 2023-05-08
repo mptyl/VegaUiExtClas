@@ -18,9 +18,15 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyFormController', {
   },
   hideContainers() {
     const formsContainer = this.lookupReference('specificFormsContainer');
+    const viewModel=this.getViewModel();
+    viewModel.set('radioGroupHidden',true);
+    viewModel.set('checkGroupHidden',true);
     formsContainer.removeAll(true);
   },
+
   showSpecificSubform(typeSelected) {
+    const viewModel=this.getViewModel();
+    viewModel.set('replyFormHeight',420);
     const formsContainer = this.lookupReference('specificFormsContainer');
     switch (typeSelected) {
       case 'CHECKBOX':
@@ -29,6 +35,8 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyFormController', {
         break;
       case 'CHECKGROUP':
       case 'RADIOGROUP':
+        viewModel.set('checkGroupHidden',false);
+        viewModel.set('replyFormHeight',360);
         formsContainer.add(this.createGroup(typeSelected));
         break;
       case 'DATE':
@@ -40,10 +48,14 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyFormController', {
       case 'INTEGER':
         formsContainer.add(this.createInteger());
         break;
+      case 'LIKERT':
+        formsContainer.add(this.createLikert());
+        break;
       case 'NUMERIC':
         formsContainer.add(this.createNumeric());
         break;
       case 'SELECT':
+        viewModel.set('replyFormHeight',480);
         formsContainer.add(this.createSelect());
         break;
       case 'COLOR':
@@ -67,12 +79,8 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyFormController', {
   },
 
   createGroup(typeSelected) {
-    let box;
-    if (typeSelected === 'CHECKGROUP')
-      box = Ext.create('widget.qe-checkgroupfieldset');
-    else
-      box = Ext.create('widget.qe-radiogroupfieldset');
-    box.setTitle(this.capitalize(typeSelected));
+    const box = Ext.create('widget.qe-checkgroupfieldset');
+    box.setTitle('Gruppo Box');
     return box;
   },
 
@@ -87,6 +95,10 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyFormController', {
   createInteger() {
     return Ext.create('widget.qe-integerfieldset');
   },
+  createLikert() {
+    return Ext.create('widget.qe-likertfieldset');
+  },
+
   createNumeric() {
     return Ext.create('widget.qe-numericfieldset');
   },

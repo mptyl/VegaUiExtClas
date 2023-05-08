@@ -216,11 +216,12 @@ Ext.define('VegaUi.mixin.QeMixin', {
         success: function (form, result, data) {
           store.load({
             callback: function () {
-              treeGrid.expandPath(viewModel.get('nodeToExpand'));
+              me.resetForm(viewModel,treeGrid);
             }
           })
         },
         failure: function (form, action) {
+          me.resetForm(viewModel,treeGrid);
           switch (action.failureType) {
             case Ext.form.action.Action.CLIENT_INVALID:
               Ext.Msg.alert(
@@ -245,6 +246,24 @@ Ext.define('VegaUi.mixin.QeMixin', {
     }
   },
 
+  getTreeGrid(){
+    const formQuestEditor = this.getView().up();
+    const questEditor = formQuestEditor.up();
+    return questEditor.down('treepanel');
+  },
+
+  resetTreeGrid(treeGrid){
+    const viewModel=this.getViewModel();
+    treeGrid.getSelectionModel().deselectAll();
+    treeGrid.expandPath(viewModel.get('nodeToExpand'));
+  },
+
+  resetForm(viewModel,treeGrid){
+    this.onCancelWithoutSaving()
+    treeGrid.getSelectionModel().deselectAll();
+    treeGrid.expandPath(viewModel.get('nodeToExpand'));
+  },
+
   parentToExpand(records, parent) {
     let selectedNode;
     for (let rec of records) {
@@ -256,9 +275,13 @@ Ext.define('VegaUi.mixin.QeMixin', {
     return selectedNode;
   },
 
-  onCancelWithoutSaving: function (button, e, eOpts) {
-    const form = this.getView().up('form-quest-editor');
-    form.hide();
+  onCancelWithoutSaving: function () {
+    const treeGrid=this.getTreeGrid();
+    this.resetTreeGrid(treeGrid);
+    const formContainer = this.getView().up('form-quest-editor');
+    const form=formContainer.down('form');
+    form.reset();
+    formContainer.hide();
     form.remove(form, true);
   },
 

@@ -1,12 +1,12 @@
-Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGroup.RadioBoxGrid', {
+Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGroup.CheckBoxGrid', {
   extend: 'Ext.panel.Panel',
-  alias: 'widget.qe-radioboxgrid',
+  alias: 'widget.qe-checkboxgrid',
 
   requires: [
-    'VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGroup.RadioBoxGridController',
+    'VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGroup.CheckBoxGridController',
   ],
 
-  controller: 'ass-questeditor-radioboxgridcontroller',
+  controller: 'ass-questeditor-checkboxgridcontroller',
   layout: 'fit',
   items: [
     {
@@ -14,35 +14,36 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
       items: [
         {
           xtype: 'container',
-          layout:{
+          layout: {
             type: 'vbox',
             align: 'stretch'
           },
           items: [
             {
-              xtype: 'radioboxform'
+              xtype: 'checkboxform',
+
             },
             {
               xtype: 'grid',
               //title: 'Lista di Radiobox',
-              reference: 'radioBoxGrid',
+              reference: 'checkBoxGrid',
               margin: '20 0 0 0',
-              store: 'QeRadioBoxes',
+              store: 'QeCheckBoxes',
               flex: 3,
-              itemId: 'radioBoxGrid',
+              itemId: 'checkBoxGrid',
               columns: [
                 {
                   xtype: 'gridcolumn',
                   text: 'Id',
                   dataIndex: 'id',
                   flex: 10,
-                  hidden: false
+                  hidden: true
                 },
                 {
                   xtype: 'gridcolumn',
                   text: 'Label',
                   dataIndex: 'boxLabel',
-                  flex: 20
+                  flex: 10
                 },
                 {
                   xtype: 'gridcolumn',
@@ -57,7 +58,10 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
                   flex: 1
                 }
               ],
-              dockedItems:[
+              listeners: {
+                rowdblclick: 'onrowdblclick'
+              },
+              dockedItems: [
                 {
                   xtype: 'toolbar',
                   docked: 'top',
@@ -67,18 +71,11 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
                     {
                       reference: 'addButton',
                       iconCls: 'x-fa fa-plus',
-                      text: 'Aggiungi nuovo RadioBox',
+                      text: 'Aggiungi nuovo Box',
                       align: 'left',
-                      handler: 'onAddRadiobox',
+                      handler: 'onAddCheckbox',
                     },
-                    {
-                      reference: 'duplicateButton',
-                      iconCls: 'x-fa fa-copy',
-                      text: 'Duplica il Radiobox',
-                      handler: 'onDuplicate',
-                      align: 'left'
-                    },
-'->',
+                    '->',
                     {
                       reference: 'reloadButton',
                       iconCls: 'x-fa fa-arrow-up',
@@ -90,7 +87,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
                     {
                       reference: 'removeButton',
                       iconCls: 'x-fa fa-trash',
-                      text: 'Cancella Radiobox',
+                      text: 'Cancella Box',
                       handler: 'onRemove',
                       align: 'right',
                     }
