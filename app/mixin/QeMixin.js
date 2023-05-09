@@ -214,6 +214,14 @@ Ext.define('VegaUi.mixin.QeMixin', {
         url: Ext.manifest['server'] + controller + '/submit',
         method: 'POST',
         success: function (form, result, data) {
+          const internalForm=qeForm.getForm();
+          const replyType=internalForm.findField('replyType');
+          if(replyType){
+            const replyTypeValue=replyType.getValue();
+            if(replyTypeValue=='RADIOGROUP' || replyTypeValue=='CHECKGROUP')
+              me.updateBoxes(formQuestEditor);
+          }
+
           store.load({
             callback: function () {
               me.resetForm(viewModel,treeGrid);
@@ -244,6 +252,13 @@ Ext.define('VegaUi.mixin.QeMixin', {
         }
       });
     }
+  },
+
+  updateBoxes(form){
+    const cbgrid=form.down('qe-checkboxgrid');
+    const grid2=cbgrid.down('grid');
+    const checkBoxesGrid=grid2.getStore()
+    checkBoxesGrid.sync();
   },
 
   getTreeGrid(){

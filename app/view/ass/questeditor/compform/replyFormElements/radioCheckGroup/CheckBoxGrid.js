@@ -94,6 +94,13 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
                   ]
                 },
               ],
+              viewConfig: {
+                plugins: {
+                  gridviewdragdrop: {
+                    dragText: 'Drag and drop to reorganize'
+                  }
+                }
+              },
               listeners: {
                 rowdblclick: 'onRowDblClick',
                 //show:'onShow',
