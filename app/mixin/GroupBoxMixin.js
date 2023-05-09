@@ -20,7 +20,6 @@ Ext.define('VegaUi.mixin.GroupBoxMixin', {
 
   onReload(){
     console.log('onReload')
-
   },
 
   onRemove(button){
@@ -29,11 +28,19 @@ Ext.define('VegaUi.mixin.GroupBoxMixin', {
     const selected=table.getSelection()[0];
     const store=grid.getStore();
     store.remove(selected);
+    this._renumberStore(store)
   },
 
 
   onRowDblClick(view, record, element, rowIndex, e, eOpts ){
     this._setViewModel(record)
+  },
+
+  onRowDrop(){
+    const gridContainer=this.getView();
+    const grid=gridContainer.down('grid')
+    const store=grid.getStore();
+    this._renumberStore(store)
   },
 
   onCancelWithoutSaving() {
@@ -54,20 +61,21 @@ Ext.define('VegaUi.mixin.GroupBoxMixin', {
 
   //region Priivate Functions
   _saveCheckBox() {
-    const radioBoxStore = this._getRadioBoxStore();
+    const checkBoxStore = this._getCheckBoxStore();
     const record = this.getViewModel().get('checkBoxModel')
-    radioBoxStore.add(record);
+    checkBoxStore.add(record);
+    this._renumberStore(checkBoxStore)
   },
 
   _syncCheckBox() {
-    const radioBoxStore = this._getRadioBoxStore();
-    radioBoxStore.sync();
+    const checkBoxStore = this._getCheckBoxStore();
+    checkBoxStore.sync();
   },
 
   _reloadGridStore() {
-    const radioBoxStore = this._getRadioBoxStore();
-    radioBoxStore.proxy.extraParams = {questId: record.get('questId'), radioGroupId: record.get('fatherNodeId')};
-    radioBoxStore.reload();
+    const checkBoxStore = this._getCheckBoxStore();
+    checkBoxStore.proxy.extraParams = {questId: record.get('questId'), radioGroupId: record.get('fatherNodeId')};
+    checkBoxStore.reload();
   },
 
   _closeForm() {
@@ -79,10 +87,10 @@ Ext.define('VegaUi.mixin.GroupBoxMixin', {
     this.getView().getForm().reset();
   },
 
-  _getRadioBoxStore() {
-    const radioBoxGrid = this.getView().up().down('grid')
-    const radioBoxStore = radioBoxGrid.getStore();
-    return radioBoxStore;
+  _getCheckBoxStore() {
+    const checkBoxGrid = this.getView().up().down('grid')
+    const checkBoxStore = checkBoxGrid.getStore();
+    return checkBoxStore;
   },
 
   _setViewModel(newCheckBox) {
@@ -99,6 +107,12 @@ Ext.define('VegaUi.mixin.GroupBoxMixin', {
 
     viewModel.set('checkBoxModel', newCheckBox);
     viewModel.set('checkBoxFormHidden', false);
+  },
+
+  _renumberStore(store){
+    store.each(function(record){
+      record.set('indexInStore',store.indexOf(record)+1)
+    })
   },
 
   //endregion

@@ -4,7 +4,7 @@ Ext.define('VegaUi.model.questEditor.QeCheckBox', {
   fields: [
     {name: 'boxLabel', type: 'string'},
     {name: 'boxValue', type: 'string'},
-    {name: 'boxChecked', type: 'boolean'}
-
+    {name: 'boxChecked', type: 'boolean'},
+    {name: 'indexInStore', type:'integer'}
   ]
 });

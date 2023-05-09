@@ -40,6 +40,13 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
                   hidden: true
                 },
                 {
+                  xtype: 'numbercolumn',
+                  text: ' ',
+                  dataIndex: 'indexInStore',
+                  flex: 1,
+                  format:'#'
+                },
+                {
                   xtype: 'gridcolumn',
                   text: 'Label',
                   dataIndex: 'boxLabel',
@@ -58,9 +65,6 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
                   flex: 1
                 }
               ],
-              listeners: {
-                rowdblclick: 'onrowdblclick'
-              },
               dockedItems: [
                 {
                   xtype: 'toolbar',
@@ -103,6 +107,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
               },
               listeners: {
                 rowdblclick: 'onRowDblClick',
+                drop:'onRowDrop'
                 //show:'onShow',
               },
               selModel: {
