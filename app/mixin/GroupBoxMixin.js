@@ -18,8 +18,14 @@ Ext.define('VegaUi.mixin.GroupBoxMixin', {
   },
 
 
-  onReload(){
-    console.log('onReload')
+  onReload(button){
+    const grid=button.up('grid')
+    const store=grid.getStore();
+    const viewModel=this.getViewModel()
+    const questId=viewModel.get('questId');
+    const replyRecord=viewModel.get('replyRecord')
+    store.proxy.extraParams = {questId: questId, checkGroupId: replyRecord.get('id')};
+    store.load()
   },
 
   onRemove(button){
@@ -57,7 +63,6 @@ Ext.define('VegaUi.mixin.GroupBoxMixin', {
     this._saveCheckBox();
     this._closeForm();
   },
-
 
   //region Priivate Functions
   _saveCheckBox() {

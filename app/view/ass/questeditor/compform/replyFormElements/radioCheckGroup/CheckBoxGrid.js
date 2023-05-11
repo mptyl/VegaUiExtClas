@@ -107,7 +107,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
               },
               listeners: {
                 rowdblclick: 'onRowDblClick',
-                drop:'onRowDrop'
+                drop:'onRowDrop',
                 //show:'onShow',
               },
               selModel: {
