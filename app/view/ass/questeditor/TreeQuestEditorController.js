@@ -98,6 +98,7 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
   },
 
   loadReply(record, form, questId, viewModel) {
+    const me=this;
     const reply = Ext.create('VegaUi.model.questEditor.QeFullReply');
     reply.getProxy().setExtraParams({id: record.get('id'), questId: questId});
     reply.load(
@@ -105,6 +106,12 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
         success: function () {
           viewModel.set('replyRecord', reply);
           viewModel.set('nodeToExpand',record.parentNode.parentNode.id+'/'+record.parentNode.id)
+          if(reply.get('replyType')=='RADIOGROUP' || reply.get('replyType')=='CHECKGROUP'){
+            const store=Ext.getStore('QeCheckBoxes');
+            const questId=viewModel.get('questId');
+            store.proxy.extraParams = {questId: questId, checkGroupId: reply.get('id')};
+            store.load()
+          }
         },
         failure: function () {
         },

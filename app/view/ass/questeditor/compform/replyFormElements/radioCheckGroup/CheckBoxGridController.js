@@ -3,11 +3,9 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
   alias: 'controller.ass-questeditor-checkboxgridcontroller',
 
 
-
   mixins: [
     'VegaUi.mixin.GroupBoxMixin'
   ],
-
 
 })
 

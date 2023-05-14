@@ -134,6 +134,8 @@ Ext.define('VegaUi.mixin.QeMixin', {
     const qeReply = Ext.create('VegaUi.model.questEditor.QeFullReply');
     const newNode = me.setupFormAndViewModel(record, qeReply, 'R', 'QeQuestion')
     me.addNode(newNode, me.getReplyForm());
+    const checkGroupStore=Ext.getStore('QeCheckBoxes');
+    checkGroupStore.loadData([],false);
   },
 
   addNode(record, formNumber) {
@@ -207,6 +209,7 @@ Ext.define('VegaUi.mixin.QeMixin', {
     const store = treeGrid.getStore();
     const qeForm = formQuestEditor.getLayout().getActiveItem().down('form');
     const viewModel = me.getViewModel();
+    viewModel.set('checkBoxFormHidden',true);
     if (!qeForm.isValid()) {
       Ext.Msg.alert('Errore nella validazione del form', 'Form invalido o incompleto. \nVerificare che tutti i campi obbligatori siano stati compilati')
     } else {
@@ -291,6 +294,8 @@ Ext.define('VegaUi.mixin.QeMixin', {
   },
 
   onCancelWithoutSaving: function () {
+    const viewModel=this.getViewModel();
+    viewModel.set('checkBoxFormHidden',true)
     const treeGrid=this.getTreeGrid();
     this.resetTreeGrid(treeGrid);
     const formContainer = this.getView().up('form-quest-editor');

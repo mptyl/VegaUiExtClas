@@ -108,7 +108,6 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
               listeners: {
                 rowdblclick: 'onRowDblClick',
                 drop:'onRowDrop',
-                //show:'onShow',
               },
               selModel: {
                 selType: 'checkboxmodel',

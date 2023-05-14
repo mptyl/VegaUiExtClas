@@ -1,0 +1,311 @@
+Ext.create('Ext.window.Window', {
+    title: 'My Window',
+    width: 400,
+    height: 300,
+    layout: 'fit',
+    items: [{
+        xtype: 'panel',
+        html: 'This is my window content'
+    }]
+}).show();
+
+
+var form = Ext.create('Ext.form.Panel', {
+    title: 'My Form',
+    width: 400,
+    height: 300,
+    items: [{
+        xtype: 'panel',
+        html: 'This is my panel content'
+    }]
+});
+
+form.add({
+    xtype: 'panel',
+    html: 'Another panel added dynamically'
+});
+
+
+function populateItems(panel, items) {
+    Ext.each(items, function(item) {
+        var component;
+
+        if (item.type === 'panel') {
+            component = Ext.create('Ext.panel.Panel', {
+                title: item.title,
+                html: item.content
+            });
+
+            if (item.children) {
+                populateItems(component, item.children);
+            }
+        } else if (item.type === 'textfield') {
+            component = Ext.create('Ext.form.field.Text', {
+                fieldLabel: item.label
+            });
+        }
+
+        panel.add(component);
+    });
+}
+
+// Example usage
+var tree = [
+    {
+        type: 'panel',
+        title: 'Panel 1',
+        content: 'This is panel 1 content',
+        children: [
+            {
+                type: 'textfield',
+                label: 'Textfield 1'
+            },
+            {
+                type: 'textfield',
+                label: 'Textfield 2'
+            }
+        ]
+    },
+    {
+        type: 'panel',
+        title: 'Panel 2',
+        content: 'This is panel 2 content',
+        children: [
+            // ...
+        ]
+    }
+];
+
+var panel = Ext.create('Ext.panel.Panel', {
+    title: 'Main Panel',
+    width: 400,
+    height: 300
+});
+
+populateItems(panel, tree);
+
+
+
+***************************************
+function populateItems(panel, items) {
+    Ext.each(items, function(item) {
+        var component;
+
+        if (item.type === 'panel') {
+            component = Ext.create('Ext.panel.Panel', {
+                title: item.title,
+                html: item.content
+            });
+
+            if (item.children) {
+                populateItems(component, item.children);
+            }
+        } else if (item.type === 'textfield') {
+            component = Ext.create('Ext.form.field.Text', {
+                fieldLabel: item.label
+            });
+        }
+
+        panel.add(component);
+    });
+}
+
+// Example usage
+var tree = [
+    {
+        type: 'panel',
+        title: 'Panel 1',
+        content: 'This is panel 1 content',
+        children: [
+            {
+                type: 'textfield',
+                label: 'Textfield 1'
+            },
+            {
+                type: 'textfield',
+                label: 'Textfield 2'
+            }
+        ]
+    },
+    {
+        type: 'panel',
+        title: 'Panel 2',
+        content: 'This is panel 2 content',
+        children: [
+            // ...
+        ]
+    }
+];
+
+var panel = Ext.create('Ext.panel.Panel', {
+    title: 'Main Panel',
+    width: 400,
+    height: 300
+});
+
+var itemList = [
+    {
+        type: 'panel',
+        title: 'Panel 1',
+        content: 'This is panel 1 content',
+        children: [
+            {
+                type: 'textfield',
+                label: 'Textfield 1'
+            },
+            {
+                type: 'textfield',
+                label: 'Textfield 2'
+            }
+        ]
+    },
+    {
+        type: 'panel',
+        title: 'Panel 2',
+        content: 'This is panel 2 content',
+        children: [
+            // ...
+        ]
+    }
+];
+
+populateItems(panel, itemList);
+
+
+function createInputField(item) {
+  switch (item.type) {
+    case 'text':
+      return Ext.create('Ext.form.field.Text', {
+        fieldLabel: item.label
+      });
+    case 'textarea':
+      return Ext.create('Ext.form.field.TextArea', {
+        fieldLabel: item.label
+      });
+    case 'number':
+      return Ext.create('Ext.form.field.Number', {
+        fieldLabel: item.label
+      });
+    case 'integer':
+      return Ext.create('Ext.form.field.Number', {
+        fieldLabel: item.label,
+        minValue: 0,
+        decimalPrecision: 0
+      });
+    case 'date':
+      return Ext.create('Ext.form.field.Date', {
+        fieldLabel: item.label
+      });
+    case 'color':
+      return Ext.create('Ext.ux.colorpick.Field', {
+        fieldLabel: item.label
+      });
+    case 'url':
+      return Ext.create('Ext.form.field.Text', {
+        fieldLabel: item.label,
+        vtype: 'url'
+      });
+    case 'radioboxes':
+      return Ext.create('Ext.form.RadioGroup', {
+        fieldLabel: item.label,
+        columns: 1,
+        vertical: true,
+        items: item.options.map(function(option) {
+          return {
+            boxLabel: option,
+            name: item.name
+          };
+        })
+      });
+    case 'checkboxes':
+      return Ext.create('Ext.form.CheckboxGroup', {
+        fieldLabel: item.label,
+        columns: 1,
+        vertical: true,
+        items: item.options.map(function(option) {
+          return {
+            boxLabel: option,
+            name: item.name
+          };
+        })
+      });
+    case 'list':
+      return Ext.create('Ext.form.CheckboxGroup', {
+        fieldLabel: item.label,
+        columns: 1,
+        vertical: true,
+        items: item.options.map(function(option) {
+          return {
+            boxLabel: option,
+            name: item.name
+          };
+        })
+      });
+    case 'combobox':
+      return Ext.create('Ext.form.field.ComboBox', {
+        fieldLabel: item.label,
+        store: item.options,
+        queryMode: 'local',
+        displayField: 'display',
+        valueField: 'value'
+      });
+    default:
+      return null;
+  }
+}
+
+function populateItems(panel, items) {
+  Ext.each(items, function(item) {
+    var component = createInputField(item);
+
+    if (component) {
+      panel.add(component);
+    }
+  });
+}
+
+// Example usage
+var itemList = [
+  {
+    type: 'text',
+    label: 'Text Field'
+  },
+  {
+    type: 'textarea',
+    label: 'Text Area'
+  },
+  {
+    type: 'number',
+    label: 'Number Field'
+  },
+  {
+    type: 'integer',
+    label: 'Integer Field'
+  },
+  {
+    type: 'date',
+    label: 'Date Field'
+  },
+  {
+    type: 'color',
+    label: 'Color Picker'
+  },
+  {
+    type: 'url',
+    label: 'URL Field'
+  },
+  {
+    type: 'radioboxes',
+    label: 'Radio Buttons',
+    name: 'radioGroup1',
+    options: ['Option 1', 'Option 2', 'Option 3']
+  },
+  {
+    type: 'checkboxes',
+    label: 'Checkboxes',
+    name: 'checkboxGroup1',
+    options: ['Option 1', 'Option 2', 'Option 3']
+  },
+  {
+    type: 'list',
+
