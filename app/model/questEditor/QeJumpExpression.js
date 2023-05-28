@@ -2,6 +2,7 @@ Ext.define('VegaUi.model.questEditor.QeJumpExpression', {
   extend: 'VegaUi.model.questEditor.QuestEditorNode',
 
   fields: [
+    {name: 'enterexp', type: 'boolean'},
     {name: 'expression', type: 'string'},
     {name: 'jumpTo', type: 'string'},
   ],

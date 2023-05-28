@@ -52,6 +52,14 @@ Ext.define('VegaUi.mixin.QeMixin', {
         me.onDeleteNode(record, index);
       }
     });
+    me.showQuestion = Ext.create('Ext.Action', {
+      iconCls: 'x-fa fa-question-circle',
+      text: 'Mostra Domanda',
+      disabled: false,
+      handler: function (widget, event) {
+        me.onShowQuestion(record, index);
+      }
+    });
     me.menuSeparator = {
       xtype: 'menuseparator'
     };
@@ -79,6 +87,7 @@ Ext.define('VegaUi.mixin.QeMixin', {
       me.ruleMenu = Ext.create('Ext.menu.Menu', {
         items: [
           me.addQuestionAction,
+          me.showQuestion,
           me.menuSeparator,
           me.addReplyAction,
           me.addJumpAction,
@@ -134,21 +143,22 @@ Ext.define('VegaUi.mixin.QeMixin', {
     const qeReply = Ext.create('VegaUi.model.questEditor.QeFullReply');
     const newNode = me.setupFormAndViewModel(record, qeReply, 'R', 'QeQuestion')
     me.addNode(newNode, me.getReplyForm());
-    const checkGroupStore=Ext.getStore('QeCheckBoxes');
-    checkGroupStore.loadData([],false);
+    const checkGroupStore = Ext.getStore('QeCheckBoxes');
+    checkGroupStore.loadData([], false);
   },
 
   addNode(record, formNumber) {
     const me = this;
     const formContainer = me.getFormContainer();
     formContainer.getLayout().setActiveItem(formNumber);
-    const form=formContainer.getLayout().getActiveItem().down('form');
+    const form = formContainer.getLayout().getActiveItem().down('form');
     form.loadRecord(record);
     const specificContainer = form.down('#specificContent');
     if (specificContainer)
       specificContainer.removeAll();
     formContainer.show();
   },
+
 
   ////////////////////////////////////////////////////////////////////////////////////
 
@@ -162,7 +172,7 @@ Ext.define('VegaUi.mixin.QeMixin', {
     if (record.data.cls === '' || record.data.cls === hierarchicalFatherCls) {
       nodeToExpand = record.get('id');
     } else {
-      nodeToExpand = record.parentNode.id+'/'+record.get('fatherId');
+      nodeToExpand = record.parentNode.id + '/' + record.get('fatherId');
     }
     questEditorViewModel.set('nodeToExpand', nodeToExpand);
 
@@ -209,7 +219,7 @@ Ext.define('VegaUi.mixin.QeMixin', {
     const store = treeGrid.getStore();
     const qeForm = formQuestEditor.getLayout().getActiveItem().down('form');
     const viewModel = me.getViewModel();
-    viewModel.set('checkBoxFormHidden',true);
+    viewModel.set('checkBoxFormHidden', true);
     if (!qeForm.isValid()) {
       Ext.Msg.alert('Errore nella validazione del form', 'Form invalido o incompleto. \nVerificare che tutti i campi obbligatori siano stati compilati')
     } else {
@@ -217,22 +227,22 @@ Ext.define('VegaUi.mixin.QeMixin', {
         url: Ext.manifest['server'] + controller + '/submit',
         method: 'POST',
         success: function (form, result, data) {
-          const internalForm=qeForm.getForm();
-          const replyType=internalForm.findField('replyType');
-          if(replyType){
-            const replyTypeValue=replyType.getValue();
-            if(replyTypeValue=='RADIOGROUP' || replyTypeValue=='CHECKGROUP')
+          const internalForm = qeForm.getForm();
+          const replyType = internalForm.findField('replyType');
+          if (replyType) {
+            const replyTypeValue = replyType.getValue();
+            if (replyTypeValue == 'RADIOGROUP' || replyTypeValue == 'CHECKGROUP')
               me.updateBoxes(formQuestEditor);
           }
 
           store.load({
             callback: function () {
-              me.resetForm(viewModel,treeGrid);
+              me.resetForm(viewModel, treeGrid);
             }
           })
         },
         failure: function (form, action) {
-          me.resetForm(viewModel,treeGrid);
+          me.resetForm(viewModel, treeGrid);
           switch (action.failureType) {
             case Ext.form.action.Action.CLIENT_INVALID:
               Ext.Msg.alert(
@@ -250,33 +260,33 @@ Ext.define('VegaUi.mixin.QeMixin', {
               const rts = JSON.parse(action.response.responseText);
               const aes = JSON.parse(rts.responseText)['apierror'];
               const messages = 'Status: <b>' + aes['status'] + '</b><br/>Message: <b>' + aes['message'] + '</b';
-              Ext.Msg.alert('Server Error',  messages);
+              Ext.Msg.alert('Server Error', messages);
           }
         }
       });
     }
   },
 
-  updateBoxes(form){
-    const cbgrid=form.down('qe-checkboxgrid');
-    const grid2=cbgrid.down('grid');
-    const checkBoxesGrid=grid2.getStore()
+  updateBoxes(form) {
+    const cbgrid = form.down('qe-checkboxgrid');
+    const grid2 = cbgrid.down('grid');
+    const checkBoxesGrid = grid2.getStore()
     checkBoxesGrid.sync();
   },
 
-  getTreeGrid(){
+  getTreeGrid() {
     const formQuestEditor = this.getView().up();
     const questEditor = formQuestEditor.up();
     return questEditor.down('treepanel');
   },
 
-  resetTreeGrid(treeGrid){
-    const viewModel=this.getViewModel();
+  resetTreeGrid(treeGrid) {
+    const viewModel = this.getViewModel();
     treeGrid.getSelectionModel().deselectAll();
     treeGrid.expandPath(viewModel.get('nodeToExpand'));
   },
 
-  resetForm(viewModel,treeGrid){
+  resetForm(viewModel, treeGrid) {
     this.onCancelWithoutSaving()
     treeGrid.getSelectionModel().deselectAll();
     treeGrid.expandPath(viewModel.get('nodeToExpand'));
@@ -294,15 +304,22 @@ Ext.define('VegaUi.mixin.QeMixin', {
   },
 
   onCancelWithoutSaving: function () {
-    const viewModel=this.getViewModel();
-    viewModel.set('checkBoxFormHidden',true)
-    const treeGrid=this.getTreeGrid();
+    const viewModel = this.getViewModel();
+    viewModel.set('checkBoxFormHidden', true)
+    const treeGrid = this.getTreeGrid();
     this.resetTreeGrid(treeGrid);
     const formContainer = this.getView().up('form-quest-editor');
-    const form=formContainer.down('form');
+    const form = formContainer.down('form');
     form.reset();
     formContainer.hide();
     form.remove(form, true);
+  },
+
+  onShowQuestion(record, index) {
+    const viewModel = this.getView().up('mainview').getViewModel();
+    viewModel.set('questionId',record.get('id'));
+    const questWin = Ext.create('VegaUi.view.ass.questeditor.ShowQuestionWindow');
+    questWin.show();
   },
 
   afterDestroy() {

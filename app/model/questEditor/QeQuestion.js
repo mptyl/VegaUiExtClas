@@ -15,6 +15,14 @@ Ext.define('VegaUi.model.questEditor.QeQuestion', {
     {name: 'imageAlt', type: 'string'},
 
   ],
+  hasMany: {
+    model: 'QeFullReply',
+    name: 'qeReplies'
+  },
+  hasMany: {
+    model: 'QeJumpExpression',
+    name: 'qeJumpExpressions'
+  },
   proxy: {
     type: 'ajax',
     url: 'http://localhost:8083/qequestion/load'

@@ -77,6 +77,9 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionariController', {
     const gridContainer = this.getView();
     const treeContainer = this.getView().up().down('quest-editor');
     treeContainer.getViewModel().set('questId', questId);
+    const mainView=this.getView().up('mainview')
+    const mainViewModel=mainView.getViewModel();
+    mainViewModel.set('questId',questId);
     gridContainer.hide();
     treeContainer.show();
   }

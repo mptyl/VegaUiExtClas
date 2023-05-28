@@ -1,31 +1,37 @@
-Ext.define('VegaUi.store.QeReplies', {
+Ext.define('VegaUi.store.QeQuestions', {
   extend: 'Ext.data.Store',
-  alias:'store.qereplies',
+  alias:'store.qequestions',
 
   requires: [
-    'VegaUi.model.questEditor.QeFullReply',
     'Ext.data.proxy.Direct',
     'VegaUi.DirectAPI',
     'Ext.data.reader.Json',
-    'Ext.data.writer.Json'
   ],
 
   constructor: function (cfg) {
     const me = this;
     cfg = cfg || {};
     me.callParent([Ext.apply({
-      storeId: 'QeReplies',
+      fields:['nodeCode'],
+      storeId: 'QeQuestions',
       autoLoad: false,
-      model: 'VegaUi.model.questEditor.QeFullReply',
       proxy: {
         type: 'direct',
         api: {
-          read: replyController.read,
+          read: jumpExpressionController.readQuestions,
         },
         reader: {
           type: 'json',
-          messageProperty: 'Errore nella lettura dele Repies',
+          messageProperty: 'Errore nella lettura delle Question',
           rootProperty: 'records',
+          transform: {
+            fn: function(data) {
+              return data.records.map(function(item) {
+                return {nodeCode: item};
+              });
+            },
+            scope: this
+          },
           listeners: {
             exception: {
               fn: me.onJsonException,
@@ -38,11 +44,6 @@ Ext.define('VegaUi.store.QeReplies', {
             fn: me.onDirectException,
             scope: me
           }
-        },
-        writer: {
-          type: 'json',
-          dateFormat: 'Y-m-d',
-          writeAllFields: true
         }
       }
     }, cfg)]);
@@ -50,7 +51,7 @@ Ext.define('VegaUi.store.QeReplies', {
 
   onJsonException: function (reader, response, error, eOpts) {
     var me = this;
-    Ext.Msg.alert('Errore nell\'accesso alle Replies', JSON.parse(response.responseText).message,
+    Ext.Msg.alert('Errore nell\'accesso alle Question', JSON.parse(response.responseText).message,
       function () {
         me.rejectChanges();
       }, me);
@@ -58,7 +59,7 @@ Ext.define('VegaUi.store.QeReplies', {
 
   onDirectException: function (proxy, response, operation, eOpts) {
     var me = this;
-    Ext.Msg.alert('Errore nell\'accesso alle Replies', operation.getError(),
+    Ext.Msg.alert('Errore nell\'accesso alle Question', operation.getError(),
       function () {
         me.rejectChanges();
       }, me);

@@ -1,31 +1,37 @@
-Ext.define('VegaUi.store.QeReplies', {
+Ext.define('VegaUi.store.QeJeReplies', {
   extend: 'Ext.data.Store',
-  alias:'store.qereplies',
+  alias:'store.qejerepliess',
 
   requires: [
-    'VegaUi.model.questEditor.QeFullReply',
     'Ext.data.proxy.Direct',
     'VegaUi.DirectAPI',
     'Ext.data.reader.Json',
-    'Ext.data.writer.Json'
   ],
 
   constructor: function (cfg) {
     const me = this;
     cfg = cfg || {};
     me.callParent([Ext.apply({
-      storeId: 'QeReplies',
+      fields:['replyNodeCode'],
+      storeId: 'QeJeReplies',
       autoLoad: false,
-      model: 'VegaUi.model.questEditor.QeFullReply',
       proxy: {
         type: 'direct',
         api: {
-          read: replyController.read,
+          read: jumpExpressionController.readReplies,
         },
         reader: {
           type: 'json',
-          messageProperty: 'Errore nella lettura dele Repies',
+          messageProperty: 'Errore nella lettura delle Replies',
           rootProperty: 'records',
+          transform: {
+            fn: function(data) {
+              return data.records.map(function(item) {
+                return {replyNodeCode: item};
+              });
+            },
+            scope: this
+          },
           listeners: {
             exception: {
               fn: me.onJsonException,
@@ -38,11 +44,6 @@ Ext.define('VegaUi.store.QeReplies', {
             fn: me.onDirectException,
             scope: me
           }
-        },
-        writer: {
-          type: 'json',
-          dateFormat: 'Y-m-d',
-          writeAllFields: true
         }
       }
     }, cfg)]);

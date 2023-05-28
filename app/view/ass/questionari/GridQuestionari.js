@@ -7,11 +7,11 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionari', {
   ],
   controller: 'ass-questionari-gridquestionari',
   layout: 'fit',
-
   items: [
     {
       xtype: 'grid',
       scrollable: 'vertical',
+
       reference: 'grid',
       bind:
         {

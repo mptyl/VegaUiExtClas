@@ -1,0 +1,76 @@
+Include the Quill JavaScript and CSS files: In your application's HTML file,
+include the Quill JavaScript and CSS files by adding the following script and link tags to the <head> section:
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+
+
+Create a custom ExtJS component: Create a custom ExtJS component that will serve as the container for the Quill editor.
+This component will extend Ext.form.field.TextArea and provide the necessary functions for rendering and interacting with the editor.
+
+Ext.define('MyApp.view.QuillEditor', {
+  extend: 'Ext.form.field.TextArea',
+  xtype: 'quilleditor',
+
+  afterRender: function () {
+    this.callParent(arguments);
+    this.renderQuill();
+  },
+
+  renderQuill: function () {
+    this.quill = new Quill(this.getEl().dom, {
+      theme: 'snow'
+    });
+  },
+
+  getValue: function () {
+    return this.quill.root.innerHTML;
+  },
+
+  setValue: function (value) {
+    this.quill.root.innerHTML = value;
+  }
+});
+
+Use the custom component: Now you can use the custom QuillEditor component in your ExtJS application
+wherever you want to allow data entry using the Quill editor. For example, in a form:
+
+Ext.create('Ext.form.Panel', {
+  title: 'Data Entry',
+  width: 800,
+  height: 600,
+  items: [
+    {
+      xtype: 'quilleditor',
+      fieldLabel: 'Description',
+      name: 'description',
+      anchor: '100%',
+      height: 300
+    }
+  ],
+  buttons: [
+    {
+      text: 'Save',
+      handler: function () {
+        var form = this.up('form').getForm();
+        if (form.isValid()) {
+          var values = form.getValues();
+          console.log('Submitted values:', values);
+        }
+      }
+    }
+  ],
+  renderTo: Ext.getBody()
+});
+
+
+This code creates a form with the QuillEditor component added as a field. Adjust the size, label,
+and form configuration as needed.
+
+Customize the editor: You can further customize the Quill editor by adding configurations and options
+in the renderQuill() function. Refer to the Quill documentation for available options and features that you can
+incorporate based on your requirements.
+
+With these steps, you should be able to integrate the Quill editor into your ExtJS application
+and use it for data entry. You can adjust the component's styling, size, and configurations to match your
+application's design and functionality needs.

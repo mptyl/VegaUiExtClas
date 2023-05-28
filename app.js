@@ -39,6 +39,9 @@ Ext.application({
     'QuestEditorStore',
     'QeReplyTypes',
     'QeCheckBoxes',
+    'QeReplies',
+    'QeQuestions',
+    'QeJeReplies'
   ],
 
   launch: function () {

@@ -3,6 +3,8 @@ Ext.define('VegaUi.view.home.Home',{
     extend: 'Ext.panel.Panel',
     xtype:'home-home-panel',
 
+
+
     requires: [
         'VegaUi.view.home.HomeController',
         'VegaUi.view.home.HomeModel'

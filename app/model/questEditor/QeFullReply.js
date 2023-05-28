@@ -40,6 +40,10 @@ Ext.define('VegaUi.model.questEditor.QeFullReply', {
     {name: 'rows', type: 'integer'},
     {name: 'cols', type: 'integer'}
   ],
+  hasMany: {
+    model: 'CheckBoxModel',
+    name: 'qeCheckBoxes'
+  },
   proxy: {
     type: 'ajax',
     url: 'http://localhost:8083/qereply/load'
