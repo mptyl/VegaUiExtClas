@@ -20,6 +20,7 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionFormController', 
   },
 
   onExpressionChange(field, newValue, oldValue, eOpt) {
+    console.log('Expression changed')
     const color = this.checkPredicateValidity(newValue) ? '#a2f5a2' : '#ffbaba';
     field.setFieldStyle('background-color: ' + color + ';');
   },
@@ -49,6 +50,11 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionFormController', 
     const storer = combor.getStore();
     storer.proxy.extraParams = {questId: questId};
     storer.load();
+  },
+
+  onResetExpression() {
+    const vm = this.getViewModel();
+    vm.set('jeRecord.expression', '');
   }
 
 });

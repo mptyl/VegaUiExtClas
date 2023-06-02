@@ -120,6 +120,11 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyFormController', {
     let secondPart = typeSelected.slice(1);
     let lowedText = secondPart.toLowerCase();
     return firstChar + lowedText;
+  },
+
+  onMinChange(field, newValue) {
+
+    console.log(newValue);
   }
 });
 

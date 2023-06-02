@@ -29,6 +29,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyForm', {
         labelAlign: 'right',
         labelWidth: 130
       },
+      defaultButton: 'saveGroup',
       items: [
         {
           xtype: 'fieldset',
@@ -197,7 +198,8 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyForm', {
             }
           ]
         }
-      ]
+      ],
+
     },
     {
       xtype: 'qe-checkboxgrid',

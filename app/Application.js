@@ -4,23 +4,20 @@
  * initialization details.
  */
 Ext.define('VegaUi.Application', {
-    extend: 'Ext.app.Application',
+  extend: 'Ext.app.Application',
 
-    name: 'VegaUi',
-
-    stores: [
-        // TODO: add global / shared stores here
-    ],
+  name: 'VegaUi',
 
 
 
-    onAppUpdate: function () {
-        Ext.Msg.confirm('Application Update', 'This application has an update, reload?',
-            function (choice) {
-                if (choice === 'yes') {
-                    window.location.reload();
-                }
-            }
-        );
-    }
+
+  onAppUpdate: function () {
+    Ext.Msg.confirm('Application Update', 'This application has an update, reload?',
+      function (choice) {
+        if (choice === 'yes') {
+          window.location.reload();
+        }
+      }
+    );
+  }
 });

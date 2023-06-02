@@ -15,17 +15,18 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.DateFieldset'
           xtype: 'datefield',
           name: 'minDate',
           fieldLabel: 'Data minima ammessa:',
-          dateFormat: 'Y-m-d',
+          format: 'd/m/Y',
           bind:{
             value:'{replyRecord.minDate}'
           },
-          flex:1
+          flex:1,
+          timezoneOffset: 120,
         },
         {
           xtype: 'datefield',
           name: 'maxDate',
           fieldLabel: 'Data massima ammessa:',
-          dateFormat: 'Y-m-d',
+          format: 'd/m/Y',
           bind:{
             value:'{replyRecord.maxDate}'
           },

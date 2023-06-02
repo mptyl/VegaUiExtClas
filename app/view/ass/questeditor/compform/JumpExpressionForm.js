@@ -86,6 +86,13 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionForm', {
                     change: 'onExpressionChange'
                   },
                   flex:10
+                },
+                {
+                  xtype: 'button',
+                  text: 'Reset',
+                  margin: '0 0 0 5',
+                  handler: 'onResetExpression',
+                  flex:2
                 }
               ]
             },
@@ -122,7 +129,7 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionForm', {
                   listConfig: {
                     maxHeight: 400,  // Maximum height of dropdown list in pixels
                   },
-                  store: ['(', ')', '<', '>', '>=', '<=', '=', '!=', 'AND', 'OR', 'NOT', 'TRUE', 'FALSE'],
+                  store: ['(', ')', '<', '>', '>=', '<=', '==', '!=', '&&', '||', '!', 'TRUE', 'FALSE'],
                   queryMode: 'local',
                   flex: 1,
                   listeners: {

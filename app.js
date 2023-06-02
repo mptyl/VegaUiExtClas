@@ -31,6 +31,7 @@ Ext.application({
     // so that application classes do not need to require each other.
     'VegaUi.*'
   ],
+
   stores: [
     'Questionnaires',
     'QuestionnaireGroups',
@@ -44,10 +45,10 @@ Ext.application({
     'QeJeReplies'
   ],
 
+
   launch: function () {
     Ext.ariaWarn = Ext.emptyFn;
     Ext.create('VegaUi.view.MainView');
-
   }
 
 });
