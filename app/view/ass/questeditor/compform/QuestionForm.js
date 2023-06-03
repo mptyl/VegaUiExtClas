@@ -21,6 +21,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.QuestionForm', {
         labelAlign: 'right',
         labelMinWidth: 180,
       },
+      defaultButton: 'saveButton',
       items: [
         {
           xtype: 'fieldset',
@@ -44,6 +45,8 @@ Ext.define('VegaUi.view.ass.questeditor.compform.QuestionForm', {
                   fieldLabel: 'Etichetta',
                   name: 'text',
                   bind:'{questionRecord.text}',
+                  allowBlank: false,
+                  itemId:'treeLabel',
                   flex: 20
                 },
                 {
@@ -51,6 +54,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.QuestionForm', {
                   name: 'nodeCode',
                   bind:'{questionRecord.nodeCode}',
                   margin: '0 0 0 5',
+                  disabled: true,
                   flex: 2
                 },
               ]
@@ -61,6 +65,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.QuestionForm', {
               anchor: '100%',
               fieldLabel: 'Titolo Domanda',
               name: 'title',
+              allowBlank: false,
               bind:'{questionRecord.title}',
             },
             {
@@ -68,6 +73,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.QuestionForm', {
               anchor: '100%',
               fieldLabel: 'Testo Domanda',
               name: 'questionText',
+              allowBlank: false,
               bind:'{questionRecord.questionText}',
             },
             {
@@ -131,14 +137,8 @@ Ext.define('VegaUi.view.ass.questeditor.compform.QuestionForm', {
               fieldLabel: 'Randomizzazione risposte',
               name: 'randomRepliesOrder',
               bind:'{questionRecord.randomRepliesOrder}',
-            },
-            {
-              xtype: 'textfield',
-              anchor: '100%',
-              fieldLabel: 'elementPrefix',
-              name: 'elementPrefix',
-              bind:'{questionRecord.elementPrefix}',
-              hidden:true
+              allowBlank: false,
+              defaultValue: false,
             },
             {
               xtype: 'textfield',
@@ -155,6 +155,16 @@ Ext.define('VegaUi.view.ass.questeditor.compform.QuestionForm', {
               name: 'imageAlt',
               bind:'{questionRecord.imageAlt}',
               hidden: true
+            },
+
+            // Fields standard
+            {
+              xtype: 'textfield',
+              anchor: '100%',
+              fieldLabel: 'elementPrefix',
+              name: 'elementPrefix',
+              bind:'{questionRecord.elementPrefix}',
+              hidden:true
             },
             {
               xtype: 'textfield',
@@ -197,7 +207,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.QuestionForm', {
             },
             '->',
             {
-              reference: 'saveGroup',
+              reference: 'saveButton',
               iconCls: 'x-fa fa-inbox',
               text: 'Salva Domanda',
               handler:'onSaveQuestion',

@@ -16,6 +16,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyForm', {
     align: 'stretch'
   },
 
+
   items: [
     {
       xtype: 'form',
@@ -29,7 +30,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyForm', {
         labelAlign: 'right',
         labelWidth: 130
       },
-      defaultButton: 'saveGroup',
+      defaultButton: 'saveButton',
       items: [
         {
           xtype: 'fieldset',
@@ -49,6 +50,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyForm', {
               items: [
                 {
                   xtype: 'textfield',
+                  itemId:'treeLabel',
                   anchor: '100%',
                   fieldLabel: 'Etichetta',
                   name: 'text',
@@ -60,7 +62,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyForm', {
                   xtype: 'textfield',
                   name: 'nodeCode',
                   margin: '0 0 0 5',
-                  readOnly: true,
+                  disabled: true,
                   bind: '{replyRecord.nodeCode}',
                   flex: 2
                 },
@@ -108,7 +110,6 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyForm', {
                       name: 'replyRequired',
                       reference: 'replyRequiredField',
                       fieldLabel: 'Risposta obbligatoria:',
-                      hidden: false,
                       defaultValue: false,
                       bind: '{replyRecord.replyRequired}',
                       flex: 1,
@@ -120,7 +121,6 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyForm', {
                       name: 'withComment',
                       reference: 'withCommentField',
                       fieldLabel: 'Con commento:',
-                      hidden: false,
                       defaultValue: false,
                       bind: '{replyRecord.withComment}',
                       flex: 1,
@@ -190,7 +190,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyForm', {
             },
             '->',
             {
-              reference: 'saveGroup',
+              reference: 'saveButton',
               iconCls: 'x-fa fa-inbox',
               text: 'Salva Risposta',
               align: 'right',

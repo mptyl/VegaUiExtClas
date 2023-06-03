@@ -19,6 +19,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
         labelTextAlign: 'right',
         labelMinWidth: 250,
       },
+      defaultButton: 'saveButton',
       items: [
         {
           xtype: 'fieldset',
@@ -39,9 +40,11 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
                 {
                   xtype: 'textfield',
                   anchor: '100%',
+                  itemId:'treeLabel',
                   fieldLabel: 'Etichetta',
                   name: 'text',
                   bind: '{groupRecord.text}',
+                  allowBlank: false,
                   flex: 20
                 },
 
@@ -49,6 +52,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
                   xtype: 'textfield',
                   name: 'nodeCode',
                   bind: '{groupRecord.nodeCode}',
+                  disabled: true,
                   margin: '0 0 0 5',
                   flex: 2
                 },
@@ -62,6 +66,8 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
               bind: '{groupRecord.random}',
               defaultValue: false
             },
+
+            // Fields standard
             {
               xtype: 'textfield',
               anchor: '100%',
@@ -111,7 +117,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
             },
             '->',
             {
-              reference: 'saveGroup',
+              reference: 'saveButton',
               iconCls: 'x-fa fa-inbox',
               text: 'Salva Gruppo',
               handler: 'onSaveGroup',

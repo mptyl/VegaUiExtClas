@@ -41,6 +41,11 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
             break;
         }
         me.getFormContainer().show()
+        const active=me.getFormContainer().layout.getActiveItem();
+        const treeLabelField=active.down('#treeLabel');
+        if(treeLabelField){
+          treeLabelField.focus(true, 100)
+        }
       }
     }
   },

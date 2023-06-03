@@ -26,6 +26,7 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionForm', {
         labelAlign: 'right',
         labelMinWidth: 180,
       },
+      defaultButton: 'saveButton',
       items: [
         {
           xtype: 'fieldset',
@@ -46,8 +47,10 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionForm', {
                 {
                   xtype: 'textfield',
                   anchor: '100%',
+                  itemId:'treeLabel',
                   fieldLabel: 'Etichetta',
                   name: 'text',
+                  allowBlank: false,
                   bind: '{jeRecord.text}',
                   flex: 20
                 },
@@ -56,6 +59,7 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionForm', {
                   name: 'nodeCode',
                   bind: '{jeRecord.nodeCode}',
                   margin: '0 0 0 5',
+                  disabled: true,
                   flex: 2
                 },
               ]
@@ -79,12 +83,12 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionForm', {
                   xtype: 'textfield',
                   itemId:'expressionField',
                   anchor: '100%',
-                  //fieldLabel: 'Espressione:',
                   name: 'expression',
                   bind: '{jeRecord.expression}',
                   listeners: {
                     change: 'onExpressionChange'
                   },
+                  allowBlank: false,
                   flex:10
                 },
                 {
@@ -148,10 +152,13 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionForm', {
                   fieldLabel: 'Salta a:',
                   name: 'jumpTo',
                   bind: '{jeRecord.jumpTo}',
+                  allowBlank: false,
                   flex:2
                 },
               ]
             },
+
+            // Fields standard
             {
               xtype: 'textfield',
               anchor: '100%',
@@ -201,7 +208,7 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionForm', {
             },
             '->',
             {
-              reference: 'saveGroup',
+              reference: 'saveButton',
               iconCls: 'x-fa fa-inbox',
               text: 'Salva Jump Expression',
               handler: 'onSaveJumpExpression',
