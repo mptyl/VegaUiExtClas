@@ -42,7 +42,8 @@ Ext.application({
     'QeCheckBoxes',
     'QeReplies',
     'QeQuestions',
-    'QeJeReplies'
+    'QeJeReplies',
+    'CompanyRoles',
   ],
 
 

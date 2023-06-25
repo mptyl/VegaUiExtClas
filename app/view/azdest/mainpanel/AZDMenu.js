@@ -14,11 +14,11 @@ Ext.define('VegaUi.view.azdest.mainpanel.AZDMenu',{
     },
   defaults: {
     xtype: 'button',
-    padding: '3 0',
+    padding: 10,
+    margin: 1,
     width: '100%',
     handler:'onButtonTap'
   },
-  title:'Menu',
   items: [
     {
       text: 'Gruppi aziende',
@@ -30,7 +30,7 @@ Ext.define('VegaUi.view.azdest.mainpanel.AZDMenu',{
     },
     {
       text: 'Ruoli aziendali',
-      itemId:'azdRuoliAziendali'
+      itemId:'azdRuoliAziendaliGrid'
     },
     {
       text: 'Ruoli x Azienda',

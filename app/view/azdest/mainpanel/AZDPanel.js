@@ -11,7 +11,10 @@ Ext.define('VegaUi.view.azdest.mainpanel.AZDPanel', {
   viewModel: {
     type: 'azdest-mainpanel-azdpanel'
   },
-  layout: 'hbox',
+  layout: {
+    type: 'hbox',
+    align: 'stretch'
+  },
   items: [
     {
       xtype: 'azd-mainpanel-menu',
@@ -32,8 +35,8 @@ Ext.define('VegaUi.view.azdest.mainpanel.AZDPanel', {
           itemId: 'azdAziendePanel',
         },
         {
-          xtype: 'azd-ruoloaziendale-panel',
-          itemId: 'azdRuoliAziendaliPanel',
+          xtype: 'azd-ruoloaziendalegrid-panel',
+          itemId: 'azdRuoliAziendaliGridPanel',
         },
         {
           xtype: 'azd-ruoloxazienda-panel',

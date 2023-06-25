@@ -17,6 +17,10 @@ Ext.define('VegaUi.view.MainViewViewController', {
   extend: 'Ext.app.ViewController',
   alias: 'controller.mainview',
 
+  onLogout: function() {
+    console.log('onLogout');
+  },
+
   onButtonTap(button) {
     console.log(button.getItemId())
     this.redirectTo(button.getItemId());

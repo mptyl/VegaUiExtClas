@@ -75,7 +75,8 @@
     },
     "compressor": {
       "type": "yui"
-    }
+    },
+    "server": "http://localhost:8083/"
   },
   "testing": {},
   "development": {

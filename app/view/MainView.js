@@ -30,10 +30,22 @@ Ext.define('VegaUi.view.MainView', {
   layout: 'border',
   items: [
     {
-      xtype: 'panel',
       region: 'north',
-      html: 'Header content',
-      minHeight: 50
+      xtype: 'panel',
+      height: 50,
+      minHeight: 50,
+      header: {
+        titlePosition: 0,
+        bind: {
+          title: '{name}'
+        },
+        items: [{
+          xtype: 'button',
+          text: 'Logout',
+          handler: 'onLogout',
+          cls: 'logoutButton'
+        }]
+      }
     },
     {
       xtype: 'panel',
@@ -46,6 +58,7 @@ Ext.define('VegaUi.view.MainView', {
           layout: 'card',
           itemId: 'contentPanel',
           reference: 'contentPanel',
+          margin: 10,
           items: [
             {
               xtype: 'home-home-panel',
