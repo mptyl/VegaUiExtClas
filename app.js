@@ -44,6 +44,7 @@ Ext.application({
     'QeQuestions',
     'QeJeReplies',
     'CompanyRoles',
+    'CompanyGroups',
   ],
 
 

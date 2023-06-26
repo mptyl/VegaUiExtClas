@@ -54,6 +54,10 @@ Ext.define('VegaUi.controller.VegaRouter', {
         Ext.getStore('CompanyRoles').reload();
         break;
       }
+      case 'azdGruppoaziende':{
+        Ext.getStore('CompanyGroups').reload();
+        break;
+      }
     }
   },
 

@@ -53,7 +53,7 @@ Ext.define('VegaUi.view.ass.profili.FormProfili', {
           items: [
             {
               xtype: 'button',
-              reference: 'add',
+              reference: 'backToList',
               iconCls: 'x-fa fa-plus',
               text: 'Torna alla lista',
               handler: 'onReset',

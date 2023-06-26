@@ -1,9 +1,9 @@
-Ext.define('VegaUi.store.CompanyRoles', {
+Ext.define('VegaUi.store.CompanyGroups', {
   extend: 'Ext.data.Store',
-  alias:'store.companyroles',
+  alias:'store.companygroups',
 
   requires: [
-    'VegaUi.model.CompanyRole',
+    'VegaUi.model.CompanyGroup',
     'Ext.data.proxy.Direct',
     'VegaUi.DirectAPI',
     'Ext.data.reader.Json',
@@ -14,9 +14,9 @@ Ext.define('VegaUi.store.CompanyRoles', {
     const me = this;
     cfg = cfg || {};
     me.callParent([Ext.apply({
-      storeId: 'CompanyRoles',
+      storeId: 'CompanyGroups',
       autoLoad: false,
-      model: 'VegaUi.model.CompanyRole',
+      model: 'VegaUi.model.CompanyGroup',
       sorters: [{
         property: 'id',
         direction: 'ASC' // or 'DESC' for descending
@@ -24,14 +24,14 @@ Ext.define('VegaUi.store.CompanyRoles', {
       proxy: {
         type: 'direct',
         api: {
-          read: companyRoleDirectController.read,
-          create  : companyRoleDirectController.create,
-          update  : companyRoleDirectController.update,
-          destroy: companyRoleDirectController.destroy
+          read: companyGroupDirectController.read,
+          create  : companyGroupDirectController.create,
+          update  : companyGroupDirectController.update,
+          destroy: companyGroupDirectController.destroy
         },
         reader: {
           type: 'json',
-          messageProperty: 'Errore nella lettura del file Company Role',
+          messageProperty: 'Errore nella lettura del file Company Group',
           rootProperty: 'records',
           listeners: {
             exception: {
@@ -57,7 +57,7 @@ Ext.define('VegaUi.store.CompanyRoles', {
 
   onJsonException: function (reader, response, error, eOpts) {
     var me = this;
-    Ext.Msg.alert('Errore Json nell\'accesso alla tabella Company Role', JSON.parse(response.responseText).message,
+    Ext.Msg.alert('Errore Json nell\'accesso alla tabella Company Group', JSON.parse(response.responseText).message,
       function () {
         me.rejectChanges();
       }, me);
@@ -71,7 +71,7 @@ Ext.define('VegaUi.store.CompanyRoles', {
     //   keycloak.logout();
     // }
     const status= response.xhr? response.xhr.status +' - ': '';
-    Ext.Msg.alert('Errore Direct nell\'accesso alla tabella  Company Role', status+operation.getError(),
+    Ext.Msg.alert('Errore Direct nell\'accesso alla tabella  Company Group', status+operation.getError(),
       function () {
         me.rejectChanges();
       }, me);

@@ -1,0 +1,49 @@
+.custom-button-green {
+  background-color: #4CAF50 !important;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+
+  .x-btn-inner-default-toolbar-small {
+    /* Define your custom styles here */
+    color: white; // Example style
+  }
+
+  .fa-plus {
+    color: white;
+  }
+
+  &:hover {
+    background-color: #45a049;
+    color: black;
+  }
+}
+
+.custom-button-red {
+  background-color: #f44336 !important;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+
+  .fa-trash {
+    color: white;
+  }
+
+  &:hover {
+    background-color: #c41c00;
+    color: white;
+  }
+
+  .x-btn-inner-default-toolbar-small {
+    /* Define your custom styles here */
+    color: white; // Example style
+  }
+}
