@@ -9,7 +9,7 @@ Ext.define('VegaUi.store.QuestEditorStore', {
     'Ext.data.reader.Json',
     'Ext.data.writer.Json'
   ],
-  storeId: 'questEditorStoreId',
+  storeId: 'QuestEditorStore',
   model: 'VegaUi.model.questEditor.QuestEditorTreeModel',
   nodeParam: 'id',
   proxy: {

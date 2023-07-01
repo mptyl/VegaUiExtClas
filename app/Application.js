@@ -5,11 +5,7 @@
  */
 Ext.define('VegaUi.Application', {
   extend: 'Ext.app.Application',
-
   name: 'VegaUi',
-
-
-
 
   onAppUpdate: function () {
     Ext.Msg.confirm('Application Update', 'This application has an update, reload?',

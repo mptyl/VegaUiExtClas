@@ -29,7 +29,7 @@ Ext.application({
   requires: [
     // This will automatically load all classes in the VegaUi namespace
     // so that application classes do not need to require each other.
-    'VegaUi.*'
+    'VegaUi.*',
   ],
 
   stores: [

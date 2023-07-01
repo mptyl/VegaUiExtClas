@@ -72,18 +72,18 @@ Ext.define('VegaUi.view.MainView', {
               xtype: 'azd-mainpanel-panel',
               itemId: 'azdMainPanel',
             },
-            {
-              xtype: 'av-mainpanel-panel',
-              itemId: 'avMainPanel',
-            },
-            {
-              xtype: 'asr-mainpanel-panel',
-              itemId: 'asrMainPanel',
-            },
-            {
-              xtype: 'adm-mainpanel-panel',
-              itemId: 'admMainPanel',
-            }
+            // {
+            //   xtype: 'av-mainpanel-panel',
+            //   itemId: 'avMainPanel',
+            // },
+            // {
+            //   xtype: 'asr-mainpanel-panel',
+            //   itemId: 'asrMainPanel',
+            // },
+            // {
+            //   xtype: 'adm-mainpanel-panel',
+            //   itemId: 'admMainPanel',
+            // }
           ]
         },
       ]

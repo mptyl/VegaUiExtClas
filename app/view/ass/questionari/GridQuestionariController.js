@@ -62,6 +62,8 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionariController', {
 
   loadTree(record) {
     const questId = record.get('id');
+    const view = this.getView();
+    const upview= view.up();
     const treeGrid = this.getView().up().down('treepanel')
     const treeStore = treeGrid.getStore();
     treeStore.getProxy().setExtraParams({questId: questId});

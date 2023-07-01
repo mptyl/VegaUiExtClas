@@ -4,6 +4,7 @@ Ext.define('VegaUi.view.ass.groupquest.GridGruppoQuestionari', {
 
     requires: [
       'VegaUi.view.ass.groupquest.GridGruppoQuestionariController',
+      'Ext.grid.filters.Filters'
     ],
 
     controller: 'ass-groupquest-gridgruppoquestionari',

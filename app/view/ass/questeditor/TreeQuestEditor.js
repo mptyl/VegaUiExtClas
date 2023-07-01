@@ -4,9 +4,11 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditor', {
 
   requires: [
     'VegaUi.view.ass.questeditor.TreeQuestEditorController',
+    'Ext.tree.plugin.TreeViewDragDrop'
   ],
 
   controller: 'ass-questionari-treequesteditor',
+  itemId:'treeQuestEditor',
 
   reference: 'questEditorPanel',
   layout: 'fit',

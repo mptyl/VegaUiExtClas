@@ -65,7 +65,7 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
 
   getFormContainer() {
     const view = this.getView();
-    const viewUp = view.up();
+    const viewUp = view.up().up();
     const viewUpDown = viewUp.down('form-quest-editor')
     return viewUpDown;
   },

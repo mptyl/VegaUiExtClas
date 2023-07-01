@@ -4,6 +4,8 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
 
   requires: [
     'VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGroup.CheckBoxGridController',
+    'Ext.grid.plugin.DragDrop',
+    'Ext.selection.Model'
   ],
 
   controller: 'ass-questeditor-checkboxgridcontroller',
@@ -21,7 +23,6 @@ Ext.define('VegaUi.view.ass.questeditor.compform.replyFormElements.radioCheckGro
           items: [
             {
               xtype: 'checkboxform',
-
             },
             {
               xtype: 'grid',
