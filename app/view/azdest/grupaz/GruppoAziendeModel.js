@@ -4,7 +4,8 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeModel', {
   data: {
     name: 'VegaUi',
     removeGroupDisabled: true,
-    formHidden: true
+    formHidden: true,
+    record:null
   },
   stores: {
     gruppoAziende: {
