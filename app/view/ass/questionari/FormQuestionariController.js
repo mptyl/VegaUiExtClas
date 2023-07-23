@@ -6,12 +6,36 @@ Ext.define('VegaUi.view.ass.questionari.FormQuestionariController', {
     'VegaUi.mixin.TylCrudMixin'
   ],
 
-  onReset() {
-    this.cancelFormTyl()
+
+  onReset(){
+    this._cancelForm()
+    this.__hideQuestEditor();
+    this._showGrid();
+    this.__deselectAll();
+
   },
 
-  onSave() {
-    this.submitFormTyl('questionnaire');
+  __deselectAll(){
+    const grid=this.getView().up().down('grid');
+    grid.getSelectionModel().deselectAll()
   },
+
+  __hideQuestEditor(){
+    const vm=this.getView().up().getViewModel();
+    vm.set('questEditorHidden',true);
+  },
+
+
+  onSave() {
+    const me=this;
+
+    me._submitForm('questionnaire',true);
+    const questModel=me.getView().up().getViewModel();
+    me.getView().up().down('grid').getStore().load()
+    me.getView().hide()
+    me._showGrid(questModel);
+
+  },
+
 
 });

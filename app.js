@@ -49,7 +49,9 @@ Ext.application({
 
 
   launch: function () {
-    Ext.ariaWarn = Ext.emptyFn;
+    Ext.ariaWarn = Ext.emptyFn
+    // TODO - Launch the application, preceduto da logout
+    console.log('launching')
     Ext.create('VegaUi.view.MainView');
   }
 

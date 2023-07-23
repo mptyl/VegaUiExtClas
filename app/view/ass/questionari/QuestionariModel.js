@@ -3,9 +3,11 @@ Ext.define('VegaUi.view.ass.questionari.QuestionariModel', {
   alias: 'viewmodel.ass-questionari-questionari',
   data: {
     name: 'VegaUi - Questionari',
-    image: null,
     hiddenid: true,
-    disabledGridButtons: false
+    removeButtonDisabled: true,
+    gridHidden:false,
+    formHidden:true,
+    questEditorHidden:true
   },
   stores: {
     queststore: {

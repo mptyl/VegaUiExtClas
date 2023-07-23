@@ -1,6 +1,6 @@
 Ext.define('VegaUi.view.ass.questionari.FormQuestionari', {
   extend: 'Ext.panel.Panel',
-  xtype: 'quest-form',
+  alias: 'widget.quest-form',
 
   requires: [
     'VegaUi.view.ass.questionari.FormQuestionariController',

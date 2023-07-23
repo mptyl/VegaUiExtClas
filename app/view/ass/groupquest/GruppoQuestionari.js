@@ -21,12 +21,17 @@ Ext.define('VegaUi.view.ass.groupquest.GruppoQuestionari',{
 
       {
         xtype:'questgroup-form',
-        flex:14,
-        hidden:true
+        flex:1,
+        bind:{
+          hidden:'{formHidden}'
+        }
       },
       {
         xtype:'questgroup-grid',
-        flex:4
+        flex:1,
+        bind:{
+          hidden:'{gridHidden}'
+        }
       },
     ]
 });

@@ -8,7 +8,9 @@ Ext.define('VegaUi.view.ass.profili.ProfiliModel', {
   data: {
     name: 'VegaUi - Profilo Questionari',
     hiddenid:false,
-    disabledGridButtons:false
+    disabledGridButtons:false,
+    formHidden:true,
+    gridHidden:false
   },
   stores: {
     quesprofiletstore: {

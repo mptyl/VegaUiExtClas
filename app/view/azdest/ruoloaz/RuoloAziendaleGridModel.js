@@ -3,8 +3,7 @@ Ext.define('VegaUi.view.azdest.ruoloaz.RuoloAziendaleGridModel', {
   alias: 'viewmodel.azdest-ruoloaz-ruoloaziendalegrid',
   data: {
     name: 'VegaUi',
-    formHidden: true,
-    removeRoleDisabled: true
+    removeButtonDisabled: true
   }
 
 });

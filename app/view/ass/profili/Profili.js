@@ -18,12 +18,17 @@ Ext.define('VegaUi.view.ass.profili.Profili', {
   items:[
     {
       xtype:'questprofile-form',
-      flex:14,
-      hidden:true
+      flex:1,
+      bind:{
+        hidden:'{formHidden}'
+      }
     },
     {
       xtype:'questprofile-grid',
-      flex:4
+      flex:1,
+      bind:{
+        hidden:'{gridHidden}'
+      }
     }
   ]
 });

@@ -18,17 +18,24 @@ Ext.define('VegaUi.view.ass.questionari.Questionari', {
   items: [
     {
       xtype: 'quest-form',
-      flex: 14,
-      hidden: true
+      flex: 1,
+      bind:{
+        hidden:'{formHidden}'
+      },
     },
     {
       xtype: 'quest-grid',
-      flex: 4,
+      flex: 1,
+      bind:{
+        hidden:'{gridHidden}'
+      },
     },
     {
       xtype: 'quest-editor',
-      flex: 14,
-      hidden: true
+      flex: 1,
+      bind:{
+        hidden:'{questEditorHidden}'
+      },
     },
   ]
 });

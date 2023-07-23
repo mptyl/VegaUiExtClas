@@ -4,14 +4,16 @@ Ext.define('VegaUi.view.ass.questeditor.QuestEditorController', {
 
   onReset() {
     const me = this;
-    this.getView().up().getViewModel().set('hiddenGridButtons', false)
+    const vm=me.getView().up().getViewModel()
 
     const grid=me.getView().up().down('grid');
     grid.getStore().load()
+    grid.getSelectionModel().deselectAll();
 
-    me.getView().down('form-quest-editor').hide();
-    me.getView().hide();
-    me.getView().up().down('quest-grid').show()
+    vm.set('gridHidden',false);
+    vm.set('formHidden',true);
+    vm.set('questEditorHidden',true);
+
   }
 
 });

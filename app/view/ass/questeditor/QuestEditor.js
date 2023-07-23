@@ -44,7 +44,17 @@ Ext.define('VegaUi.view.ass.questeditor.QuestEditor', {
             iconCls: 'x-fa fa-plus',
             text: 'Torna alla lista',
             handler: 'onReset',
-          }
+          },
+          {
+            xtype: 'tbtext',
+            bind: {
+              text: '{questionnaireTitle}'
+            },
+            style: {
+              fontWeight: 'bold'
+            }
+          },
+          '->'
         ]
       }
     },

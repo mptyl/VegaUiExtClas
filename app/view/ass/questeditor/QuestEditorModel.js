@@ -19,7 +19,7 @@ Ext.define('VegaUi.view.ass.questeditor.QuestEditorModel', {
     checkBoxFormHidden:true,
     radioBoxFormHidden:true,
     checkBoxModel:null,
-    radioBoxModel:null
+    radioBoxModel:null,
   },
   stores: {
     treePanelStore: {

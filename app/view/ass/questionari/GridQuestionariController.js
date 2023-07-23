@@ -8,50 +8,48 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionariController', {
 
   onAdd() {
     const record = Ext.create('VegaUi.model.Questionnaire');
-    this.loadFormWithNewRecordTyl(record)
+    const entityPanel=this.getView().up();
+    const form=entityPanel.down('quest-form')
+    this._loadFormWithNewRecord(form,record);
+    this.__setModelForAdd(entityPanel);
   },
 
   onReload() {
-    this.reloadGridTyl()
+    this._reloadGrid()
   },
 
   onRemove() {
-    this.removeTyl();
+    this._removeSelection('Questionari');
   },
 
-  onModify(grid) {
-    const record = grid.getSelectable().getSelectedRecords()[0];
-    const formContainer = this.getView().up().down();
-    const form = formContainer.down('form');
-    form.setValues(record.data);
-    formContainer.getViewModel().set('image', record.get('image'))
-    formContainer.show();
+  onRowDblClick: function (tableview, record) {
+    this._onRowDblClick(tableview, record)
+    this.__setModelForModify();
   },
 
+  onSelectionChange() {
+    if (this.getView().getSelectionModel().getSelection().length > 0)
+      this.getViewModel().set('removeButtonDisabled', false);
+    else
+      this.getViewModel().set('removeButtonDisabled', true);
+  },
+
+  //TODO - implementare Duplicate
   onDuplicate() {
   },
 
   onOpenQuestEditor() {
     const me = this;
-    const grid = me.getGrid();
-    const record = grid.getSelectionModel().getSelection()[0];
-    const recordSelected = me.verifyIfRecordSelected(record);
+    const record = me.getView().getSelectionModel().getSelection()[0];
+    const recordSelected = me.__verifyIfRecordSelected(record);
     if (recordSelected) {
-      me.loadTree(record);
-      me.showQuestEditor(record.get('id'));
+      me.__loadTree(record);
+      me.__showQuestEditor(record);
     }
   },
 
   //region Private Methods
-  getGrid() {
-    return this.getView().down('grid')
-  },
-
-  getSelectableRecord(grid) {
-    return grid.getSelectionModel().getSelected();
-  },
-
-  verifyIfRecordSelected(record) {
+  __verifyIfRecordSelected(record) {
     if (record == null) {
       Ext.Msg.alert(
         'Nessuna selezione',
@@ -60,7 +58,7 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionariController', {
     } else return true;
   },
 
-  loadTree(record) {
+  __loadTree(record) {
     const questId = record.get('id');
     const view = this.getView();
     const upview= view.up();
@@ -75,15 +73,48 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionariController', {
     });
   },
 
-  showQuestEditor(questId) {
-    const gridContainer = this.getView();
-    const treeContainer = this.getView().up().down('quest-editor');
-    treeContainer.getViewModel().set('questId', questId);
+  __showQuestEditor(record){
+    const me=this
+
+    const questContainer= me.getView().up();
+
+    // Set questId e questionnaireTitle in mainview
     const mainView=this.getView().up('mainview')
     const mainViewModel=mainView.getViewModel();
-    mainViewModel.set('questId',questId);
-    gridContainer.hide();
-    treeContainer.show();
-  }
+    mainViewModel.set('questId',record.get('id'));
+    mainViewModel.set('questionnaireTitle',record.get('title'));
+
+    // Set questId in tree
+    const treeContainer = questContainer.down('quest-editor');
+    const treeModel= treeContainer.getViewModel();
+    treeModel.set('questId', record.get('id'));
+
+    // Show tree
+    const questModel=questContainer.getViewModel();
+    me.__showTree(questModel);
+  },
+
+  __setModelForModify(){
+    const entityPanel=this.getView().up();
+    const viewModel = entityPanel.getViewModel();
+    viewModel.set('gridHidden', true);
+    viewModel.set('formHidden', false);
+    viewModel.set('formHidden', false);
+    viewModel.set('questEditorHidden',true)
+  },
+
+  __showTree(questModel) {
+    questModel.set('formHidden',true);
+    questModel.set('questEditorHidden',false);
+    questModel.set('gridHidden',true);
+  },
+
+  __setModelForAdd(entityPanel){
+    const viewModel = entityPanel.getViewModel();
+    viewModel.set('gridHidden', true);
+    viewModel.set('formHidden', false);
+    viewModel.set('hiddenid',true)
+  },
+
   //endregion
 });

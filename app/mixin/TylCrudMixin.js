@@ -18,8 +18,8 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
    * Caricamento di un record selezionato (tramite double tap) dalla grid e apertura della form
    * @param grid
    */
-  onRowDblClick: function (tableview, record, element, rowIndex, e, eOpts) {
-    const entityPanel = tableview.up().up().up(); //tableview->grid->gridPanel->entityPanel
+  _onRowDblClick: function (tableview, record, element, rowIndex, e, eOpts) {
+    const entityPanel = tableview.up().up(); //tableview->gridPanel->entityPanel
     const formPanel = entityPanel.down('panel');
     const form = formPanel.down('form');
     const viewModel = entityPanel.getViewModel();
@@ -28,20 +28,23 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
         form.reset();
         form.loadRecord(record);
         form.query('field:first')[0].focus();
-        viewModel.set('hiddenId', false);
-        viewModel.set('disabledGridButtons', true);
-        viewModel.set('image', record.get('image'));
-        formPanel.show();
       }
     }
   },
 
+  _showForm(tableview) {
+    const entityPanel = tableview.up().up(); //tableview->grid->gridPanel->entityPanel
+    const viewModel = entityPanel.getViewModel();
+    viewModel.set('gridHidden', true);
+    viewModel.set('formHidden', false);
+  },
+
+
   /**
    * Reload della grid
    */
-  reloadGridTyl() {
-    const me = this;
-    me.getView().down('grid').getStore().load();
+  _reloadGrid() {
+    this.getView().getStore().load();
   }
   ,
 
@@ -63,15 +66,16 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
    * Cancellazione record selezionati
    * @param entityName
    */
-  removeTyl(entityName) {
+  _removeSelection(entityName) {
     const me = this;
-    const grid = me.getView().down('grid')
+    //const grid = me.getView().down('grid')
+    const grid = me.getView();
     const store = grid.getStore();
-    const selectedRow = grid.getSelectionModel().getSelection()[0];
+    const selectedRow = grid.getSelectionModel().getSelection();
     if (selectedRow) {
       Ext.Msg.confirm(
         'Conferma cancellazione',
-        'Confermi la cancellazione dell\'elemento selezionato?',
+        'Confermi la cancellazione degli elementi selezionati?',
         function (btn) {
           if (btn === 'yes') {
             store.remove(selectedRow)
@@ -80,7 +84,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
                 store.reload()
               },
               failure: function () {
-                Ext.Msg.alert('Risultato', 'L\'elemento selezionato non è stato cancellato');
+                Ext.Msg.alert('Risultato', 'Gli elementi selezionati non sono stati cancellati');
               },
               callback: function () {
                 grid.getSelectionModel().deselectAll()
@@ -92,9 +96,8 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
     } else
       Ext.Msg.alert(
         'Nessuna selezione',
-        'Selezionare prima l\'elemento da cancellare')
-  }
-  ,
+        'Selezionare prima gli elementi da cancellare')
+  },
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //                        Gestione Form
@@ -104,17 +107,9 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
    * Caricamento del nuovo record sulla form e apertura della form stessa.
    * @param record
    */
-  loadFormWithNewRecordTyl(record) {
+  _loadFormWithNewRecord(form,record) {
     record.set('id', null);
-    const gridPanel = this.getView();
-    const entityPanel = gridPanel.up();
-    const formContainer = entityPanel.down();
-    const form = formContainer.down('form');
-
-    entityPanel.getViewModel().set('hiddenid', true)
-    entityPanel.getViewModel().set('disabledGridButtons', true);
-    form.loadRecord(record);
-    formContainer.show();
+    form.down('form').getForm().loadRecord(record);
   },
 
   /**
@@ -122,7 +117,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
    * Se salvataggio andato a buon fine, reload dello store e hide della form
    * @param entityName
    */
-  submitFormTyl: function (entityName) {
+  _submitForm: function (entityName,externalHideForm) {
     const me = this;
     const formContainer = me.getView();
     const form = formContainer.down('form');
@@ -137,9 +132,16 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
         url: Ext.manifest.server + entityName + '/submit',
         method: 'POST',
         success: function (form, result, data) {
-          store.load();
-          viewModel.set('disabledGridButtons', false);
-          formContainer.hide();
+          Ext.suspendLayouts();
+          store.load({
+            callback: function () {
+              viewModel.set('disabledGridButtons', false);
+              if(!externalHideForm) {
+                formContainer.hide();
+              }
+              Ext.resumeLayouts(true);
+            }
+          });
         },
         failure: function (form, action) {
           switch (action.failureType) {
@@ -158,11 +160,16 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
             case Ext.form.action.Action.SERVER_INVALID:
               Ext.Msg.alert('Failure', action.result.msg);
           }
-
-
-          store.load();
-          viewModel.set('disabledGridButtons', false);
-          formContainer.hide();
+          Ext.suspendLayouts();
+          store.load({
+            callback: function () {
+              viewModel.set('disabledGridButtons', false);
+              if(!externalHideForm) {
+                formContainer.hide();
+              }
+              Ext.resumeLayouts(true);
+            }
+          });
         }
       });
     }
@@ -172,13 +179,20 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
   /**
    * Uscita senza salvare dalla form e suo hide
    */
-  cancelFormTyl(store) {
+  _cancelForm(store) {
     const me = this;
     this.getView().up().getViewModel().set('disabledGridButtons', false)
     me.getView().up().down('grid').getStore().load()
-    me.getView().hide();
-  }
-  ,
+  },
+
+  _showGrid(){
+    const me = this;
+    const viewModel= me.getView().up().getViewModel();
+    viewModel.set('disabledGridButtons', false);
+    viewModel.set('formHidden', true);
+    viewModel.set('gridHidden', false);
+  },
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                Private Mehods

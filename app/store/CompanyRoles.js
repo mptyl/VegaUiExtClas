@@ -19,8 +19,9 @@ Ext.define('VegaUi.store.CompanyRoles', {
       model: 'VegaUi.model.CompanyRole',
       sorters: [{
         property: 'id',
-        direction: 'ASC' // or 'DESC' for descending
+        direction: 'DESC' // or 'DESC' for descending
       }],
+      sortOnLoad: true,
       proxy: {
         type: 'direct',
         api: {

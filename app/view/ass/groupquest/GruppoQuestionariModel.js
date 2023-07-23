@@ -7,7 +7,9 @@ Ext.define('VegaUi.view.ass.groupquest.GruppoQuestionariModel', {
   data: {
     name: 'VegaUi - Gruppo Questionari',
     hiddenid:false,
-    disabledGridButtons:false
+    removeButtonDisabled: true,
+    gridHidden:false,
+    formHidden:true,
   },
   stores: {
     quesgrouptstore: {

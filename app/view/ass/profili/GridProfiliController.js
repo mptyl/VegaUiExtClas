@@ -1,27 +1,44 @@
 Ext.define('VegaUi.view.ass.profili.GridProfiliController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.ass-profili-gridprofili',
+  extend: 'Ext.app.ViewController',
+  alias: 'controller.ass-profili-gridprofili',
 
   mixins: [
     VegaUi.mixin.TylCrudMixin
   ],
 
-  onAdd(){
-    const record=Ext.create('VegaUi.model.QuestionnaireProfile');
-    this.loadFormWithNewRecordTyl(record)
+  onAdd() {
+    const record = Ext.create('VegaUi.model.QuestionnaireProfile')
+    const entityPanel = this.getView().up();
+    const form = entityPanel.down('questprofile-form')
+    this._loadFormWithNewRecord(form, record);
+    this.__setModel(entityPanel);
   },
 
-  onReload(){
-    this.reloadGridTyl()
+  onReload() {
+    this._reloadGrid()
   },
 
-  onRemove(){
-    this.removeTyl("Questionnaire Profile");
+  onRemove() {
+    this._removeSelection('Profilo Questionari');
   },
 
-  onModify(grid){
-    this.loadFormTyl(grid)
+  onRowDblClick: function (tableview, record, element, rowIndex, e, eOpts) {
+    this._onRowDblClick(tableview, record, element, rowIndex, e, eOpts)
+    this._showForm(tableview);
   },
 
+  onSelectionChange() {
+    if (this.getView().getSelectionModel().getSelection().length > 0)
+      this.getViewModel().set('removeButtonDisabled', false);
+    else
+      this.getViewModel().set('removeButtonDisabled', true);
+  },
+
+  __setModel(entityPanel){
+    const viewModel = entityPanel.getViewModel();
+    viewModel.set('gridHidden', true);
+    viewModel.set('formHidden', false);
+    viewModel.set('hiddenid',true)
+  }
 
 });

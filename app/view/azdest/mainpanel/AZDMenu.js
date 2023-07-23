@@ -1,60 +1,59 @@
+Ext.define('VegaUi.view.azdest.mainpanel.AZDMenu', {
+  extend: 'Ext.panel.Panel',
+  xtype: 'azd-mainpanel-menu',
 
-Ext.define('VegaUi.view.azdest.mainpanel.AZDMenu',{
-    extend: 'Ext.panel.Panel',
-    xtype:'azd-mainpanel-menu',
+  requires: [
+    'VegaUi.view.azdest.mainpanel.AZDMenuController',
+    'VegaUi.view.azdest.mainpanel.AZDMenuModel'
+  ],
 
-    requires: [
-        'VegaUi.view.azdest.mainpanel.AZDMenuController',
-        'VegaUi.view.azdest.mainpanel.AZDMenuModel'
-    ],
-
-    controller: 'azdest-mainpanel-azdmenu',
-    viewModel: {
-        type: 'azdest-mainpanel-azdmenu'
-    },
+  controller: 'azdest-mainpanel-azdmenu',
+  viewModel: {
+    type: 'azdest-mainpanel-azdmenu'
+  },
   defaults: {
     xtype: 'button',
     padding: 10,
     margin: 1,
     width: '100%',
-    handler:'onButtonTap'
+    handler: 'onButtonTap'
   },
   items: [
     {
       text: 'Gruppi aziende',
-      itemId:'azdGruppoaziende'
+      itemId: 'azdGruppoaziende'
     },
     {
       text: 'Aziende',
-      itemId:'azdAziende'
+      itemId: 'azdAziende'
     },
     {
       text: 'Ruoli aziendali',
-      itemId:'azdRuoliAziendaliGrid'
+      itemId: 'azdRuoliAziendaliGrid'
     },
     {
       text: 'Ruoli x Azienda',
-      itemId:'azdRuolixAzienda'
+      itemId: 'azdRuolixAzienda'
     },
     {
       text: 'Liste deestinatari',
-      itemId:'azdListaDestinatarit'
+      itemId: 'azdListaDestinatarit'
     },
     {
       text: 'Destinatari',
-      itemId:'azdDestinatari'
+      itemId: 'azdDestinatari'
     },
     {
       text: 'Destinatari x lista',
-      itemId:'azdDestPerLista'
+      itemId: 'azdDestPerLista'
     },
     {
       text: 'Upload destinatari',
-      itemId:'azdUploadDestinatari'
+      itemId: 'azdUploadDestinatari'
     },
     {
       text: 'Riassegna responsabile',
-      itemId:'azdRiassegnaResp'
+      itemId: 'azdRiassegnaResp'
     }
   ]
 });

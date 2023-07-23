@@ -7,11 +7,21 @@ Ext.define('VegaUi.view.ass.groupquest.GruppoQuestionariFormController', {
   ],
 
   onReset(){
-    this.cancelFormTyl()
+    this._cancelForm();
+    this._showGrid();
+    this.__deselectAll();
+  },
+
+  __deselectAll(){
+    const grid=this.getView().up().down('grid');
+    grid.getSelectionModel().deselectAll()
   },
 
   onSave(){
-    this.submitFormTyl('questionnaire_group')
-  }
+    this._submitForm('questionnaire_group',true)
+    this._showGrid();
+  },
+
+
 
 });

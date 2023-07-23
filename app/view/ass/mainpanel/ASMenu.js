@@ -11,21 +11,13 @@ Ext.define('VegaUi.view.ass.mainpanel.ASMenu', {
   viewModel: {
     type: 'ass-mainpanel-asmenu'
   },
-  bodyPadding:10,
-  collapsible: {
-    direction: 'left',
-    animation: true,
-    useDrawer: false,
-    collapseToolText: 'Menu Assessment e questionari',
-    expandToolText: 'Menu Asssessment e Questionari'
-  },
   defaults: {
     xtype: 'button',
-    padding: '10 0',
+    padding: 10,
+    margin: 1,
     width: '100%',
     handler:'onButtonTap'
   },
-  title:'Menu',
   items: [
     {
       text: 'Gruppi questionari',

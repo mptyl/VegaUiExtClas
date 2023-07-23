@@ -19,8 +19,9 @@ Ext.define('VegaUi.store.CompanyGroups', {
       model: 'VegaUi.model.CompanyGroup',
       sorters: [{
         property: 'id',
-        direction: 'ASC' // or 'DESC' for descending
+        direction: 'DESC' // or 'DESC' for descending
       }],
+      sortOnLoad: true,
       proxy: {
         type: 'direct',
         api: {

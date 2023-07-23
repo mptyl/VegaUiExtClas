@@ -19,9 +19,17 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziende', {
   items: [
     {
       xtype: 'azd-gruppoaziende-form',
+      flex:1,
+      bind:{
+        hidden:'{formHidden}'
+      }
     },
     {
       xtype: 'azd-gruppoaziende-grid',
+      flex:1,
+      bind:{
+        hidden:'{gridHidden}'
+      }
     }
   ]
 });

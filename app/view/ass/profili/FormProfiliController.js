@@ -7,11 +7,20 @@ Ext.define('VegaUi.view.ass.profili.FormProfiliController', {
   ],
 
   onReset(){
-      this.cancelFormTyl()
+    this._cancelForm()
+    this._showGrid();
+    this.__deselectAll();
   },
 
   onSave(){
-    this.submitFormTyl('questionnaire_profile')
+    this._submitForm('questionnaire_profile',true)
+    this._showGrid();
+
+  },
+
+  __deselectAll(){
+    const grid=this.getView().up().down('grid');
+    grid.getSelectionModel().deselectAll()
   }
 
 });
