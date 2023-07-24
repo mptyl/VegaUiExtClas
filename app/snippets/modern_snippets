@@ -1,0 +1,84 @@
+function createInputField(item) {
+  switch (item.type) {
+    case 'text':
+      return Ext.create('Ext.form.field.Text', {
+        fieldLabel: item.label
+      });
+    case 'textarea':
+      return Ext.create('Ext.form.field.TextArea', {
+        fieldLabel: item.label
+      });
+    case 'number':
+      return Ext.create('Ext.form.field.Number', {
+        fieldLabel: item.label
+      });
+    case 'integer':
+      return Ext.create('Ext.form.field.Number', {
+        fieldLabel: item.label,
+        minValue: 0,
+        step: 1
+      });
+    case 'date':
+      return Ext.create('Ext.form.field.Date', {
+        fieldLabel: item.label
+      });
+    case 'color':
+      return Ext.create('Ext.ux.colorpick.Field', {
+        fieldLabel: item.label
+      });
+    case 'url':
+      return Ext.create('Ext.form.field.Text', {
+        fieldLabel: item.label,
+        vtype: 'url'
+      });
+    case 'radioboxes':
+      return Ext.create('Ext.form.RadioGroup', {
+        fieldLabel: item.label,
+        columns: 1,
+        vertical: true,
+        items: item.options.map(function(option) {
+          return {
+            boxLabel: option,
+            name: item.name
+          };
+        })
+      });
+    case 'checkboxes':
+      return Ext.create('Ext.form.CheckboxGroup', {
+        fieldLabel: item.label,
+        columns: 1,
+        vertical: true,
+        items: item.options.map(function(option) {
+          return {
+            boxLabel: option,
+            name: item.name
+          };
+        })
+      });
+    case 'list':
+      return Ext.create('Ext.form.CheckboxGroup', {
+        fieldLabel: item.label,
+        columns: 1,
+        vertical: true,
+        items: item.options.map(function(option) {
+          return {
+            boxLabel: option,
+            name: item.name
+          };
+        })
+      });
+    case 'combobox':
+      return Ext.create('Ext.form.ComboBox', {
+        fieldLabel: item.label,
+        store: item.options,
+        queryMode: 'local',
+        displayField: 'display',
+        valueField: 'value'
+      });
+    default:
+      return null;
+  }
+}
+
+// Rest of the code remains the same as in the previous example
+

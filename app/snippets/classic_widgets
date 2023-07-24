@@ -1,0 +1,79 @@
+function createInputField(item) {
+  switch (item.type) {
+    case 'text':
+      return Ext.create('Ext.field.Text', {
+        label: item.label
+      });
+    case 'textarea':
+      return Ext.create('Ext.field.TextArea', {
+        label: item.label
+      });
+    case 'number':
+      return Ext.create('Ext.field.Number', {
+        label: item.label
+      });
+    case 'integer':
+      return Ext.create('Ext.field.Number', {
+        label: item.label,
+        minValue: 0,
+        stepValue: 1
+      });
+    case 'date':
+      return Ext.create('Ext.field.Date', {
+        label: item.label
+      });
+    case 'color':
+      return Ext.create('Ext.field.Color', {
+        label: item.label
+      });
+    case 'url':
+      return Ext.create('Ext.field.Text', {
+        label: item.label,
+        inputType: 'url'
+      });
+    case 'radioboxes':
+      return Ext.create('Ext.field.RadioGroup', {
+        label: item.label,
+        items: item.options.map(function(option) {
+          return {
+            label: option,
+            value: option
+          };
+        })
+      });
+    case 'checkboxes':
+      return Ext.create('Ext.field.CheckboxGroup', {
+        label: item.label,
+        items: item.options.map(function(option) {
+          return {
+            label: option,
+            value: option
+          };
+        })
+      });
+    case 'list':
+      return Ext.create('Ext.field.Select', {
+        label: item.label,
+        options: item.options.map(function(option) {
+          return {
+            text: option,
+            value: option
+          };
+        })
+      });
+    case 'combobox':
+      return Ext.create('Ext.field.ComboBox', {
+        label: item.label,
+        store: {
+          data: item.options
+        },
+        displayField: 'display',
+        valueField: 'value'
+      });
+    default:
+      return null;
+  }
+}
+
+// Rest of the code remains the same as in the previous example
+

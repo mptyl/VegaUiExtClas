@@ -1,0 +1,48 @@
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+
+Ext.define('MyApp.view.MapBoxWidget', {
+  extend: 'Ext.Widget',
+  xtype: 'mapboxwidget',
+
+  // Override the element creation to use a <div> as the container
+  element: {
+    reference: 'element',
+    tag: 'div'
+  },
+
+  // Override the render function to initialize the map
+  render: function () {
+    this.callParent(arguments);
+    this.renderMap();
+  },
+
+  // Render the map using MapBox
+  renderMap: function () {
+    mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
+
+    var map = new mapboxgl.Map({
+      container: this.element.dom,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [0, 0], // Set the initial center of the map
+      zoom: 10 // Set the initial zoom level
+    });
+
+    // Add any additional map configuration or interaction logic here
+  }
+});
+
+Ext.create('Ext.panel.Panel', {
+  title: 'Map',
+  width: 800,
+  height: 600,
+  items: [
+    {
+      xtype: 'mapboxwidget',
+      flex: 1
+    }
+  ],
+  renderTo: Ext.getBody()
+});
+
+
