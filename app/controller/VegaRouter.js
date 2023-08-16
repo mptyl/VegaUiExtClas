@@ -58,6 +58,11 @@ Ext.define('VegaUi.controller.VegaRouter', {
         Ext.getStore('CompanyGroups').reload();
         break;
       }
+      case 'azdAziende':{
+        Ext.getStore('CompanyGroups').reload();
+        Ext.getStore('Companies').reload();
+        break;
+      }
     }
   },
 

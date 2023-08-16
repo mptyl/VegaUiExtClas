@@ -27,7 +27,7 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeGridController', {
   },
 
   onRemoveClick() {
-    this._removeSelection('Gruppo Questionari');
+    this._removeSelection('Gruppo Aziende');
   },
 
   __setModelForAdd(entityPanel){

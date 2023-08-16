@@ -1,6 +1,10 @@
 $enable-font-awesome: dynamic(true);
 $base-color: rgb(61, 73, 92);
 
+.my-html-editor .x-html-editor-iframe {
+  padding: 20px; /* Adjust the value as needed */
+}
+
 .custom-button-green {
   background-color: #4CAF50 !important;
   border: none;

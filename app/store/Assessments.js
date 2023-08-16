@@ -1,9 +1,9 @@
-Ext.define('VegaUi.store.CompanyGroups', {
+Ext.define('VegaUi.store.Assessments', {
   extend: 'Ext.data.Store',
-  alias:'store.companygroups',
+  alias:'store.assessments',
 
   requires: [
-    'VegaUi.model.CompanyGroup',
+    'VegaUi.model.Assessment',
     'Ext.data.proxy.Direct',
     'VegaUi.DirectAPI',
     'Ext.data.reader.Json',
@@ -14,9 +14,9 @@ Ext.define('VegaUi.store.CompanyGroups', {
     const me = this;
     cfg = cfg || {};
     me.callParent([Ext.apply({
-      storeId: 'CompanyGroups',
-      autoLoad: true,
-      model: 'VegaUi.model.CompanyGroup',
+      storeId: 'Assessments',
+      autoLoad: false,
+      model: 'VegaUi.model.Assessment',
       sorters: [{
         property: 'id',
         direction: 'DESC' // or 'DESC' for descending
@@ -25,14 +25,12 @@ Ext.define('VegaUi.store.CompanyGroups', {
       proxy: {
         type: 'direct',
         api: {
-          read: companyGroupDirectController.read,
-          create  : companyGroupDirectController.create,
-          update  : companyGroupDirectController.update,
-          destroy: companyGroupDirectController.destroy
+          read: assessmentDirectController.read,
+          destroy: assessmentDirectController.destroy
         },
         reader: {
           type: 'json',
-          messageProperty: 'Errore nella lettura del file Company Group',
+          messageProperty: 'Errore nella lettura del file Assessment',
           rootProperty: 'records',
           listeners: {
             exception: {
@@ -58,7 +56,7 @@ Ext.define('VegaUi.store.CompanyGroups', {
 
   onJsonException: function (reader, response, error, eOpts) {
     var me = this;
-    Ext.Msg.alert('Errore Json nell\'accesso alla tabella Company Group', JSON.parse(response.responseText).message,
+    Ext.Msg.alert('Errore Json nell\'accesso alla tabella Assessment', JSON.parse(response.responseText).message,
       function () {
         me.rejectChanges();
       }, me);
@@ -72,7 +70,7 @@ Ext.define('VegaUi.store.CompanyGroups', {
     //   keycloak.logout();
     // }
     const status= response.xhr? response.xhr.status +' - ': '';
-    Ext.Msg.alert('Errore Direct nell\'accesso alla tabella  Company Group', status+operation.getError(),
+    Ext.Msg.alert('Errore Direct nell\'accesso alla tabella  Assessment', status+operation.getError(),
       function () {
         me.rejectChanges();
       }, me);

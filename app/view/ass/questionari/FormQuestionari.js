@@ -185,7 +185,7 @@ Ext.define('VegaUi.view.ass.questionari.FormQuestionari', {
                       anchor: '100%',
                     },
                     {
-                      xtype: 'textarea',
+                      xtype: 'htmleditor',
                       fieldLabel: 'Note:',
                       name: 'notes',
                       anchor: '100%',

@@ -12,5 +12,20 @@ Ext.define('VegaUi.view.ass.assessment.Assessment', {
     type: 'ass-assessment-assessment'
   },
 
-  html: 'Assessment'
+  items:[
+    {
+      xtype:'assessment-form',
+      flex:1,
+      bind:{
+        hidden:'{formHidden}'
+      }
+    },
+    {
+      xtype:'assessment-grid',
+      flex:1,
+      bind:{
+        hidden:'{gridHidden}'
+      }
+    }
+  ]
 });

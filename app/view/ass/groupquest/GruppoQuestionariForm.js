@@ -27,7 +27,7 @@ Ext.define('VegaUi.view.ass.groupquest.GruppoQuestionariForm', {
             {
               xtype: 'textfield',
               anchor: '100%',
-              fieldLabel: 'Nome Questionario',
+              fieldLabel: 'Nome Gruppo Questionari',
               name: 'name',
             },
             {
