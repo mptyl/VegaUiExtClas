@@ -147,7 +147,7 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionForm', {
                   valueField: 'nodeCode',
                   forceSelection: true,
                   queryMode: 'local',
-                  store: 'QeQuestions',
+                  store: 'QeJeQuestions',
                   anchor: '100%',
                   fieldLabel: 'Salta a:',
                   name: 'jumpTo',

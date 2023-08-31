@@ -67,6 +67,12 @@ Ext.define('VegaUi.view.azdest.ruoloaz.RuoloAziendaleGrid', {
         },
         '->',
         {
+          reference: 'reloadButton',
+          iconCls: 'x-fa fa-arrow-up',
+          text: 'Reload',
+          handler: 'onReload',
+        },
+        {
           text: 'Cancella Ruolo',
           reference: 'removeRole',
           handler: 'onRemoveClick',

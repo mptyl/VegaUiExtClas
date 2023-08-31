@@ -30,6 +30,10 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeGridController', {
     this._removeSelection('Gruppo Aziende');
   },
 
+  onReload() {
+    this.getView().getStore().reload();
+  },
+
   __setModelForAdd(entityPanel){
     const viewModel = entityPanel.getViewModel();
     viewModel.set('gridHidden', true);

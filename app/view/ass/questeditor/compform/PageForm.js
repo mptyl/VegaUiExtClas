@@ -1,16 +1,16 @@
-Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
+Ext.define('VegaUi.view.ass.questeditor.compform.PageForm', {
   extend: 'Ext.panel.Panel',
-  alias: 'widget.qe-group-form',
+  alias: 'widget.qe-page-form',
 
   requires: [
-    'VegaUi.view.ass.questeditor.compform.GroupFormController',
+    'VegaUi.view.ass.questeditor.compform.PageFormController',
   ],
 
-  controller: 'groupform-controller',
+  controller: 'ass-questeditor-compform-pageform',
+
   scrollable: 'both',
   border: true,
   bodyPadding: 10,
-  autoRender:true,
 
   items: [
     {
@@ -24,13 +24,13 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
       items: [
         {
           xtype: 'fieldset',
-          title: 'Gruppo Questionari',
+          title: 'Pagina',
           items: [
             {
               xtype: 'textfield',
               fieldLabel: 'Id',
               name: 'id',
-              bind: '{groupRecord.id}',
+              bind: '{pageRecord.id}',
               hidden: true
             },
             {
@@ -41,10 +41,10 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
                 {
                   xtype: 'textfield',
                   anchor: '100%',
-                  itemId:'treeLabel',
+                  itemId: 'treeLabel',
                   fieldLabel: 'Etichetta',
                   name: 'text',
-                  bind: '{groupRecord.text}',
+                  bind: '{pageRecord.text}',
                   allowBlank: false,
                   flex: 20
                 },
@@ -52,7 +52,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
                 {
                   xtype: 'textfield',
                   name: 'nodeCode',
-                  bind: '{groupRecord.nodeCode}',
+                  bind: '{pageRecord.nodeCode}',
                   disabled: true,
                   margin: '0 0 0 5',
                   flex: 2
@@ -60,11 +60,18 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
               ]
             },
             {
+              xtype: 'textfield',
+              anchor: '100%',
+              fieldLabel: 'Note',
+              name: 'note',
+              bind: '{pageRecord.note}'
+            },
+            {
               xtype: 'checkboxfield',
               anchor: '100%',
               fieldLabel: 'Con risposte random',
               name: 'random',
-              bind: '{groupRecord.random}',
+              bind: '{pageRecord.random}',
               defaultValue: false
             },
 
@@ -74,7 +81,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
               anchor: '100%',
               fieldLabel: 'elementPrefix',
               name: 'elementPrefix',
-              bind: '{groupRecord.elementPrefix}',
+              bind: '{pageRecord.elementPrefix}',
               hidden: true
             },
             {
@@ -82,7 +89,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
               anchor: '100%',
               fieldLabel: 'fatherNodeId',
               name: 'fatherNodeId',
-              bind: '{groupRecord.fatherNodeId}',
+              bind: '{pageRecord.fatherNodeId}',
               hidden: true
             },
             {
@@ -90,7 +97,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
               anchor: '100%',
               fieldLabel: 'siblingPosition',
               name: 'siblingPosition',
-              bind: '{groupRecord.siblingPosition}',
+              bind: '{pageRecord.siblingPosition}',
               hidden: true
             },
             {
@@ -98,7 +105,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
               anchor: '100%',
               fieldLabel: 'questId',
               name: 'questId',
-              bind: '{groupRecord.questId}',
+              bind: '{pageRecord.questId}',
               hidden: true
             }
           ]
@@ -107,7 +114,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
       dockedItems: [
         {
           xtype: 'toolbar',
-          ui:'footer',
+          ui: 'footer',
           docked: 'top',
           items: [
             {
@@ -120,7 +127,7 @@ Ext.define('VegaUi.view.ass.questeditor.compform.GroupForm', {
             {
               reference: 'saveButton',
               iconCls: 'x-fa fa-inbox',
-              text: 'Salva Gruppo',
+              text: 'Salva Pagina',
               handler: 'onSaveGroup',
             }
           ]

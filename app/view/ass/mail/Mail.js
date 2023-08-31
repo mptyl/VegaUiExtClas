@@ -11,6 +11,24 @@ Ext.define('VegaUi.view.ass.mail.Mail', {
   viewModel: {
     type: 'ass-mail-mail'
   },
-
-  html: 'Mail'
+  layout: {
+    type: 'hbox',
+    align: 'stretch'
+  },
+  items:[
+    {
+      xtype:'ass-mailForm',
+      flex:1,
+      bind:{
+        hidden:'{formHidden}'
+      }
+    },
+    {
+      xtype:'ass-mailGrid',
+      flex:1,
+      bind:{
+        hidden:'{gridHidden}'
+      }
+    }
+  ]
 });

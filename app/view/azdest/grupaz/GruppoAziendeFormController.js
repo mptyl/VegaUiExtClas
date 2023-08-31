@@ -11,7 +11,7 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeFormController', {
     const form = this.getView().down('#mainForm').getForm();
     form.submit({
       success: function (form, action) {
-        me.saveLogo(action.result.id);
+        me.__saveLogo(action.result.id);
         const grid=me.getView().up('azd-gruppoaziende-panel').down('azd-gruppoaziende-grid');
         //const vm = me.getView().up().getViewModel()
         //vm.get('record').set('id', action.result.id);
@@ -31,7 +31,7 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeFormController', {
     this._showGrid();
   },
 
-  saveLogo(id) {
+  __saveLogo(id) {
     const me=this;
     const form = me.getView().down('#logoForm').getForm();
     form.submit({
@@ -39,5 +39,6 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeFormController', {
         id: id
       }
     })
-  }
+  },
+
 });

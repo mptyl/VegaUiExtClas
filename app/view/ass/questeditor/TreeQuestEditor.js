@@ -39,6 +39,7 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditor', {
       listeners: {
         select: 'onSelectRow',
         itemcontextmenu: 'onTreePanelItemContextMenu',
+        beforeDrop:'onBeforeDrop',
         drop:'onDrop'
       },
       plugins:{

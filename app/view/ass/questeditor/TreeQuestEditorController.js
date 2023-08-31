@@ -8,11 +8,12 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
 
   config: {
     groupForm: 0,
-    questionForm: 1,
-    jeForm: 2,
-    replyForm: 3,
-    radioGroupForm: 3,
-    checkGroupForm: 3
+    pageForm: 1,
+    questionForm: 2,
+    jeForm: 3,
+    replyForm: 4,
+    radioGroupForm: 4,
+    checkGroupForm: 4
   },
 
   onSelectRow(dataView, record, eOpts) {
@@ -36,14 +37,17 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
           case 'QeJumpExpression':
             me.loadJumpExpression(record, form, questId, questEditorViewModel)
             break;
+          case 'QePage':
+            me.loadPage(record, form, questId, questEditorViewModel)
+            break;
           case 'QeGroup':
             me.loadGroup(record, form, questId, questEditorViewModel)
             break;
         }
         me.getFormContainer().show()
-        const active=me.getFormContainer().layout.getActiveItem();
-        const treeLabelField=active.down('#treeLabel');
-        if(treeLabelField){
+        const active = me.getFormContainer().layout.getActiveItem();
+        const treeLabelField = active.down('#treeLabel');
+        if (treeLabelField) {
           treeLabelField.focus(true, 100)
         }
       }
@@ -61,13 +65,23 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
       })
   },
 
+  onDuplicateNode: function (record, index) {
+    const me = this;
+    Ext.Msg.confirm(
+      'Conferma duplicazione',
+      'Confermi duplicazione?', function (btn) {
+        if (btn === 'yes') {
+          me.duplicateItemNode(record, index);
+        }
+      })
+  },
+
   //////////////////////////////////////////////////////////////////////
 
   getFormContainer() {
     const view = this.getView();
     const viewUp = view.up().up();
-    const viewUpDown = viewUp.down('form-quest-editor')
-    return viewUpDown;
+    return viewUp.down('form-quest-editor')
   },
 
   getQuestId() {
@@ -79,8 +93,14 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
     const me = this;
     const formContainer = me.getFormContainer();
     switch (selectedRecord.get('cls')) {
+
       case 'QeGroup': {
         const formIndex = me.getGroupForm()
+        formContainer.setActiveItem(formIndex);
+        return formContainer;
+      }
+      case 'QePage': {
+        const formIndex = me.getPageForm()
         formContainer.setActiveItem(formIndex);
         return formContainer;
       }
@@ -103,17 +123,17 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
   },
 
   loadReply(record, form, questId, viewModel) {
-    const me=this;
+    const me = this;
     const reply = Ext.create('VegaUi.model.questEditor.QeFullReply');
     reply.getProxy().setExtraParams({id: record.get('id'), questId: questId});
     reply.load(
       {
         success: function () {
           viewModel.set('replyRecord', reply);
-          viewModel.set('nodeToExpand',record.parentNode.parentNode.id+'/'+record.parentNode.id)
-          if(reply.get('replyType')=='RADIOGROUP' || reply.get('replyType')=='CHECKGROUP'){
-            const store=Ext.getStore('QeCheckBoxes');
-            const questId=viewModel.get('questId');
+          viewModel.set('nodeToExpand', record.parentNode.parentNode.id + '/' + record.parentNode.id)
+          if (reply.get('replyType') == 'RADIOGROUP' || reply.get('replyType') == 'CHECKGROUP') {
+            const store = Ext.getStore('QeCheckBoxes');
+            const questId = viewModel.get('questId');
             store.proxy.extraParams = {questId: questId, checkGroupId: reply.get('id')};
             store.load()
           }
@@ -127,14 +147,14 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
   },
 
   loadQuestion(record, form, questId, viewModel) {
-    const me=this;
+    const me = this;
     const question = Ext.create('VegaUi.model.questEditor.QeQuestion');
     question.getProxy().setExtraParams({id: record.get('id'), questId: questId});
     question.load(
       {
         success: function () {
           viewModel.set('questionRecord', question);
-          viewModel.set('nodeToExpand',record.parentNode.id)
+          viewModel.set('nodeToExpand', record.parentNode.id)
         },
         failure: function (record, operation) {
           me.alertMsg(operation);
@@ -144,14 +164,32 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
   },
 
   loadJumpExpression(record, form, questId, viewModel) {
-    const me=this;
+    const me = this;
     const jumpExpression = Ext.create('VegaUi.model.questEditor.QeJumpExpression');
     jumpExpression.getProxy().setExtraParams({id: record.get('id'), questId: questId});
     jumpExpression.load(
       {
         success: function () {
           viewModel.set('jeRecord', jumpExpression);
-          viewModel.set('nodeToExpand',record.parentNode.parentNode.id+'/'+record.parentNode.id)
+          viewModel.set('nodeToExpand', record.parentNode.parentNode.id + '/' + record.parentNode.id)
+        },
+        failure: function (record, operation) {
+          me.alertMsg(operation);
+        }
+      }
+    )
+  },
+
+  loadPage(record, form, questId, viewModel) {
+    const me = this;
+    const qePage = Ext.create('VegaUi.model.questEditor.QePage');
+    qePage.getProxy().setExtraParams({id: record.get('id'), questId: questId});
+    qePage.load(
+      {
+        success: function () {
+          viewModel.set('pageRecord', qePage);
+          viewModel.set('nodeToExpand', record.parentNode.id)
+          viewModel.set('currentRecord', qePage);
         },
         failure: function (record, operation) {
           me.alertMsg(operation);
@@ -161,14 +199,15 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
   },
 
   loadGroup(record, form, questId, viewModel) {
-    const me=this;
+    const me = this;
     const qeGroup = Ext.create('VegaUi.model.questEditor.QeGroup');
     qeGroup.getProxy().setExtraParams({id: record.get('id'), questId: questId});
     qeGroup.load(
       {
         success: function () {
           viewModel.set('groupRecord', qeGroup);
-          viewModel.set('nodeToExpand','root')
+          viewModel.set('nodeToExpand', qeGroup.id)
+          viewModel.set('currentRecord', qeGroup);
         },
         failure: function (record, operation) {
           me.alertMsg(operation);
@@ -177,12 +216,12 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
     )
   },
 
-  alertMsg(operation){
+  alertMsg(operation) {
     let message;
     const rom = operation.error.response.responseJson;
-    const apiError=rom.apierror
-    if(apiError)
-      message='Status: <b>' + apiError['status'] + '</b><br/>Message: <b>' + apiError['message'] + '</b><br/>DebugMessage: <b>' + apiError['debugMessage'] + '</b'
+    const apiError = rom.apierror
+    if (apiError)
+      message = 'Status: <b>' + apiError['status'] + '</b><br/>Message: <b>' + apiError['message'] + '</b><br/>DebugMessage: <b>' + apiError['debugMessage'] + '</b'
     else
       message = 'Status: <b>' + rom['status'] + '</b><br/>Error: <b>' + rom['error'] + '</b><br/>Message: <b>' + rom['message'] + '</b><br/>'
     Ext.Msg.alert(
@@ -193,6 +232,26 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
 
   closeForm() {
     this.getFormContainer().hide();
+  },
+
+  duplicateItemNode: function (record) {
+    let me = this;
+    const treeGrid = me.getView().down('treepanel');
+    const store = treeGrid.getStore();
+    const questId = me.getQuestId();
+    const viewModel = me.getViewModel();
+    questEditorTreeController.duplicateTreeElement(questId, record.get('id'), function (result, e) {
+      if (e.type == 'rpc') {
+        store.reload({
+          scope: this,
+          callback: function (records, operation, success) {
+            treeGrid.expandPath(viewModel.get('nodeToExpand'));
+          }
+        });
+      } else {
+        Ext.Msg.alert('Failure', 'Type: ' + result.type + '<br/> Message: ' + result.message);
+      }
+    })
   },
 
   removeItemNode: function (record) {
@@ -227,8 +286,48 @@ Ext.define('VegaUi.view.ass.questeditor.TreeQuestEditorController', {
     return selectedNode;
   },
 
-  onDrop(){
-    console.log('drop')
+  onBeforeDrop(node, data, overModel, dropPosition, dropHandlers, eOpts) {
+    try {
+      const me = this;
+      const draggedRecordId = data.records[0].get('id')
+      const overModelId = overModel.get('id');
+      const position = dropPosition;
+      const questId = me.getQuestId();
+      console.log('Before drop ' + data.records[0].get('cls') + ' ' + position + ' ' + overModel.get('cls'));
+      if (this._isAllowed(data.records[0].get('cls'), overModel.get('cls'))) {
+        treeDragAndDropController.dragAndDrop(questId, draggedRecordId, overModelId, position, function (result, e) {
+          if (!result.success) {
+            Ext.Msg.alert('Failure', result.message);
+            return false;
+          } else
+            return true;
+        })
+      }
+    } catch (e) {
+      console.log(e)
+      return false
+    }
+  },
+
+  onDrop(node, data, overModel, dropPosition, eOpts) {
+    console.log('After Drop ' + data.records[0].get('cls') + ' ' + dropPosition + ' ' + overModel.get('cls'));
+    const me = this;
+    const treeGrid = me.getView().down('treepanel');
+    treeGrid.expandNode(overModel);
+  },
+
+  _isAllowed(draggedClass, overClass) {
+    console.log('Dragged: ' + draggedClass + ' Over: ' + overClass)
+    if ((draggedClass === overClass) ||
+      (draggedClass === 'QeFullReply' && overClass === 'QeQuestion') ||
+      (draggedClass === 'QeJumpExpression' && overClass === 'QeQuestion') ||
+      (draggedClass === 'QeQuestion' && overClass === 'QePage') ||
+      (draggedClass === 'QePage' && overClass === 'QeGroup')) {
+      return true;
+    } else
+      return false;
   }
+
+
 })
 

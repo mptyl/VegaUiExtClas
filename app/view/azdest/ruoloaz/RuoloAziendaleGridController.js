@@ -14,6 +14,7 @@ Ext.define('VegaUi.view.azdest.ruoloaz.RuoloAziendaleGridController', {
     const store = this.getView().getStore();
     const rec = Ext.create('VegaUi.model.CompanyRole');
     rec.set('id', null);
+    rec.set('version', null);
     const rowEditing = this.getView().findPlugin('rowediting');
     store.insert(0, rec);
     rowEditing.startEdit(rec, 0);

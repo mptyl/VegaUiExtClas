@@ -9,7 +9,7 @@ Ext.define('VegaUi.view.ass.profili.GridProfiliController', {
   onAdd() {
     const record = Ext.create('VegaUi.model.QuestionnaireProfile')
     const entityPanel = this.getView().up();
-    const form = entityPanel.down('questprofile-form')
+    const form = entityPanel.down('ass-mailForm')
     this._loadFormWithNewRecord(form, record);
     this.__setModel(entityPanel);
   },

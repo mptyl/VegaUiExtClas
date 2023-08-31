@@ -18,7 +18,7 @@ Ext.define('VegaUi.view.ass.groupquest.GruppoQuestionariFormController', {
   },
 
   onSave(){
-    this._submitForm('questionnaire_group',true)
+    this._newSubmitForm('questionnaire_group',true)
     this._showGrid();
   },
 

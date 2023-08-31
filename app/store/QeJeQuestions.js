@@ -1,6 +1,6 @@
-Ext.define('VegaUi.store.QeQuestions', {
+Ext.define('VegaUi.store.QeJeQuestions', {
   extend: 'Ext.data.Store',
-  alias:'store.qequestions',
+  alias:'store.qejequestions',
 
   requires: [
     'Ext.data.proxy.Direct',
@@ -13,7 +13,7 @@ Ext.define('VegaUi.store.QeQuestions', {
     cfg = cfg || {};
     me.callParent([Ext.apply({
       fields:['nodeCode'],
-      storeId: 'QeQuestions',
+      storeId: 'QeJeQuestions',
       autoLoad: false,
       proxy: {
         type: 'direct',

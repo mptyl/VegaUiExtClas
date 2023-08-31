@@ -41,19 +41,20 @@ Ext.application({
     'QeReplyTypes',
     'QeCheckBoxes',
     'QeReplies',
-    'QeQuestions',
+    'QeJeQuestions',
     'QeJeReplies',
     'CompanyRoles',
     'CompanyGroups',
     'Assessments',
-    'Companies'
+    'AssessmentCombo',
+    'Companies',
+    'Mails'
   ],
 
 
   launch: function () {
     Ext.ariaWarn = Ext.emptyFn
     // TODO - Launch the application, preceduto da logout
-    console.log('launching')
     Ext.create('VegaUi.view.MainView');
   }
 

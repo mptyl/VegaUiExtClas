@@ -3,6 +3,7 @@ Ext.define('VegaUi.model.CompanyGroup', {
 
   fields: [
     {name: 'id', type: 'integer'},
+    {name: 'version', type: 'integer'},
     {name: 'name', type: 'string'},
     {name: 'description', type: 'string'},
     {name: 'groupLogo', type: 'string'},

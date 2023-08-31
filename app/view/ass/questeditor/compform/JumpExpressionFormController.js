@@ -20,7 +20,6 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionFormController', 
   },
 
   onExpressionChange(field, newValue, oldValue, eOpt) {
-    console.log('Expression changed')
     const color = this.checkPredicateValidity(newValue) ? '#a2f5a2' : '#ffbaba';
     field.setFieldStyle('background-color: ' + color + ';');
   },
@@ -38,6 +37,7 @@ Ext.define('VegaUi.view.ass.questEditor.compform.JumpExpressionFormController', 
 
 
   loadComboStore(form) {
+    console.log('Store loaded')
     const me = this;
     const combo = form.down('#comboQuestions'); // You may need to adjust this to get your specific combo
     const store = combo.getStore();

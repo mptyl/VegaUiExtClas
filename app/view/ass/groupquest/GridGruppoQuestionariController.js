@@ -24,7 +24,7 @@ Ext.define('VegaUi.view.ass.groupquest.GridGruppoQuestionariController', {
   },
 
   onRowDblClick: function (tableview, record, element, rowIndex, e, eOpts){
-      this._onRowDblClick(tableview, record, element, rowIndex, e, eOpts)
+      this._onNewRowDblClick(tableview, record, element, rowIndex, e, eOpts)
       this.__setModelForModify();
   },
 

@@ -5,16 +5,9 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeForm', {
   requires: [
     'VegaUi.view.azdest.grupaz.GruppoAziendeFormController',
   ],
-
   controller: 'azdest-grupaz-gruppoaziendeform',
-  margin: '0 10 0 10',
-  defaults: {
-    labelAlign: 'right',
-    labelWidth: 120,
-  },
-  bind: {
-    hidden: '{formHidden}'
-  },
+  margin: '0 10',
+
   items: [
     {
       xtype: 'form',
@@ -28,6 +21,10 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeForm', {
       api: {
         submit: 'companyGroupDirectController.saveForm'
       },
+      defaults: {
+        labelAlign: 'right',
+        labelWidth: 120,
+      },
       items: [
         {
           xtype: 'fieldcontainer',
@@ -38,6 +35,12 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeForm', {
               xtype: 'numberfield',
               bind: '{record.id}',
               name: 'id',
+              hidden: true,
+            },
+            {
+              xtype: 'numberfield',
+              bind: '{record.version}',
+              name: 'version',
               hidden: true,
             },
             {
@@ -87,7 +90,6 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeForm', {
                   const imagePreview = this.up('form').down('image[reference=imagePreview]')
                   imagePreview.setSrc(newValue);
                   imagePreview.setVisible(!!newValue);
-                  console.log('change', newValue);
                 }
               }
             },
@@ -144,9 +146,15 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeForm', {
           text: 'Torna alla lista',
           handler: 'onReset',
         },
+         '->',
         {
-          xtype: 'tbfill'
+          xtype: 'tbtext',
+          text: 'Gruppo Aziendale',
+          style: {
+            fontWeight: 'bold'
+          }
         },
+        '->',
         {
           xtype: 'button',
           reference: 'save',

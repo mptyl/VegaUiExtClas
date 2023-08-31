@@ -32,6 +32,19 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
     }
   },
 
+  _onNewRowDblClick: function (tableview, record, element, rowIndex, e, eOpts) {
+    const entityPanel = tableview.up().up(); //tableview->gridPanel->entityPanel
+    const form = entityPanel.down('form');
+    const viewModel = entityPanel.getViewModel();
+    if (record) {
+      if (form != undefined && form != null && form.reference.endsWith('EntityForm')) {
+        form.reset();
+        form.loadRecord(record);
+        form.query('field:first')[0].focus();
+      }
+    }
+  },
+
   _showForm(tableview) {
     const entityPanel = tableview.up().up(); //tableview->grid->gridPanel->entityPanel
     const viewModel = entityPanel.getViewModel();
@@ -117,14 +130,12 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
    * Se salvataggio andato a buon fine, reload dello store e hide della form
    * @param entityName
    */
-  _submitForm: function (entityName,externalHideForm) {
+  _submitForm: function (entityName) {
     const me = this;
-    const formContainer = me.getView();
-    const form = formContainer.down('form');
-    const entityPanel = formContainer.up();
-    const grid = entityPanel.down('grid');
-    const store = grid.getStore();
-    const viewModel = entityPanel.getViewModel();
+    const form = me.getView();
+    // const entityPanel = form.up();
+    // const grid = entityPanel.down('grid');
+    const store = form.up().down('grid').getStore();
     if (!form.isValid()) {
       Ext.Msg.alert('Errore nella validazione del form', 'Form invalido o incompleto. \nVerificare che tutti i campi obbligatori siano stati compilati')
     } else {
@@ -132,16 +143,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
         url: Ext.manifest.server + entityName + '/submit',
         method: 'POST',
         success: function (form, result, data) {
-          Ext.suspendLayouts();
-          store.load({
-            callback: function () {
-              viewModel.set('disabledGridButtons', false);
-              if(!externalHideForm) {
-                formContainer.hide();
-              }
-              Ext.resumeLayouts(true);
-            }
-          });
+          store.load();
         },
         failure: function (form, action) {
           switch (action.failureType) {
@@ -160,38 +162,131 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
             case Ext.form.action.Action.SERVER_INVALID:
               Ext.Msg.alert('Failure', action.result.msg);
           }
-          Ext.suspendLayouts();
-          store.load({
-            callback: function () {
-              viewModel.set('disabledGridButtons', false);
-              if(!externalHideForm) {
-                formContainer.hide();
-              }
-              Ext.resumeLayouts(true);
-            }
-          });
         }
       });
     }
-  }
-  ,
+  },
+
+  _saveMainForm() {
+    const me=this;
+    const form = this.getView().down('#mainForm').getForm();
+    form.submit({
+      success: function (form, action) {
+        me._saveLogo(action.result.id);
+        Ext.Msg.alert('Success', 'Company con ID='+action.result.id+action.result.msg);
+      },
+      failure: function (form, action) {
+        Ext.Msg.alert('Failed', action.result.msg);
+        me._showGrid();
+      }
+    });
+  },
+
+  _saveLogo(id) {
+    debugger;
+    const me=this;
+    const form = me.getView().down('#logoForm').getForm();
+    form.submit({
+      params: {
+        id: id
+      },
+      success: function (form, action) {
+        debugger;
+        const grid=me.getView().up().down('grid');
+        grid.getStore().reload();
+        grid.getSelectionModel().deselectAll();
+        me._showGrid();
+      },
+      failure:function(form,action) {
+        Ext.Msg.alert('Failed', "Errore nel salvataggio del logo");
+        me._showGrid();
+      }
+    })
+  },
 
   /**
-   * Uscita senza salvare dalla form e suo hide
+   * Salva il contenuto della form.
+   * Se salvataggio andato a buon fine, reload dello store e hide della form
+   * @param entityName
+   */
+  // _submitForm: function (entityName,externalHideForm) {
+  //   const me = this;
+  //   const formContainer = me.getView();
+  //   const form = formContainer.down('form');
+  //   const entityPanel = formContainer.up();
+  //   const grid = entityPanel.down('grid');
+  //   const store = grid.getStore();
+  //   const viewModel = entityPanel.getViewModel();
+  //   if (!form.isValid()) {
+  //     Ext.Msg.alert('Errore nella validazione del form', 'Form invalido o incompleto. \nVerificare che tutti i campi obbligatori siano stati compilati')
+  //   } else {
+  //     form.submit({
+  //       url: Ext.manifest.server + entityName + '/submit',
+  //       method: 'POST',
+  //       success: function (form, result, data) {
+  //         Ext.suspendLayouts();
+  //         store.load({
+  //           callback: function () {
+  //             viewModel.set('disabledGridButtons', false);
+  //             if(!externalHideForm) {
+  //               formContainer.hide();
+  //             }
+  //             Ext.resumeLayouts(true);
+  //           }
+  //         });
+  //       },
+  //       failure: function (form, action) {
+  //         switch (action.failureType) {
+  //           case Ext.form.action.Action.CLIENT_INVALID:
+  //             Ext.Msg.alert(
+  //               'Failure',
+  //               'Form fields may not be submitted with invalid values'
+  //             );
+  //             break;
+  //           case Ext.form.action.Action.CONNECT_FAILURE:
+  //             const rt = JSON.parse(action.response.responseText);
+  //             const ae = rt.apierror;
+  //             const message = 'Status: <b>' + ae['status'] + '</b><br/>Message: <b>' + ae['message'] + '</b><br/>Debug: <b>' + ae['debugMessage'] + '</b';
+  //             Ext.Msg.alert('Failure', 'Ajax communication failed:<br/> ' + message);
+  //             break;
+  //           case Ext.form.action.Action.SERVER_INVALID:
+  //             Ext.Msg.alert('Failure', action.result.msg);
+  //         }
+  //         Ext.suspendLayouts();
+  //         store.load({
+  //           callback: function () {
+  //             viewModel.set('disabledGridButtons', false);
+  //             if(!externalHideForm) {
+  //               formContainer.hide();
+  //             }
+  //             Ext.resumeLayouts(true);
+  //           }
+  //         });
+  //       }
+  //     });
+  //   }
+  // },
+
+
+  /**
+   * Uscita senza save dalla form e suo hide
    */
   _cancelForm(store) {
     const me = this;
-    this.getView().up().getViewModel().set('disabledGridButtons', false)
     me.getView().up().down('grid').getStore().load()
   },
 
+  /**
+   * Gestione dei glag per lo spegnimento della form e l'accensione della grid
+   * @private
+   */
   _showGrid(){
     const me = this;
     const viewModel= me.getView().up().getViewModel();
-    viewModel.set('disabledGridButtons', false);
     viewModel.set('formHidden', true);
     viewModel.set('gridHidden', false);
   },
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

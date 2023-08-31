@@ -21,6 +21,14 @@ Ext.define('VegaUi.mixin.QeMixin', {
         me.onAddGroup(record, index);
       }
     });
+    me.addPageAction = Ext.create('Ext.Action', {
+      iconCls: 'x-fa fa-file',
+      text: 'Aggiungi nuova Pagina',
+      disabled: false,
+      handler: function (widget, event) {
+        me.onAddPage(record, index);
+      }
+    });
     me.addQuestionAction = Ext.create('Ext.Action', {
       iconCls: 'x-fa fa-question',
       text: 'Aggiungi nuova Domanda', disabled: false,
@@ -42,6 +50,14 @@ Ext.define('VegaUi.mixin.QeMixin', {
       disabled: false,
       handler: function (widget, event) {
         me.onAddJumpExpression(record, index);
+      }
+    });
+    me.duplicateAction = Ext.create('Ext.Action', {
+      iconCls: 'x-fa fa-copy',
+      text: 'Duplica elemento',
+      disabled: false,
+      handler: function (widget, event) {
+        me.onDuplicateNode(record, index);
       }
     });
     me.deleteAction = Ext.create('Ext.Action', {
@@ -71,11 +87,23 @@ Ext.define('VegaUi.mixin.QeMixin', {
         ]
       });
     }
-    ;
     if (record.data.cls == 'QeGroup') {
       me.ruleMenu = Ext.create('Ext.menu.Menu', {
         items: [
           me.addGroupAction,
+            me.duplicateAction,
+          me.menuSeparator,
+          me.addPageAction,
+          me.menuSeparator,
+          me.deleteAction
+        ]
+      });
+    }
+    if (record.data.cls == 'QePage') {
+      me.ruleMenu = Ext.create('Ext.menu.Menu', {
+        items: [
+          me.addPageAction,
+          me.duplicateAction,
           me.menuSeparator,
           me.addQuestionAction,
           me.menuSeparator,
@@ -87,6 +115,7 @@ Ext.define('VegaUi.mixin.QeMixin', {
       me.ruleMenu = Ext.create('Ext.menu.Menu', {
         items: [
           me.addQuestionAction,
+          me.duplicateAction,
           me.showQuestion,
           me.menuSeparator,
           me.addReplyAction,
@@ -100,6 +129,7 @@ Ext.define('VegaUi.mixin.QeMixin', {
       me.ruleMenu = Ext.create('Ext.menu.Menu', {
         items: [
           me.addReplyAction,
+          me.duplicateAction,
           me.menuSeparator,
           me.deleteAction
         ]
@@ -109,6 +139,7 @@ Ext.define('VegaUi.mixin.QeMixin', {
       me.ruleMenu = Ext.create('Ext.menu.Menu', {
         items: [
           me.addJumpAction,
+          me.duplicateAction,
           me.menuSeparator,
           me.deleteAction
         ]
@@ -124,10 +155,17 @@ Ext.define('VegaUi.mixin.QeMixin', {
     me.addNode(newNode, me.getGroupForm());
   },
 
+  onAddPage: function (record) {
+    const me = this;
+    const qePage = Ext.create('VegaUi.model.questEditor.QePage');
+    const newNode = me.setupFormAndViewModel(record, qePage, 'P', 'QeGroup')
+    me.addNode(newNode, me.getPageForm());
+  },
+
   onAddQuestion(record) { //il record è il nodo su cui è stato fatto il right-click
     const me = this;
     const qeQuestion = Ext.create('VegaUi.model.questEditor.QeQuestion');
-    const newNode = me.setupFormAndViewModel(record, qeQuestion, 'Q', 'QeGroup');
+    const newNode = me.setupFormAndViewModel(record, qeQuestion, 'Q', 'QePage');
     me.addNode(newNode, me.getQuestionForm());
   },
 
@@ -197,6 +235,10 @@ Ext.define('VegaUi.mixin.QeMixin', {
     switch (record.data.cls) {
       case 'QeGroup':
         questEditorViewModel.set('groupId', record.id);
+        break;
+      case 'QePage':
+        questEditorViewModel.set('groupId', record.id);
+        questEditorViewModel.set('pageId', record.id);
         break;
       case 'QeQuestion':
         questEditorViewModel.set('groupId', record.parentNode.id);
@@ -284,6 +326,9 @@ Ext.define('VegaUi.mixin.QeMixin', {
     const viewModel = this.getViewModel();
     treeGrid.getSelectionModel().deselectAll();
     treeGrid.expandPath(viewModel.get('nodeToExpand'));
+
+
+    //treeGrid.getSelectionModel().select(viewModel.get('currentRecord'));
   },
 
   resetForm(viewModel, treeGrid) {
@@ -310,7 +355,7 @@ Ext.define('VegaUi.mixin.QeMixin', {
     this.resetTreeGrid(treeGrid);
     const formContainer = this.getView().up('form-quest-editor');
     const form = formContainer.down('form');
-    form.reset();
+    //form.reset();
     formContainer.hide();
     form.remove(form, true);
   },

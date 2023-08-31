@@ -14,6 +14,9 @@ Ext.define('VegaUi.view.ass.questeditor.FormQuestEditor', {
       xtype: 'qe-group-form'
     },
     {
+      xtype: 'qe-page-form'
+    },
+    {
       xtype: 'qe-question-form'
     },
     {

@@ -45,7 +45,14 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeGrid', {
             fontWeight: 'bold'
           }
         },
-        '->', {
+        '->',
+        {
+          reference: 'reloadButton',
+          iconCls: 'x-fa fa-arrow-up',
+          text: 'Reload',
+          handler: 'onReload',
+        },
+        {
           text: 'Cancella Gruppo',
           reference: 'removeRole',
           handler: 'onRemoveClick',

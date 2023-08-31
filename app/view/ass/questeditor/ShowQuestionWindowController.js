@@ -178,7 +178,6 @@ Ext.define('VegaUi.view.ass.questeditor.ShowQuestionWindowController', {
     const store = Ext.getStore('QeReplies')
     store.proxy.extraParams = {questId: questId, questionId: questionId};
     store.load();
-    console.log('store loaded');
     return store;
   },
 

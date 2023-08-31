@@ -123,7 +123,6 @@ Ext.define('VegaUi.view.ass.questeditor.compform.FullReplyFormController', {
   },
 
   onMinChange(field, newValue) {
-
     console.log(newValue);
   }
 });
