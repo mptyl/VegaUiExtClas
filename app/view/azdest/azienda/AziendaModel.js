@@ -3,10 +3,13 @@ Ext.define('VegaUi.view.azdest.azienda.AziendaModel', {
   alias: 'viewmodel.azdest-azienda-azienda',
   data: {
     name: 'VegaUi - Aziende',
-    removeButtonDisabled: true,
     record: null,
+
+    saveButtonDisabled: true,
+    removeButtonDisabled: true,
     formHidden: true,
-    gridHidden: false
+    gridHidden: false,
+    hiddenId: true
   },
 
 });
