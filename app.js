@@ -48,7 +48,8 @@ Ext.application({
     'Assessments',
     'AssessmentCombo',
     'Companies',
-    'Mails'
+    'Mails',
+    'RecipientLists'
   ],
 
 

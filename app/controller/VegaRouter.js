@@ -10,6 +10,7 @@ Ext.define('VegaUi.controller.VegaRouter', {
     assContentPanel:'#assContentPanel',
     azdContentPanel:'#azdContentPanel',
     azdRuoliAziendaliPanel:'#azdRuoliAziendaliPanel',
+    azdListaDestinatariGrid:'#azdListaDestinatariGrid',
     avContentPanel:'#avContentPanel',
     asrContentPanel:'#asrContentPanel',
     admContentPanel:'#admContentPanel',
@@ -47,11 +48,15 @@ Ext.define('VegaUi.controller.VegaRouter', {
   },
 
   activateAzddestRoute(xtype){
+      debugger;
     this.getContentPanel().layout.setActiveItem('azdMainPanel');
     this.getAzdContentPanel().layout.setActiveItem(xtype+'Panel');
     switch (xtype) {
       case 'azdRuoliAziendaliGrid': {
-        Ext.getStore('CompanyRoles').reload();
+        break;
+      }
+      case 'azdListaDestinatariGrid': {
+        //Ext.getStore('RecipientLists').reload();
         break;
       }
       case 'azdGruppoaziende':{

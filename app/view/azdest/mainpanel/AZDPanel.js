@@ -43,8 +43,8 @@ Ext.define('VegaUi.view.azdest.mainpanel.AZDPanel', {
           itemId: 'azdRuolixAziendaPanel',
         },
         {
-          xtype: 'azd-listadestinatari-panel',
-          itemId: 'azdListaDestinataritPanel',
+          xtype: 'azd-listadestinatarigrid-panel',
+          itemId: 'azdListaDestinatariGridPanel',
         },
         {
           xtype: 'azd-destinatari-panel',

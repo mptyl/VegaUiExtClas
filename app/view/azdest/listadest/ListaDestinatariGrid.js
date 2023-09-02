@@ -1,45 +1,41 @@
-Ext.define('VegaUi.view.azdest.ruoloaz.RuoloAziendaleGrid', {
+Ext.define('VegaUi.view.azdest.listadest.ListaDestinatariGrid', {
   extend: 'Ext.grid.Panel',
-  alias: 'widget.azd-ruoloaziendalegrid-panel',
+  alias: 'widget.azd-listadestinatarigrid-panel',
 
   requires: [
-    'VegaUi.view.azdest.ruoloaz.RuoloAziendaleGridController',
-    'VegaUi.view.azdest.ruoloaz.RuoloAziendaleGridModel',
+    'VegaUi.view.azdest.listadest.ListaDestinatariGridController',
+    'VegaUi.view.azdest.listadest.ListaDestinatariGridModel',
     'Ext.selection.Model',
     'Ext.grid.RowEditor',
     'Ext.grid.plugin.RowEditing'
   ],
 
-  controller: 'azdest-ruoloaz-ruoloaziendalegrid',
+  controller: 'azdest-listadest-listadestinatarigrid',
   viewModel: {
-    type: 'azdest-ruoloaz-ruoloaziendalegrid'
+    type: 'azdest-listadest-listadestinatarigrid'
   },
 
-  store: 'CompanyRoles',
+  store: 'RecipientLists',
   margin: '0 10',
   columns: [
+    {text: 'Id', dataIndex: 'id', format: '#', flex: 1,},
+    {text: 'Nome', dataIndex: 'listName', flex: 10, editor: {allowBlank: false}},
     {
-      text: 'Id',
-      dataIndex: 'id',
-      format: '#',
-      flex: 1
-    },
-    {
-      text: 'Nome',
-      dataIndex: 'roleName',
-      flex: 10,
+      text: 'Tipo Lista', dataIndex: 'listType', flex: 20,
       editor: {
-        allowBlank: true
+        xtype: 'combobox',
+        name: 'listType',
+        allowBlank: false,
+        forceSelection: true,
+        store: [
+          'SVILUPPO',
+          'TEST',
+          'PRODUZIONE',
+          'CHIUSO'
+        ],
       }
     },
-    {
-      text: 'Descrizione',
-      dataIndex: 'roleDescription',
-      flex: 20,
-      editor: {
-        allowBlank: true
-      }
-    }
+    {text: 'Descrizione', dataIndex: 'listDescription', flex: 20, editor: {allowBlank: true}}
   ],
   dockedItems: [
     {
@@ -52,7 +48,7 @@ Ext.define('VegaUi.view.azdest.ruoloaz.RuoloAziendaleGrid', {
       },
       items: [
         {
-          text: 'Aggiungi Ruolo',
+          text: 'Aggiungi Lista',
           handler: 'onAdd',
           //userCls: 'custom-button-green',
           iconCls: 'x-fa fa-plus',
@@ -60,7 +56,7 @@ Ext.define('VegaUi.view.azdest.ruoloaz.RuoloAziendaleGrid', {
         '->',
         {
           xtype: 'tbtext',
-          text: 'Ruoli Aziendali',
+          text: 'Liste Destinatari',
           style: {
             fontWeight: 'bold'
           }
@@ -73,7 +69,7 @@ Ext.define('VegaUi.view.azdest.ruoloaz.RuoloAziendaleGrid', {
           handler: 'onReload',
         },
         {
-          text: 'Cancella Ruolo',
+          text: 'Cancella Lista Destinatari',
           reference: 'removeRole',
           handler: 'onRemoveClick',
           //userCls: 'custom-button-red',

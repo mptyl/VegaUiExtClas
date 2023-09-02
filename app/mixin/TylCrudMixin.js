@@ -142,7 +142,6 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
             }
           } else {
             // Handle error response
-            debugger;
             Ext.Msg.alert('Failure', 'Status:' + response.status + ' ' + response.statusText);
           }
         })
@@ -163,7 +162,6 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
   },
 
   _removeLogo(controller) {
-    debugger;
     const me = this;
     const entityPanel = me.getView().up();
     const vm = entityPanel.getViewModel();

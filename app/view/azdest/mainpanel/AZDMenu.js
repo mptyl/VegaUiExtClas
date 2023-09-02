@@ -37,7 +37,7 @@ Ext.define('VegaUi.view.azdest.mainpanel.AZDMenu', {
     },
     {
       text: 'Liste deestinatari',
-      itemId: 'azdListaDestinatarit'
+      itemId: 'azdListaDestinatariGrid'
     },
     {
       text: 'Destinatari',
