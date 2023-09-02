@@ -6,18 +6,16 @@ Ext.define('VegaUi.view.azdest.ruoloaz.RuoloAziendaleGridController', {
     VegaUi.mixin.TylCrudMixin
   ],
 
-  onReload: function () {
-    this.getView().getStore().reload();
+  onAdd() {
+    this._addInGrid('VegaUi.model.CompanyRole');
   },
 
-  onAddClick() {
-    const store = this.getView().getStore();
-    const rec = Ext.create('VegaUi.model.CompanyRole');
-    rec.set('id', null);
-    rec.set('version', null);
-    const rowEditing = this.getView().findPlugin('rowediting');
-    store.insert(0, rec);
-    rowEditing.startEdit(rec, 0);
+  onSelectionChange() {
+    this._selectionChange()
+  },
+
+  onReload: function () {
+    this.getView().getStore().reload();
   },
 
   onRemoveClick() {
@@ -25,25 +23,11 @@ Ext.define('VegaUi.view.azdest.ruoloaz.RuoloAziendaleGridController', {
   },
 
   onEdit(editor, context){
-    //context.record.commit()
-    const store= this.getView().getStore();
-    store.sync();
-    store.reload();
-    this.getView().getSelectionModel().deselectAll();
+    this._editInGrid(editor, context);
   },
 
   onCancelEdit(rowEditing, context) {
-    if (context.record.phantom) {
-      this.getView().store.remove(context.record);
-      this.getView().getSelectionModel().deselectAll();
-    }
+    this._cancelEditInGrid(rowEditing, context);
   },
-
-  onSelectionChange(){
-    if(this.getView().getSelectionModel().getSelection().length > 0)
-      this.getViewModel().set('removeButtonDisabled', false);
-    else
-      this.getViewModel().set('removeButtonDisabled', true);
-  }
 
 });

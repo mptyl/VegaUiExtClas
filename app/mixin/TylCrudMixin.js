@@ -30,6 +30,16 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
     this._setModelForAdd(entityPanel);
   },
 
+  _addInGrid(model) {
+    const store = this.getView().getStore();
+    const rec = Ext.create(model);
+    rec.set('id', null);
+    rec.set('version', null);
+    const rowEditing = this.getView().findPlugin('rowediting');
+    store.insert(0, rec);
+    rowEditing.startEdit(rec, 0);
+  },
+
   _setModelForAdd(entityPanel) {
     const viewModel = entityPanel.getViewModel();
     viewModel.set('gridHidden', true);
@@ -56,6 +66,20 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
     const entityPanel = tableview.up().up(); //tableview->gridPanel->entityPanel
     const vm = entityPanel.getViewModel();
     vm.set('record', record);
+  },
+
+  _editInGrid(editor, context){
+    const store= this.getView().getStore();
+    store.sync();
+    store.reload();
+    this.getView().getSelectionModel().deselectAll();
+  },
+
+  _cancelEditInGrid(rowEditing, context) {
+    if (context.record.phantom) {
+      this.getView().store.remove(context.record);
+      this.getView().getSelectionModel().deselectAll();
+    }
   },
 
   //////////////////////////////////////////////////////////////////////////////////////////////////

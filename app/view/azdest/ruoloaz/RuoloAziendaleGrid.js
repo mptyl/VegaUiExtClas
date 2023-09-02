@@ -53,7 +53,7 @@ Ext.define('VegaUi.view.azdest.ruoloaz.RuoloAziendaleGrid', {
       items: [
         {
           text: 'Aggiungi Ruolo',
-          handler: 'onAddClick',
+          handler: 'onAdd',
           //userCls: 'custom-button-green',
           iconCls: 'x-fa fa-plus',
         },
