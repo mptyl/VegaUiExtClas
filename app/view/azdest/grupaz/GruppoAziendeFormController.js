@@ -6,39 +6,27 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeFormController', {
     VegaUi.mixin.TylCrudMixin
   ],
 
-  onSave() {
-    const me=this;
-    const form = this.getView().down('#mainForm').getForm();
-    form.submit({
-      success: function (form, action) {
-        me.__saveLogo(action.result.id);
-        const grid=me.getView().up('azd-gruppoaziende-panel').down('azd-gruppoaziende-grid');
-        //const vm = me.getView().up().getViewModel()
-        //vm.get('record').set('id', action.result.id);
-        grid.getStore('gruppoAziende').reload();
-        grid.getSelectionModel().deselectAll();
-        me._showGrid();
-        Ext.Msg.alert('Success', 'Company Group con ID='+action.result.id+action.result.msg);
-      },
-      failure: function (form, action) {
-        Ext.Msg.alert('Failed', action.result.msg);
-      }
-    });
-  },
-
-  onReset(){
-    this._cancelForm()
+  onReset() {
     this._showGrid();
   },
 
-  __saveLogo(id) {
-    const me=this;
-    const form = me.getView().down('#logoForm').getForm();
-    form.submit({
-      params: {
-        id: id
-      }
-    })
+  onSave() {
+    this._saveWithLogo('#mainForm','companyGroup/uploadLogo?')
   },
+
+  onRemoveLogo() {
+    const me=this;
+    Ext.Msg.confirm(
+      'Conferma cancellazione', 'Confermi la cancellazione del logo?', function (btn) {
+        if (btn === 'yes') {
+          me._removeLogo(companyGroupDirectController)
+        }
+      }
+    );
+  },
+
+  onFormDirtyChange(basic, dirty, eOpts) {
+    this._formDirtyChange(basic, dirty);
+  }
 
 });

@@ -11,8 +11,9 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeForm', {
   items: [
     {
       xtype: 'form',
-      reference: 'gruppoaziendeEntityForm',
+      trackResetOnLoad: true,
       itemId:'mainForm',
+      reference: 'gruppoaziendeEntityForm',
       margin: '10 0',
       layout: {
         type: 'hbox',
@@ -21,22 +22,16 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeForm', {
       api: {
         submit: 'companyGroupDirectController.saveForm'
       },
-      defaults: {
-        labelAlign: 'right',
-        labelWidth: 120,
-      },
       items: [
         {
           xtype: 'fieldcontainer',
           flex: 1,
           layout: 'anchor',
+          defaults: {
+            labelAlign: 'right',
+            labelWidth: 180,
+          },
           items: [
-            {
-              xtype: 'numberfield',
-              bind: '{record.id}',
-              name: 'id',
-              hidden: true,
-            },
             {
               xtype: 'numberfield',
               bind: '{record.version}',
@@ -59,8 +54,6 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeForm', {
               allowBlank: true,
               anchor: '100%'
             },
-
-
             {
               xtype: 'htmleditor',
               name: 'privacyText',
@@ -70,73 +63,150 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeForm', {
               allowBlank: true,
               anchor: '100%'
             },
+            {
+              xtype: 'numberfield',
+              fieldLabel: 'Id:',
+              name: 'id',
+              bind:{
+                value: '{record.id}',
+                hidden:'{hiddenId}',
+                readOnly:true
+              },
+            },
           ]
         },
         {
           xtype: 'fieldcontainer',
-          layout: 'anchor',
-          margin: '0 10 0 10',
+          layout: {
+            type:'vbox',
+            pack:'start',
+            align:'stretch'
+          },
+          margin: '0 10',
           items: [
-            {
-              xtype: 'textfield',
-              fieldLabel: 'Src immagine',
-              bind: '{record.groupLogo}',
-              name: 'groupLogo',
-              allowBlank: true,
-              anchor: '100%',
-              hidden:true,
-              listeners: {
-                change: function (field, newValue) {
-                  const imagePreview = this.up('form').down('image[reference=imagePreview]')
-                  imagePreview.setSrc(newValue);
-                  imagePreview.setVisible(!!newValue);
-                }
-              }
-            },
             {
               xtype: 'image',
               reference: 'imagePreview',
-              width: 200,
-              hidden:true,
-              title: 'Logo Gruppo',
-            },
-
+              width:200,
+              bind:{
+                src: '{record.groupLogo}',
+                hidden: '{!record.groupLogo}'
+              }
+            }
           ]
         },
-      ]
+        // {
+        //   xtype: 'fieldcontainer',
+        //   layout: 'anchor',
+        //   margin: '0 10',
+        //   defaults: {
+        //     labelAlign: 'right',
+        //     labelWidth: 180,
+        //   },
+        //   items: [
+        //     {
+        //       xtype: 'textfield',
+        //       fieldLabel: 'Src immagine',
+        //       bind: '{record.groupLogo}',
+        //       name: 'groupLogo',
+        //       allowBlank: true,
+        //       anchor: '100%',
+        //       hidden:true,
+        //       listeners: {
+        //         change: function (field, newValue) {
+        //           const imagePreview = this.up('form').down('image[reference=imagePreview]')
+        //           imagePreview.setSrc(newValue);
+        //           imagePreview.setVisible(!!newValue);
+        //         }
+        //       }
+        //     },
+        //     {
+        //       xtype: 'image',
+        //       reference: 'imagePreview',
+        //       width: 200,
+        //       hidden:true,
+        //       title: 'Logo Gruppo',
+        //     },
+        //
+        //   ]
+        // },
+      ],
+      listeners: {
+        dirtychange: 'onFormDirtyChange'
+      }
     },
     {
       xtype: 'form',
-      itemId:'logoForm',
-      api: {
-        submit: 'companyGroupDirectController.saveLogo'
-      },
+      itemId: 'logoForm',
+      trackResetOnLoad: true,
       layout: {
         type: 'hbox',
         align: 'stretch'
+      },
+      defaults: {
+        labelAlign: 'right',
+        labelWidth: 180,
       },
       items: [
         {
           xtype: 'filefield',
           flex: 1,
           anchor: '100%',
-          fieldLabel: 'Logo gruppo',
+          fieldLabel: 'Logo Gruppo aziende',
           msgTarget: 'side',
-          name: 'groupLogoFile',
+          name: 'logoFile',
           buttonText: 'Seleziona immagine logo gruppo',
         },
         {
-          html: ' ',
-          margin: '0 10 0 10',
-          width: 200
-        }
-      ]
-    }
+          xtype: 'button',
+          text: 'Rimuovi logo',
+          margin: '0 0 0 20',
+          handler: 'onRemoveLogo',
+          width: 200,
+          bind:{
+            hidden: '{!record.groupLogo}'
+          }
+        },
+      ],
+      listeners: {
+        dirtychange: 'onFormDirtyChange'
+      }}
+    // {
+    //   xtype: 'form',
+    //   itemId:'logoForm',
+    //   api: {
+    //     submit: 'companyGroupDirectController.saveLogo'
+    //   },
+    //   layout: {
+    //     type: 'hbox',
+    //     align: 'stretch'
+    //   },
+    //   items: [
+    //     {
+    //       xtype: 'filefield',
+    //       flex: 1,
+    //       anchor: '100%',
+    //       fieldLabel: 'Logo gruppo',
+    //       msgTarget: 'side',
+    //       name: 'groupLogoFile',
+    //       buttonText: 'Seleziona immagine logo gruppo',
+    //     },
+    //     {
+    //       html: ' ',
+    //       margin: '0 10 0 10',
+    //       width: 200
+    //     }
+    //   ]
+    // }
   ],
   dockedItems: [
     {
       xtype: 'toolbar',
       dock: 'top',
+      defaults: {
+        xtype: 'button',
+        padding: 10,
+      },
       ui: 'footer',
       items: [
         {
@@ -149,7 +219,7 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeForm', {
          '->',
         {
           xtype: 'tbtext',
-          text: 'Gruppo Aziendale',
+          text: 'Gruppo Aziende',
           style: {
             fontWeight: 'bold'
           }

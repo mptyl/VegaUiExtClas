@@ -10,17 +10,13 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeGrid', {
 
   controller: 'azdest-grupaz-gruppoaziendegrid',
   margin: '0 10 0 10',
-  store: 'CompanyGroups',
   columns: [
     {text: 'Id', dataIndex: 'id', format: '#', flex: 1},
     {text: 'Nome', dataIndex: 'name', flex: 10},
     {text: 'Descrizione', dataIndex: 'description', flex: 20},
     {text: 'Logo', dataIndex: 'groupLogo', flex: 10}
   ],
-  bind:
-    {
-      store: '{gruppoAziende}'
-    },
+  bind: {store: '{gruppoAziende}'},
   dockedItems: [
     {
       xtype: 'toolbar',
@@ -33,8 +29,7 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeGrid', {
       items: [
         {
           text: 'Aggiungi Gruppo',
-          handler: 'onAddClick',
-          //userCls: 'custom-button-green',
+          handler: 'onAdd',
           iconCls: 'x-fa fa-plus',
         },
         '->',

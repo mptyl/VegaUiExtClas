@@ -11,6 +11,7 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziende', {
   viewModel: {
     type: 'azdest-grupaz-gruppoaziende'
   },
+
   layout: {
     type: 'vbox',
     align: 'stretch'

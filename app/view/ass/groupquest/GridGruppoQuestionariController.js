@@ -1,55 +1,54 @@
 Ext.define('VegaUi.view.ass.groupquest.GridGruppoQuestionariController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.ass-groupquest-gridgruppoquestionari',
+  extend: 'Ext.app.ViewController',
+  alias: 'controller.ass-groupquest-gridgruppoquestionari',
 
   mixins: [
     VegaUi.mixin.TylCrudMixin
   ],
 
-
-  onAdd(){
-    let record=Ext.create('VegaUi.model.QuestionnaireGroup');
-    const entityPanel=this.getView().up();
-    const form=entityPanel.down('questgroup-form')
-    this._loadFormWithNewRecord(form,record);
-    this.__setModelForAdd(entityPanel);
-  },
-
-  onReload(){
-    this._reloadGrid();
-  },
-
-  onRemove() {
-    this._removeSelection('Gruppo Questionari');
-  },
-
-  onRowDblClick: function (tableview, record, element, rowIndex, e, eOpts){
-      this._onNewRowDblClick(tableview, record, element, rowIndex, e, eOpts)
-      this.__setModelForModify();
+  onAdd() {
+    this._addWithLogo('VegaUi.model.QuestionnaireGroup')
   },
 
   onSelectionChange() {
-    if (this.getView().getSelectionModel().getSelection().length > 0)
-      this.getViewModel().set('removeButtonDisabled', false);
-    else
-      this.getViewModel().set('removeButtonDisabled', true);
+    this._selectionChange()
   },
 
-  __setModelForAdd(entityPanel){
-    const viewModel = entityPanel.getViewModel();
-    viewModel.set('gridHidden', true);
-    viewModel.set('formHidden', false);
-    viewModel.set('hiddenid',true)
+  onRowDblClick: function (tableview, record, element, rowIndex, e, eOpts) {
+    this._rowDblClick(tableview, record, element, rowIndex, e, eOpts)
+    this._resetFormToNotDirty(record, 'form')
+    this._setModelForModify();
+  },
+
+  onRemove() {
+    this._removeSelection();
+  },
+
+  onReload() {
+    this._reloadGrid();
   },
 
 
-  __setModelForModify(){
-    const entityPanel=this.getView().up();
-    const viewModel = entityPanel.getViewModel();
-    viewModel.set('gridHidden', true);
-    viewModel.set('formHidden', false);
-    viewModel.set('hiddenid',false)
-  }
+
+
+
+  //
+  //
+  // __setModelForAdd(entityPanel) {
+  //   const viewModel = entityPanel.getViewModel();
+  //   viewModel.set('gridHidden', true);
+  //   viewModel.set('formHidden', false);
+  //   viewModel.set('hiddenid', true)
+  // },
+  //
+  //
+  // __setModelForModify() {
+  //   const entityPanel = this.getView().up();
+  //   const viewModel = entityPanel.getViewModel();
+  //   viewModel.set('gridHidden', true);
+  //   viewModel.set('formHidden', false);
+  //   viewModel.set('hiddenid', false)
+  // }
 
 
 });

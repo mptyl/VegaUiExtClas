@@ -20,14 +20,14 @@ Ext.define('VegaUi.view.azdest.azienda.Azienda', {
   items: [
     {
       xtype: 'azd-aziende-form',
-      flex: 1,
+      flex:1,
       bind: {
         hidden: '{formHidden}'
       }
     },
     {
       xtype: 'azd-aziende-grid',
-      flex: 1,
+      flex:1,
       bind: {
         hidden: '{gridHidden}'
       }

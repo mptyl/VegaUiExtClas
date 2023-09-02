@@ -13,7 +13,163 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
   //                               Gestione Grid
   /////////////////////////////////////////////////////////////////////////////////////////////////
 
+  _selectionChange() {
+    if (this.getView().getSelectionModel().getSelection().length > 0)
+      this.getViewModel().set('removeButtonDisabled', false);
+    else
+      this.getViewModel().set('removeButtonDisabled', true);
+  },
 
+  _addWithLogo(model) {
+    let record = Ext.create(model);
+    const entityPanel = this.getView().up();
+    const logoForm = entityPanel.down('#logoForm');
+    logoForm.getForm().setValues({'logoFile': null})
+    const vm = entityPanel.getViewModel();
+    vm.set('record', record);
+    this._setModelForAdd(entityPanel);
+  },
+
+  _setModelForAdd(entityPanel) {
+    const viewModel = entityPanel.getViewModel();
+    viewModel.set('gridHidden', true);
+    viewModel.set('formHidden', false);
+    viewModel.set('hiddenId', true)
+  },
+
+  _setModelForModify() {
+    const entityPanel = this.getView().up();
+    const viewModel = entityPanel.getViewModel();
+    viewModel.set('gridHidden', true);
+    viewModel.set('formHidden', false);
+    viewModel.set('hiddenId', false)
+  },
+
+  _resetFormToNotDirty(record, entityForm) {
+    const entityPanel = this.getView().up();
+    const form = entityPanel.down(entityForm);
+    form.getForm().setValues(record.data)
+    form.reset();
+  },
+
+  _rowDblClick: function (tableview, record, element, rowIndex, e, eOpts) {
+    const entityPanel = tableview.up().up(); //tableview->gridPanel->entityPanel
+    const vm = entityPanel.getViewModel();
+    vm.set('record', record);
+  },
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  //                               Gestione Form
+  /////////////////////////////////////////////////////////////////////////////////////////////////
+  _showGrid() {
+    const me = this;
+    const viewModel = me.getView().up().getViewModel();
+    viewModel.set('formHidden', true);
+    viewModel.set('gridHidden', false);
+  },
+
+  _saveWithLogo(mainFormId, endpoint) {
+    const me = this;
+    //const form = this.getView().down('#mainForm').getForm();
+    const form = this.getView().down(mainFormId).getForm();
+    form.submit({
+      success: function (form, action) {
+        const file = me._getFile();  // Get the file from the form
+        if (file) { // If the file is present, save it
+          me._saveLogo(endpoint,action.result.id, file)
+        } else { // Otherwise just reload the grid
+          me._reloadStore()
+          me._showGrid();
+        }
+      },
+      failure: function (form, action) {
+        Ext.Msg.alert('Errore nell\'aggiornamento dell\'entità', action.result.msg);
+      }
+    });
+  },
+
+  _saveLogo(endpoint,id,file) {
+    const me = this;
+    //var url = Ext.manifest.server + 'company/uploadLogo?' + new URLSearchParams({
+    const url = Ext.manifest.server + endpoint + new URLSearchParams({
+      id: id
+    });
+    const gridToRefresh = me.getView().up().down('grid');
+    me._saveFile(url, file, gridToRefresh);
+  },
+
+  _saveFile(url, file, gridToRefresh) {
+    const me = this;
+
+    if (file) {
+      var formData = new FormData();
+      formData.append('file', file);
+      fetch(url, {
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => {
+          if (response.ok) {
+            if (gridToRefresh) {
+              // Logo uploaded successfully
+              gridToRefresh.getStore().reload();
+              gridToRefresh.getSelectionModel().deselectAll();
+              me._showGrid();
+            }
+          } else {
+            // Handle error response
+            debugger;
+            Ext.Msg.alert('Failure', 'Status:' + response.status + ' ' + response.statusText);
+          }
+        })
+        .catch(error => {
+          // Handle fetch error
+          Ext.Msg.alert('Error uploading file:', error);
+        });
+    } else {
+      Ext.Msg.alert('Error', 'Please select a file to upload.');
+    }
+  },
+
+  _reloadStore() {
+    const me = this;
+    const gridToRefresh = me.getView().up().down('grid');
+    gridToRefresh.getStore().reload();
+    gridToRefresh.getSelectionModel().deselectAll();
+  },
+
+  _removeLogo(controller) {
+    debugger;
+    const me = this;
+    const entityPanel = me.getView().up();
+    const vm = entityPanel.getViewModel();
+    const id = vm.get('record.id');
+    controller.removeLogo(id);
+    me._reloadStore()
+    me._showGrid();
+    console.log('Logo removed');
+  },
+
+  _formDirtyChange(basic, dirty) {
+    if (dirty)
+      this._enableSaveButton();
+    else
+      this._disableSaveButton();
+  },
+  _enableSaveButton() {
+    this.getView().up().getViewModel().set('saveButtonDisabled', false);
+  },
+  _disableSaveButton() {
+    this.getView().up().getViewModel().set('saveButtonDisabled', true);
+  },
+
+  _getFile() {
+    const formPanel = this.getView().down('#logoForm');
+    const fileField = formPanel.down('filefield');
+    return fileField.fileInputEl.dom.files[0];
+  },
+
+  ////////////////////////////// OLD //////////////////////////////////////// /////////////
   /**
    * Caricamento di un record selezionato (tramite double tap) dalla grid e apertura della form
    * @param grid
@@ -75,7 +231,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
    * Cancellazione record selezionati
    * @param entityName
    */
-  _removeSelection(entityName) {
+  _removeSelection() {
     const me = this;
     //const grid = me.getView().down('grid')
     const grid = me.getView();
@@ -163,44 +319,6 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
     }
   },
 
-  _saveFile(url, file, gridToRefresh) {
-    const me = this;
-
-    if (file) {
-      var formData = new FormData();
-      formData.append('file', file);
-
-      // var url = Ext.manifest.server + 'company/uploadLogo?' + new URLSearchParams({
-      //   id: id
-      // });
-
-      fetch(url, {
-        method: 'POST',
-        body: formData,
-      })
-        .then(response => {
-          if (response.ok) {
-            if (gridToRefresh) {
-              // Logo uploaded successfully
-              gridToRefresh.getStore().reload();
-              gridToRefresh.getSelectionModel().deselectAll();
-              me._showGrid();
-            }
-          } else {
-            // Handle error response
-            debugger;
-            Ext.Msg.alert('Failure', 'Status:' + response.status + ' ' + response.statusText);
-          }
-        })
-        .catch(error => {
-          // Handle fetch error
-          Ext.Msg.alert('Error uploading file:', error);
-        });
-    } else {
-      Ext.Msg.alert('Error', 'Please select a file to upload.');
-    }
-  },
-
 
   /**
    * Uscita senza save dalla form e suo hide
@@ -214,12 +332,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
    * Gestione dei glag per lo spegnimento della form e l'accensione della grid
    * @private
    */
-  _showGrid() {
-    const me = this;
-    const viewModel = me.getView().up().getViewModel();
-    viewModel.set('formHidden', true);
-    viewModel.set('gridHidden', false);
-  },
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

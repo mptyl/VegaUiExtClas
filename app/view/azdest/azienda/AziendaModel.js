@@ -11,5 +11,10 @@ Ext.define('VegaUi.view.azdest.azienda.AziendaModel', {
     gridHidden: false,
     hiddenId: true
   },
+  stores: {
+    aziende: {
+      type: 'companies'
+    }
+  }
 
 });

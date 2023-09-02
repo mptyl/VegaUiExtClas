@@ -6,24 +6,18 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeGridController', {
     VegaUi.mixin.TylCrudMixin
   ],
 
-  onAddClick() {
-    let record=Ext.create('VegaUi.model.CompanyGroup');
-    const entityPanel=this.getView().up();
-    const form=entityPanel.down('azd-gruppoaziende-form')
-    this._loadFormWithNewRecord(form,record);
-    this.__setModelForAdd(entityPanel);
+  onAdd() {
+    this._addWithLogo('VegaUi.model.CompanyGroup');
   },
 
   onSelectionChange() {
-    if (this.getView().getSelectionModel().getSelection().length > 0)
-      this.getViewModel().set('removeButtonDisabled', false);
-    else
-      this.getViewModel().set('removeButtonDisabled', true);
+    this._selectionChange()
   },
 
   onRowDblClick: function (tableview, record, element, rowIndex, e, eOpts){
-    this._onRowDblClick(tableview, record, element, rowIndex, e, eOpts)
-    this.__setModelForModify();
+    this._rowDblClick(tableview, record, element, rowIndex, e, eOpts)
+    this._resetFormToNotDirty(record, 'form')
+    this._setModelForModify();
   },
 
   onRemoveClick() {
@@ -33,22 +27,5 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeGridController', {
   onReload() {
     this.getView().getStore().reload();
   },
-
-  __setModelForAdd(entityPanel){
-    const viewModel = entityPanel.getViewModel();
-    viewModel.set('gridHidden', true);
-    viewModel.set('formHidden', false);
-    viewModel.set('hiddenid',true)
-  },
-
-
-  __setModelForModify(){
-    const entityPanel=this.getView().up();
-    const viewModel = entityPanel.getViewModel();
-    viewModel.set('gridHidden', true);
-    viewModel.set('formHidden', false);
-    viewModel.set('hiddenid',false)
-  }
-
 
 });
