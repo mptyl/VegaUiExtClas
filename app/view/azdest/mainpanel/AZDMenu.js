@@ -36,7 +36,7 @@ Ext.define('VegaUi.view.azdest.mainpanel.AZDMenu', {
       itemId: 'azdRuolixAzienda'
     },
     {
-      text: 'Liste deestinatari',
+      text: 'Liste destinatari',
       itemId: 'azdListaDestinatariGrid'
     },
     {

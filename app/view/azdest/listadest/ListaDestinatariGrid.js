@@ -14,9 +14,9 @@ Ext.define('VegaUi.view.azdest.listadest.ListaDestinatariGrid', {
   viewModel: {
     type: 'azdest-listadest-listadestinatarigrid'
   },
-
   store: 'RecipientLists',
   margin: '0 10',
+
   columns: [
     {text: 'Id', dataIndex: 'id', format: '#', flex: 1,},
     {text: 'Nome', dataIndex: 'listName', flex: 10, editor: {allowBlank: false}},

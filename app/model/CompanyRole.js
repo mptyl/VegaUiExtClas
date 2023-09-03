@@ -3,7 +3,6 @@ Ext.define('VegaUi.model.CompanyRole', {
 
   fields: [
     {name: 'id', type: 'integer'},
-    {name: 'version', type: 'integer'},
     {name: 'roleName', type: 'string'},
     {name: 'roleDescription', type: 'string'}
   ]

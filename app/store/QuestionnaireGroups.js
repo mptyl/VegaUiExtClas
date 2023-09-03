@@ -26,6 +26,8 @@ Ext.define('VegaUi.store.QuestionnaireGroups', {
         type: 'direct',
         api: {
           read: questionnaireGroupDirectController.read,
+          create: questionnaireGroupDirectController.create,
+          update: questionnaireGroupDirectController.update,
           destroy: questionnaireGroupDirectController.destroy
         },
         reader: {

@@ -28,7 +28,7 @@ Ext.define('VegaUi.view.ass.mainpanel.ASPanel', {
       flex:1,
       items: [
         {
-          xtype: 'ass-groupquest-panel',
+          xtype: 'ass-groupquest-grid',
           itemId: 'assGroupquestPanel',
         },
         {
@@ -36,7 +36,7 @@ Ext.define('VegaUi.view.ass.mainpanel.ASPanel', {
           itemId: 'assQuestionariPanel',
         },
         {
-          xtype: 'ass-profili-panel',
+          xtype: 'ass-questprofile-grid',
           itemId: 'assProfiliPanel',
         },
         {

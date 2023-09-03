@@ -17,7 +17,6 @@ Ext.define('VegaUi.view.ass.groupquest.GruppoQuestionari', {
     align: 'stretch'
   },
   items: [
-
     {
       xtype: 'questgroup-form',
       flex: 1,

@@ -1,40 +1,25 @@
 Ext.define('VegaUi.view.ass.groupquest.GridGruppoQuestionari', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.questgroup-grid',
+    alias: 'widget.ass-groupquest-grid',
 
     requires: [
       'VegaUi.view.ass.groupquest.GridGruppoQuestionariController',
-      'Ext.grid.filters.Filters'
+      'VegaUi.view.ass.groupquest.GridGruppoQuestionariModel',
+      'Ext.selection.Model',
+      'Ext.grid.RowEditor',
+      'Ext.grid.plugin.RowEditing'
     ],
-    bind:
-      {
-        store: '{quesgrouptstore}'
-      },
     controller: 'ass-groupquest-gridgruppoquestionari',
-    plugins: 'gridfilters',
-    margin: '0 10 0 10',
+    viewModel: {
+      type: 'ass-groupquest-gridgruppoquestionari'
+    },
+    store: 'QuestionnaireGroups',
+    margin: '0 10',
     border: true,
     columns: [
-      {
-        xtype: 'numbercolumn',
-        flex: 2,
-        dataIndex: 'id',
-        text: 'Id',
-        format: '0',
-        align: 'right'
-      },
-      {
-        xtype: 'gridcolumn',
-        flex: 20,
-        dataIndex: 'name',
-        text: 'Nome'
-      },
-      {
-        xtype: 'gridcolumn',
-        flex: 20,
-        dataIndex: 'description',
-        text: 'Descrizione',
-      }
+      {xtype: 'numbercolumn', text: 'Id', dataIndex: 'id', format: '#', flex: 1, align: 'right'},
+      {xtype: 'gridcolumn', flex: 5, dataIndex: 'name', text: 'Nome', editor: {allowBlank: false}},
+      {xtype: 'gridcolumn', flex: 10, dataIndex: 'description', text: 'Descrizione', editor: {allowBlank: true}}
     ],
     dockedItems: [
       {
@@ -70,21 +55,15 @@ Ext.define('VegaUi.view.ass.groupquest.GridGruppoQuestionari', {
             iconCls: 'x-fa fa-arrow-up',
             text: 'Reload',
             handler: 'onReload',
-            textAlign: 'right',
-            bind: {
-              disabled: '{disabledGridButtons}'
-            }
           },
           {
             reference: 'removeButton',
             iconCls: 'x-fa fa-trash',
             text: 'Cancella Gruppo Questionario',
             handler: 'onRemove',
-            textAlign: 'right',
             bind: {
-              disabled: '{disabledGridButtons}'
+              disabled: '{removeButtonDisabled}'
             }
-
           }
         ]
       }
@@ -93,9 +72,18 @@ Ext.define('VegaUi.view.ass.groupquest.GridGruppoQuestionari', {
       selType: 'checkboxmodel',
       mode: 'MULTI'
     },
+    plugins: {
+      rowediting: {
+        clicksToMoveEditor: 1,
+        autoCancel: true,
+        listeners: {
+          cancelEdit: 'onCancelEdit',
+          edit: 'onEdit'
+        }
+      }
+    },
     listeners: {
-      rowdblclick: 'onRowDblClick',
-      selectionchange: 'onSelectionChange',
+      selectionchange: 'onSelectionChange'
     }
   }
 )

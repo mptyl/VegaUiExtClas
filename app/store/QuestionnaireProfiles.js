@@ -26,6 +26,8 @@ Ext.define('VegaUi.store.QuestionnaireProfiles', {
         type: 'direct',
         api: {
           read: questionnaireProfileDirectController.read,
+          create: questionnaireProfileDirectController.create,
+          update: questionnaireProfileDirectController.update,
           destroy: questionnaireProfileDirectController.destroy
         },
         reader: {

@@ -4,6 +4,5 @@ Ext.define('VegaUi.model.QuestionnaireProfile', {
     fields: [
       { name: 'id', type: 'int' },
       { name: 'description', type: 'string' }
-
     ]
 });

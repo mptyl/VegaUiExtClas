@@ -7,48 +7,28 @@ Ext.define('VegaUi.view.ass.groupquest.GridGruppoQuestionariController', {
   ],
 
   onAdd() {
-    this._addWithLogo('VegaUi.model.QuestionnaireGroup')
+    this._addInGrid('VegaUi.model.QuestionnaireGroup');
   },
 
   onSelectionChange() {
     this._selectionChange()
   },
 
-  onRowDblClick: function (tableview, record, element, rowIndex, e, eOpts) {
-    this._rowDblClick(tableview, record, element, rowIndex, e, eOpts)
-    this._resetFormToNotDirty(record, 'form')
-    this._setModelForModify();
+  onReload: function () {
+    this.getView().getStore().reload();
   },
 
   onRemove() {
-    this._removeSelection();
+    this._removeSelection('Gruppo Questionario');
   },
 
-  onReload() {
-    this._reloadGrid();
+  onEdit(editor, context){
+    this._editInGrid(editor, context);
   },
 
-
-
-
-
-  //
-  //
-  // __setModelForAdd(entityPanel) {
-  //   const viewModel = entityPanel.getViewModel();
-  //   viewModel.set('gridHidden', true);
-  //   viewModel.set('formHidden', false);
-  //   viewModel.set('hiddenid', true)
-  // },
-  //
-  //
-  // __setModelForModify() {
-  //   const entityPanel = this.getView().up();
-  //   const viewModel = entityPanel.getViewModel();
-  //   viewModel.set('gridHidden', true);
-  //   viewModel.set('formHidden', false);
-  //   viewModel.set('hiddenid', false)
-  // }
+  onCancelEdit(rowEditing, context) {
+    this._cancelEditInGrid(rowEditing, context);
+  }
 
 
 });

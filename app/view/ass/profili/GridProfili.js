@@ -1,18 +1,22 @@
 Ext.define('VegaUi.view.ass.profili.GridProfili', {
   extend: 'Ext.grid.Panel',
-  alias: 'widget.questprofile-grid',
+  alias: 'widget.ass-questprofile-grid',
 
   requires: [
     'VegaUi.view.ass.profili.GridProfiliController',
+    'VegaUi.view.ass.profili.GridProfiliModel',
+    'Ext.selection.Model',
+    'Ext.grid.RowEditor',
+    'Ext.grid.plugin.RowEditing'
   ],
 
   controller: 'ass-profili-gridprofili',
-  bind:
-    {
-      store: '{quesprofiletstore}'
-    },
-  plugins: 'gridfilters',
-  margin: '0 10 0 10',
+  viewModel: {
+    type: 'ass-profili-gridprofili'
+  },
+  store:'QuestionnaireProfiles',
+
+  margin: '0 10',
   border: true,
   //style: 'border: 1px solid lightgrey',
   columns: [
@@ -30,6 +34,7 @@ Ext.define('VegaUi.view.ass.profili.GridProfili', {
       flex: 100,
       dataIndex: 'description',
       text: 'Descrizione',
+      editor: {allowBlank: false}
     }
 
   ],
@@ -67,19 +72,14 @@ Ext.define('VegaUi.view.ass.profili.GridProfili', {
           iconCls: 'x-fa fa-arrow-up',
           text: 'Reload',
           handler: 'onReload',
-          textAlign: 'right',
-          bind: {
-            disabled: '{disabledGridButtons}'
-          }
         },
         {
           reference: 'removeButton',
           iconCls: 'x-fa fa-trash',
           text: 'Cancella profilo Questionario',
           handler: 'onRemove',
-          textAlign: 'right',
           bind: {
-            disabled: '{disabledGridButtons}'
+            disabled: '{removeButtonDisabled}'
           }
         }
       ]
@@ -89,8 +89,17 @@ Ext.define('VegaUi.view.ass.profili.GridProfili', {
     selType: 'checkboxmodel',
     mode: 'MULTI'
   },
+  plugins: {
+    rowediting: {
+      clicksToMoveEditor: 1,
+      autoCancel: true,
+      listeners: {
+        cancelEdit: 'onCancelEdit',
+        edit: 'onEdit'
+      }
+    }
+  },
   listeners: {
-    rowdblclick: 'onRowDblClick',
     selectionchange: 'onSelectionChange'
   }
 });

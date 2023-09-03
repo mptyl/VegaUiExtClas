@@ -34,7 +34,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
     const store = this.getView().getStore();
     const rec = Ext.create(model);
     rec.set('id', null);
-    rec.set('version', null);
+    // rec.set('version', null);
     const rowEditing = this.getView().findPlugin('rowediting');
     store.insert(0, rec);
     rowEditing.startEdit(rec, 0);

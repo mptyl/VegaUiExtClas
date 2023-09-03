@@ -7,6 +7,32 @@ Ext.define('VegaUi.view.ass.profili.GridProfiliController', {
   ],
 
   onAdd() {
+    this._addInGrid('VegaUi.model.QuestionnaireProfile');
+  },
+
+  onSelectionChange() {
+    this._selectionChange()
+  },
+
+  onReload: function () {
+    this.getView().getStore().reload();
+  },
+
+  onRemove() {
+    this._removeSelection('Profilo Questionario');
+  },
+
+  onEdit(editor, context){
+    this._editInGrid(editor, context);
+  },
+
+  onCancelEdit(rowEditing, context) {
+    this._cancelEditInGrid(rowEditing, context);
+  }
+
+  /*
+
+  onAdd() {
     const record = Ext.create('VegaUi.model.QuestionnaireProfile')
     const entityPanel = this.getView().up();
     const form = entityPanel.down('ass-mailForm')
@@ -40,5 +66,8 @@ Ext.define('VegaUi.view.ass.profili.GridProfiliController', {
     viewModel.set('formHidden', false);
     viewModel.set('hiddenid',true)
   }
+
+
+   */
 
 });
