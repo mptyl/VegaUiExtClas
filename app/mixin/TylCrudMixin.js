@@ -10,7 +10,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
   },
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
-  //                               Gestione Grid
+  //                               New - Gestione Grid
   /////////////////////////////////////////////////////////////////////////////////////////////////
 
   _selectionChange() {
@@ -20,14 +20,23 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
       this.getViewModel().set('removeButtonDisabled', true);
   },
 
-  _addWithLogo(model) {
+  _add(model) {
+    const record = Ext.create(model);
+    const entityPanel = this.getView().up();
+    const form = entityPanel.down('form')
+    record.set('id', null);
+    form.getForm().loadRecord(record);
+    this.__setModelForAdd(entityPanel);
+  },
+
+  _addWithAttachment(model) {
     let record = Ext.create(model);
     const entityPanel = this.getView().up();
     const logoForm = entityPanel.down('#logoForm');
     logoForm.getForm().setValues({'logoFile': null})
     const vm = entityPanel.getViewModel();
     vm.set('record', record);
-    this._setModelForAdd(entityPanel);
+    this.__setModelForAdd(entityPanel);
   },
 
   _addInGrid(model) {
@@ -40,36 +49,16 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
     rowEditing.startEdit(rec, 0);
   },
 
-  _setModelForAdd(entityPanel) {
-    const viewModel = entityPanel.getViewModel();
-    viewModel.set('gridHidden', true);
-    viewModel.set('formHidden', false);
-    viewModel.set('hiddenId', true)
-  },
-
-  _setModelForModify() {
-    const entityPanel = this.getView().up();
-    const viewModel = entityPanel.getViewModel();
-    viewModel.set('gridHidden', true);
-    viewModel.set('formHidden', false);
-    viewModel.set('hiddenId', false)
-  },
-
-  _resetFormToNotDirty(record, entityForm) {
-    const entityPanel = this.getView().up();
-    const form = entityPanel.down(entityForm);
-    form.getForm().setValues(record.data)
-    form.reset();
-  },
-
   _rowDblClick: function (tableview, record, element, rowIndex, e, eOpts) {
     const entityPanel = tableview.up().up(); //tableview->gridPanel->entityPanel
     const vm = entityPanel.getViewModel();
     vm.set('record', record);
+    this.__setModelForModify()
+    this.__resetFormToNotDirty(record)
   },
 
-  _editInGrid(editor, context){
-    const store= this.getView().getStore();
+  _editInGrid(editor, context) {
+    const store = this.getView().getStore();
     store.sync();
     store.reload();
     this.getView().getSelectionModel().deselectAll();
@@ -82,177 +71,6 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
     }
   },
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  //                               Gestione Form
-  /////////////////////////////////////////////////////////////////////////////////////////////////
-  _showGrid() {
-    const me = this;
-    const viewModel = me.getView().up().getViewModel();
-    viewModel.set('formHidden', true);
-    viewModel.set('gridHidden', false);
-  },
-
-  _saveWithLogo(mainFormId, endpoint) {
-    const me = this;
-    //const form = this.getView().down('#mainForm').getForm();
-    const form = this.getView().down(mainFormId).getForm();
-    form.submit({
-      success: function (form, action) {
-        const file = me._getFile();  // Get the file from the form
-        if (file) { // If the file is present, save it
-          me._saveLogo(endpoint,action.result.id, file)
-        } else { // Otherwise just reload the grid
-          me._reloadStore()
-          me._showGrid();
-        }
-      },
-      failure: function (form, action) {
-        Ext.Msg.alert('Errore nell\'aggiornamento dell\'entità', action.result.msg);
-      }
-    });
-  },
-
-  _saveLogo(endpoint,id,file) {
-    const me = this;
-    //var url = Ext.manifest.server + 'company/uploadLogo?' + new URLSearchParams({
-    const url = Ext.manifest.server + endpoint + new URLSearchParams({
-      id: id
-    });
-    const gridToRefresh = me.getView().up().down('grid');
-    me._saveFile(url, file, gridToRefresh);
-  },
-
-  _saveFile(url, file, gridToRefresh) {
-    const me = this;
-
-    if (file) {
-      var formData = new FormData();
-      formData.append('file', file);
-      fetch(url, {
-        method: 'POST',
-        body: formData,
-      })
-        .then(response => {
-          if (response.ok) {
-            if (gridToRefresh) {
-              // Logo uploaded successfully
-              gridToRefresh.getStore().reload();
-              gridToRefresh.getSelectionModel().deselectAll();
-              me._showGrid();
-            }
-          } else {
-            // Handle error response
-            Ext.Msg.alert('Failure', 'Status:' + response.status + ' ' + response.statusText);
-          }
-        })
-        .catch(error => {
-          // Handle fetch error
-          Ext.Msg.alert('Error uploading file:', error);
-        });
-    } else {
-      Ext.Msg.alert('Error', 'Please select a file to upload.');
-    }
-  },
-
-  _reloadStore() {
-    const me = this;
-    const gridToRefresh = me.getView().up().down('grid');
-    gridToRefresh.getStore().reload();
-    gridToRefresh.getSelectionModel().deselectAll();
-  },
-
-  _removeLogo(controller) {
-    const me = this;
-    const entityPanel = me.getView().up();
-    const vm = entityPanel.getViewModel();
-    const id = vm.get('record.id');
-    controller.removeLogo(id);
-    me._reloadStore()
-    me._showGrid();
-    console.log('Logo removed');
-  },
-
-  _formDirtyChange(basic, dirty) {
-    if (dirty)
-      this._enableSaveButton();
-    else
-      this._disableSaveButton();
-  },
-  _enableSaveButton() {
-    this.getView().up().getViewModel().set('saveButtonDisabled', false);
-  },
-  _disableSaveButton() {
-    this.getView().up().getViewModel().set('saveButtonDisabled', true);
-  },
-
-  _getFile() {
-    const formPanel = this.getView().down('#logoForm');
-    const fileField = formPanel.down('filefield');
-    return fileField.fileInputEl.dom.files[0];
-  },
-
-  ////////////////////////////// OLD //////////////////////////////////////// /////////////
-  /**
-   * Caricamento di un record selezionato (tramite double tap) dalla grid e apertura della form
-   * @param grid
-   */
-  _onRowDblClick: function (tableview, record, element, rowIndex, e, eOpts) {
-    const entityPanel = tableview.up().up(); //tableview->gridPanel->entityPanel
-    const formPanel = entityPanel.down('panel');
-    const form = formPanel.down('form');
-    const viewModel = entityPanel.getViewModel();
-    if (record) {
-      if (form != undefined && form != null && form.reference.endsWith('EntityForm')) {
-        form.reset();
-        form.loadRecord(record);
-        form.query('field:first')[0].focus();
-      }
-    }
-  },
-
-  _onNewRowDblClick: function (tableview, record, element, rowIndex, e, eOpts) {
-    const entityPanel = tableview.up().up(); //tableview->gridPanel->entityPanel
-    const vm = entityPanel.getViewModel();
-    vm.set('record', record);
-    vm.set('gridHidden', true);
-    vm.set('formHidden', false);
-    vm.set('hiddenId', false)
-  },
-
-  _showForm(tableview) {
-    const entityPanel = tableview.up().up(); //tableview->grid->gridPanel->entityPanel
-    const viewModel = entityPanel.getViewModel();
-    viewModel.set('gridHidden', true);
-    viewModel.set('formHidden', false);
-  },
-
-
-  /**
-   * Reload della grid
-   */
-  _reloadGrid() {
-    this.getView().getStore().load();
-  }
-  ,
-
-  /**
-   * Esegue la duplicazione dei record selezionati eseguendo, per ciascuno di essi, il metodo duplicateRecord
-   * @param entity
-   */
-  duplicateRecordTyl(entity) {
-    const me = this;
-    const grid = me.getViewModel().get('grid');
-    const selectedRows = grid.getSelectionModel().getSelection();
-    if (selectedRows.length) {
-      me.duplicateRecords(entity, grid, selectedRows);
-    }
-  }
-  ,
-
-  /**
-   * Cancellazione record selezionati
-   * @param entityName
-   */
   _removeSelection() {
     const me = this;
     //const grid = me.getView().down('grid')
@@ -286,29 +104,91 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
         'Selezionare prima gli elementi da cancellare')
   },
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-//                        Gestione Form
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-  /**
-   * Caricamento del nuovo record sulla form e apertura della form stessa.
-   * @param record
-   */
-  _loadFormWithNewRecord(form, record) {
-    record.set('id', null);
-    form.down('form').getForm().loadRecord(record);
+  _duplicateSelection() {
+    const me = this;
+    const grid = me.getView();
+    const selectedRow = grid.getSelectionModel().getSelection();
+    if (selectedRow) {
+      Ext.Msg.confirm(
+        'Conferma duplicazione',
+        'Confermi la duplicazione degli elementi selezionati?',
+        function (btn) {
+          if (btn === 'yes') {
+            const id = selectedRow[0].id
+            questionnaireDirectController.replicate(selectedRow[0].id);
+            grid.getStore().reload();
+          }
+        });
+    } else
+      Ext.Msg.alert(
+        'Nessuna selezione',
+        'Selezionare prima gli elementi da duplicarw')
   },
 
-  /**
-   * Salva il contenuto della form.
-   * Se salvataggio andato a buon fine, reload dello store e hide della form
-   * @param entityName
-   */
-  _submitForm: function (entityName) {
+  //region Private Methods
+  __setModelForModify() {
+    const entityPanel = this.getView().up();
+    const viewModel = entityPanel.getViewModel();
+    viewModel.set('gridHidden', true);
+    viewModel.set('formHidden', false);
+    viewModel.set('hiddenId', false)
+  },
+
+  __resetFormToNotDirty(record) {
+    const entityPanel = this.getView().up();
+    const form = entityPanel.down('form');
+    form.getForm().setValues(record.data)
+    form.reset();
+  },
+
+  __setModelForAdd(entityPanel) {
+    const viewModel = entityPanel.getViewModel();
+    viewModel.set('gridHidden', true);
+    viewModel.set('formHidden', false);
+    viewModel.set('hiddenId', true)
+  },
+  //endregion
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                               New - Gestione Form
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+  _saveWithAttachment(mainFormId, endpoint) {
+    const me = this;
+    //const form = this.getView().down('#mainForm').getForm();
+    const form = this.getView().down(mainFormId).getForm();
+    form.submit({
+      success: function (form, action) {
+        const file = me.__getFile();  // Get the file from the form
+        if (file) { // If the file is present, save it
+          me.__saveAttachment(endpoint, action.result.id, file)
+        } else { // Otherwise just reload the grid
+          me.__reloadStore()
+          me._showGrid();
+        }
+      },
+      failure: function (form, action) {
+          switch (action.failureType) {
+            case Ext.form.action.Action.CLIENT_INVALID:
+              Ext.Msg.alert(
+                'Failure',
+                'Form fields may not be submitted with invalid values'
+              );
+              break;
+            case Ext.form.action.Action.CONNECT_FAILURE:
+              Ext.Msg.alert('Failure', 'Ajax communication failed');
+              break;
+            case Ext.form.action.Action.SERVER_INVALID:
+              Ext.Msg.alert('Failure', action.result.msg);
+          }
+        }
+    });
+  },
+
+  _saveWithoutAttachment(entityName) {
     const me = this;
     const form = me.getView();
-    // const entityPanel = form.up();
-    // const grid = entityPanel.down('grid');
     const store = form.up().down('grid').getStore();
     if (!form.isValid()) {
       Ext.Msg.alert('Errore nella validazione del form', 'Form invalido o incompleto. \nVerificare che tutti i campi obbligatori siano stati compilati')
@@ -317,7 +197,11 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
         url: Ext.manifest.server + entityName + '/submit',
         method: 'POST',
         success: function (form, result, data) {
-          store.load();
+          store.load({
+            callback: function () {
+              me._showGrid();
+            }
+          });
         },
         failure: function (form, action) {
           switch (action.failureType) {
@@ -329,8 +213,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
               break;
             case Ext.form.action.Action.CONNECT_FAILURE:
               const rt = JSON.parse(action.response.responseText);
-              const ae = rt.apierror;
-              const message = 'Status: <b>' + ae['status'] + '</b><br/>Message: <b>' + ae['message'] + '</b><br/>Debug: <b>' + ae['debugMessage'] + '</b';
+              const message = 'Status: <b>' + rt['status'] + '</b><br/>Message: <b>' + rt['message'] + '</b><br/>Debug: <b>' + rt['debugMessage'] + '</b';
               Ext.Msg.alert('Failure', 'Ajax communication failed:<br/> ' + message);
               break;
             case Ext.form.action.Action.SERVER_INVALID:
@@ -341,55 +224,104 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
     }
   },
 
-
-  /**
-   * Uscita senza save dalla form e suo hide
-   */
-  _cancelForm(store) {
+  _removeAttachment(controller) {
     const me = this;
-    me.getView().up().down('grid').getStore().load()
+    const entityPanel = me.getView().up();
+    const vm = entityPanel.getViewModel();
+    const id = vm.get('record.id');
+    controller.removeLogo(id);
+    me.__reloadStore()
+    me._showGrid();
+    console.log('Logo removed');
   },
 
-  /**
-   * Gestione dei glag per lo spegnimento della form e l'accensione della grid
-   * @private
-   */
+  _formDirtyChange(basic, dirty) {
+    if (dirty)
+      this.__enableSaveButton();
+    else
+      this.__disableSaveButton();
+  },
 
+  _removeImage() {
+    console.log('remove image')
+  },
 
+  _showGrid() {
+    const me = this;
+    const viewModel = me.getView().up().getViewModel();
+    viewModel.set('formHidden', true);
+    viewModel.set('gridHidden', false);
+  },
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//                                Private Mehods
-////////////////////////////////////////////////////////////////////////////////////////////////////
+  //region Private Methods
 
-  /**
-   * Raccoglie in un array tutti gli id dei record da duplicare e li invia al server per la dublicazione.
-   * Manda un messaggio di successo o insuccesso mostrando il numero di record coinvolti
-   * Al termine fa la reload dello store e
-   */
-  duplicateRecords(entity, grid, selectedRows) {
-    const ids = [];
-    for (let record of selectedRows) {
-      const id = {"id": record.data.id};
-      ids.push(id);
+  __saveAttachment(endpoint, id, file) {
+    const me = this;
+    const url = Ext.manifest.server + endpoint + new URLSearchParams({
+      id: id
+    });
+    const gridToRefresh = me.getView().up().down('grid');
+    me.__saveFile(url, file, gridToRefresh);
+  },
+
+  __saveFile(url, file, gridToRefresh) {
+    const me = this;
+
+    if (file) {
+      var formData = new FormData();
+      formData.append('file', file);
+      fetch(url, {
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => {
+          if (response.ok) {
+            if (gridToRefresh) {
+              // Logo uploaded successfully
+              gridToRefresh.getStore().reload();
+              gridToRefresh.getSelectionModel().deselectAll();
+              me._showGrid();
+            }
+          } else {
+            // Handle error response
+            Ext.Msg.alert('Failure', 'Status:' + response.status + ' ' + response.statusText);
+          }
+        })
+        .catch(error => {
+          // Handle fetch error
+          Ext.Msg.alert('Error uploading file:', error);
+        });
+    } else {
+      Ext.Msg.alert('Error', 'Please select a file to upload.');
     }
-    Ext.Ajax.request({
-      url: Ext.manifest.server + entity + '/replicate',
-      method: 'POST',
-      jsonData: ids,
-      success: function (response, opts) {
-        Ext.Msg.alert('Replicate ' + entity, Ext.decode(response.responseText).msg);
-      },
-      failure: function (response, opts) {
-        Ext.Msg.alert('Replicate ' + entity, Ext.decode(response.responseText).msg);
-      },
-      callback: function () {
-        grid.getStore().reload();
-        grid.getSelectionModel().deselectAll();
-      }
-    })
-  }
-  ,
+  },
 
+  __reloadStore() {
+    const me = this;
+    const gridToRefresh = me.getView().up().down('grid');
+    gridToRefresh.getStore().reload();
+    gridToRefresh.getSelectionModel().deselectAll();
+  },
+
+   __getFile() {
+    const formPanel = this.getView().down('#logoForm');
+    const fileField = formPanel.down('filefield');
+    return fileField.fileInputEl.dom.files[0];
+  },
+
+  __enableSaveButton() {
+    this.getView().up().getViewModel().set('saveButtonDisabled', false);
+  },
+
+  __disableSaveButton() {
+    this.getView().up().getViewModel().set('saveButtonDisabled', true);
+  },
+
+  //endregion
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                OL Private Mehods
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // monitoraggio destroy
   afterDestroy() {

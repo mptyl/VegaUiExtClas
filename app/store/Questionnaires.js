@@ -17,6 +17,10 @@ Ext.define('VegaUi.store.Questionnaires', {
       storeId: 'Questionnaires',
       autoLoad: false,
       model: 'VegaUi.model.Questionnaire',
+      sorters: [{
+        property: 'id',
+        direction: 'DESC' // or 'DESC' for descending
+      }],
       proxy: {
         type: 'direct',
         api: {

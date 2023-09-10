@@ -7,32 +7,14 @@ Ext.define('VegaUi.view.ass.mail.MailFormController', {
   ],
 
   onReset(){
-    this._cancelForm()
-    this._showGrid();
-    this.__deselectAll();
+    this._resetForm()
   },
 
   onSave(){
-    this._newSubmitForm('mail',true)
-    this._showGrid();
-
+      this._saveWithoutAttachment('mail');
   },
-
-  __deselectAll(){
-    const grid=this.getView().up().down('grid');
-    grid.getSelectionModel().deselectAll()
-  },
-
 
   onFormDirtyChange: function(basic, dirty, eOpts) {
-    var me=this;
-    if(dirty)
-    {
-      me.getReferences().save.enable();
-    }
-    else{
-      me.getReferences().save.disable();
-    }
+    this._formDirtyChange(basic, dirty);
   }
-
 });

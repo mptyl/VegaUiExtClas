@@ -7,7 +7,7 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeGridController', {
   ],
 
   onAdd() {
-    this._addWithLogo('VegaUi.model.CompanyGroup');
+    this._addWithAttachment('VegaUi.model.CompanyGroup');
   },
 
   onSelectionChange() {
@@ -16,8 +16,6 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeGridController', {
 
   onRowDblClick: function (tableview, record, element, rowIndex, e, eOpts){
     this._rowDblClick(tableview, record, element, rowIndex, e, eOpts)
-    this._resetFormToNotDirty(record, 'form')
-    this._setModelForModify();
   },
 
   onRemoveClick() {

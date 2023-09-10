@@ -11,7 +11,7 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeFormController', {
   },
 
   onSave() {
-    this._saveWithLogo('#mainForm','companyGroup/uploadLogo?')
+    this._saveWithAttachment('#mainForm','companyGroup/uploadLogo?')
   },
 
   onRemoveLogo() {
@@ -19,7 +19,7 @@ Ext.define('VegaUi.view.azdest.grupaz.GruppoAziendeFormController', {
     Ext.Msg.confirm(
       'Conferma cancellazione', 'Confermi la cancellazione del logo?', function (btn) {
         if (btn === 'yes') {
-          me._removeLogo(companyGroupDirectController)
+          me._removeAttachment(companyGroupDirectController)
         }
       }
     );

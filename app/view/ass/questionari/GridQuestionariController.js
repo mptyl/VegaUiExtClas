@@ -7,37 +7,32 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionariController', {
   ],
 
   onAdd() {
-    const record = Ext.create('VegaUi.model.Questionnaire');
-    const entityPanel=this.getView().up();
-    const form=entityPanel.down('quest-form')
-    this._loadFormWithNewRecord(form,record);
-    this.__setModelForAdd(entityPanel);
+    this._add('VegaUi.model.Questionnaire')
+  },
+
+  onDuplicate() {
+    this._duplicateSelection();
   },
 
   onReload() {
-    this._reloadGrid()
+    this.getView().getStore().reload();
   },
 
   onRemove() {
-    this._removeSelection('Questionari');
+    this._removeSelection();
   },
 
-  onRowDblClick: function (tableview, record) {
-    this._onRowDblClick(tableview, record)
-    this.__setModelForModify();
+  onRowDblClick: function (tableview, record,element, rowIndex, e, eOpts) {
+    this._rowDblClick(tableview,record,element, rowIndex, e, eOpts)
   },
 
   onSelectionChange() {
-    if (this.getView().getSelectionModel().getSelection().length > 0)
-      this.getViewModel().set('removeButtonDisabled', false);
-    else
-      this.getViewModel().set('removeButtonDisabled', true);
+    this._selectionChange()
   },
 
-  //TODO - implementare Duplicate
-  onDuplicate() {
-  },
-
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////      QuestEditor         /////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
   onOpenQuestEditor() {
     const me = this;
     const record = me.getView().getSelectionModel().getSelection()[0];
@@ -75,10 +70,7 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionariController', {
 
   __showQuestEditor(record){
     const me=this
-
     const questContainer= me.getView().up();
-
-    // Set questId e questionnaireTitle in mainview
     const mainView=this.getView().up('mainview')
     const mainViewModel=mainView.getViewModel();
     mainViewModel.set('questId',record.get('id'));
@@ -94,27 +86,10 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionariController', {
     me.__showTree(questModel);
   },
 
-  __setModelForModify(){
-    const entityPanel=this.getView().up();
-    const viewModel = entityPanel.getViewModel();
-    viewModel.set('gridHidden', true);
-    viewModel.set('formHidden', false);
-    viewModel.set('formHidden', false);
-    viewModel.set('questEditorHidden',true)
-  },
-
   __showTree(questModel) {
     questModel.set('formHidden',true);
     questModel.set('questEditorHidden',false);
     questModel.set('gridHidden',true);
-  },
-
-  __setModelForAdd(entityPanel){
-    const viewModel = entityPanel.getViewModel();
-    viewModel.set('gridHidden', true);
-    viewModel.set('formHidden', false);
-    viewModel.set('hiddenid',true)
-  },
-
+  }
   //endregion
 });

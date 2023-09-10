@@ -26,8 +26,8 @@ Ext.define('VegaUi.store.Companies', {
         type: 'direct',
         api: {
           read: companyDirectController.read,
-          create  : companyDirectController.create,
-          update  : companyDirectController.update,
+          // create  : companyDirectController.create,
+          // update  : companyDirectController.update,
           destroy: companyDirectController.destroy
         },
         reader: {

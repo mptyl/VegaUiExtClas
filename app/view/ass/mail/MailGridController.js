@@ -7,8 +7,7 @@ Ext.define('VegaUi.view.ass.mail.MailGridController', {
   ],
 
   onRowDblClick(tableview, record, element, rowIndex, e, eOpts){
-    this._onNewRowDblClick(tableview, record, element, rowIndex, e, eOpts)
-    this._showForm(tableview);
+    this._rowDblClick(tableview, record, element, rowIndex, e, eOpts)
   },
 
   onSelectionChange(){
@@ -19,16 +18,12 @@ Ext.define('VegaUi.view.ass.mail.MailGridController', {
   },
 
   onAdd(){
-    const record = Ext.create('VegaUi.model.Mail')
-    const entityPanel = this.getView().up();
-    const form = entityPanel.down('ass-mailForm');
-    this._loadFormWithNewRecord(form, record);
-    this.__setModel(entityPanel);
+      this.add('VegaUi.model.Mail');
 
   },
 
   onReload(){
-    this._reloadGrid()
+    this.getView().getStore().reload();
   },
 
   onRemove(){

@@ -6,35 +6,27 @@ Ext.define('VegaUi.view.ass.questionari.FormQuestionariController', {
     'VegaUi.mixin.TylCrudMixin'
   ],
 
-
   onReset(){
-    this._cancelForm()
-    this.__hideQuestEditor();
     this._showGrid();
-    this.__deselectAll();
-
   },
-
-  __deselectAll(){
-    const grid=this.getView().up().down('grid');
-    grid.getSelectionModel().deselectAll()
-  },
-
-  __hideQuestEditor(){
-    const vm=this.getView().up().getViewModel();
-    vm.set('questEditorHidden',true);
-  },
-
 
   onSave() {
+    this._saveWithoutAttachment('questionnaire');
+  },
+
+  onFormDirtyChange(basic, dirty, eOpts) {
+    this._formDirtyChange(basic, dirty);
+  },
+
+  onRemoveImage() {
     const me=this;
-
-    me._submitForm('questionnaire',true);
-    const questModel=me.getView().up().getViewModel();
-    me.getView().up().down('grid').getStore().load()
-    me.getView().hide()
-    me._showGrid(questModel);
-
+    Ext.Msg.confirm(
+      'Conferma cancellazione', 'Confermi la cancellazione dell\'immagine?', function (btn) {
+        if (btn === 'yes') {
+          me._removeImage(companyDirectController)
+        }
+      }
+    );
   },
 
 

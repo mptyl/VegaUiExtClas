@@ -26,8 +26,8 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionari', {
     },
     {
       xtype: 'gridcolumn',
-      flex: 10,
-      dataIndex: 'title',
+      flex: 7,
+      dataIndex: 'name',
       text: 'Nome',
       filter: {
         type: 'string'
@@ -35,7 +35,7 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionari', {
     },
     {
       xtype: 'gridcolumn',
-      flex: 10,
+      flex: 5,
       dataIndex: 'searchText',
       text: 'Ricerca Questionario',
       filter: {
@@ -45,15 +45,15 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionari', {
     {
       xtype: 'gridcolumn',
       flex: 10,
-      dataIndex: 'notes',
-      text: 'Note',
+      dataIndex: 'title',
+      text: 'Titolo',
       filter: {
         type: 'string'
       }
     },
     {
       xtype: 'gridcolumn',
-      flex: 10,
+      flex: 5,
       dataIndex: 'questionnaireGroupName',
       text: 'Gruppo questionari',
       filter: {
@@ -66,7 +66,8 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionari', {
       format: '0',
       align: 'right',
       dataIndex: 'compilationTime',
-      text: 'T. comp'
+      text: 'T.C',
+      textAlign:'right'
     },
     {
       xtype: 'numbercolumn',
@@ -74,7 +75,7 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionari', {
       format: '0',
       align: 'right',
       dataIndex: 'forcedTerminationTime',
-      text: 'T. max'
+      text: 'T.M',
     },
     {
       xtype: 'numbercolumn',
@@ -82,7 +83,7 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionari', {
       format: '0',
       align: 'right',
       dataIndex: 'attachments',
-      text: 'Allegati'
+      text: 'All.'
     },
     {
       xtype: 'checkcolumn',
@@ -145,7 +146,7 @@ Ext.define('VegaUi.view.ass.questionari.GridQuestionari', {
         {
           reference: 'removeButton',
           iconCls: 'x-fa fa-trash',
-          text: 'Cancella Gruppi Questionario',
+          text: 'Cancella Questionari',
           handler: 'onRemove',
           textAlign: 'right',
           bind: {
