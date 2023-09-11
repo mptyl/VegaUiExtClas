@@ -6,35 +6,24 @@ Ext.define('VegaUi.view.ass.mail.MailGridController', {
     VegaUi.mixin.TylCrudMixin
   ],
 
+  onAdd(){
+    this._add('VegaUi.model.Mail');
+  },
+
+  onReload() {
+    this.getView().getStore().reload();
+  },
+
+  onRemove(){
+    this._removeSelection();
+  },
+
   onRowDblClick(tableview, record, element, rowIndex, e, eOpts){
     this._rowDblClick(tableview, record, element, rowIndex, e, eOpts)
   },
 
   onSelectionChange(){
-    if (this.getView().getSelectionModel().getSelection().length > 0)
-      this.getViewModel().set('removeButtonDisabled', false);
-    else
-      this.getViewModel().set('removeButtonDisabled', true);
+    this._selectionChange()
   },
-
-  onAdd(){
-      this.add('VegaUi.model.Mail');
-
-  },
-
-  onReload(){
-    this.getView().getStore().reload();
-  },
-
-  onRemove(){
-    this._removeSelection('Mail');
-  },
-
-  __setModel(entityPanel){
-    const viewModel = entityPanel.getViewModel();
-    viewModel.set('gridHidden', true);
-    viewModel.set('formHidden', false);
-    viewModel.set('hiddenId',true)
-  }
 
 });

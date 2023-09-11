@@ -4,13 +4,17 @@ Ext.define('VegaUi.view.ass.mail.MailGrid', {
 
   requires: [
     'VegaUi.view.ass.mail.MailGridController',
+    'Ext.selection.Model',
+    'Ext.grid.RowEditor'
   ],
 
   controller: 'ass-mail-mailgrid',
 
-  margin: '0 10 0 10',
+  margin: '0 10',
   border: true,
-  store: 'Mails',
+  bind: {
+    store: '{mails}'
+  },
   //style: 'border: 1px solid lightgrey',
   columns: [
     {
@@ -30,34 +34,34 @@ Ext.define('VegaUi.view.ass.mail.MailGrid', {
     },
     {
       xtype: 'gridcolumn',
-      flex:20,
-      dataIndex:'object',
-      text:'Oggetto'
+      flex: 20,
+      dataIndex: 'object',
+      text: 'Oggetto'
 
     },
     {
       xtype: 'gridcolumn',
-      flex:10,
+      flex: 10,
       dataIndex: 'event',
-      text:'Evento'
+      text: 'Evento'
     },
     {
-      xtype:'gridcolumn',
-      flex:20,
-      dataIndex:'assessmentDescription',
-      text:'Assessment'
+      xtype: 'gridcolumn',
+      flex: 20,
+      dataIndex: 'assessmentTitle',
+      text: 'Assessment'
     },
     {
-      xtype:'booleancolumn',
-      flex:2,
-      dataIndex:'cc',
-      text:'Cc'
+      xtype: 'booleancolumn',
+      flex: 2,
+      dataIndex: 'cc',
+      text: 'Cc'
     },
     {
-      xtype:'booleancolumn',
-      flex:2,
-      dataindex:'bcc',
-      text:'Bcc'
+      xtype: 'booleancolumn',
+      flex: 2,
+      dataindex: 'bcc',
+      text: 'Bcc'
     },
 
   ],
@@ -76,10 +80,6 @@ Ext.define('VegaUi.view.ass.mail.MailGrid', {
           iconCls: 'x-fa fa-plus',
           text: 'Aggiungi nuova Mail',
           handler: 'onAdd',
-          bind: {
-            disabled: '{disabledGridButtons}'
-          }
-
         },
         '->',
         {
@@ -96,9 +96,6 @@ Ext.define('VegaUi.view.ass.mail.MailGrid', {
           text: 'Reload',
           handler: 'onReload',
           textAlign: 'right',
-          bind: {
-            disabled: '{disabledGridButtons}'
-          }
         },
         {
           reference: 'removeButton',
@@ -107,7 +104,7 @@ Ext.define('VegaUi.view.ass.mail.MailGrid', {
           handler: 'onRemove',
           textAlign: 'right',
           bind: {
-            disabled: '{disabledGridButtons}'
+            disabled: '{removeButtonDisabled}'
           }
         }
       ]

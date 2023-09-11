@@ -6,12 +6,12 @@ Ext.define('VegaUi.view.ass.mail.MailFormController', {
     VegaUi.mixin.TylCrudMixin
   ],
 
-  onReset(){
-    this._resetForm()
+  onReset() {
+    this._showGrid();
   },
 
   onSave(){
-      this._saveWithoutAttachment('mail');
+      this._save('mail');
   },
 
   onFormDirtyChange: function(basic, dirty, eOpts) {

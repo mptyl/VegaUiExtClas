@@ -15,6 +15,7 @@ Ext.define('VegaUi.view.azdest.azienda.AziendaModel', {
     aziende: {
       type: 'companies'
     },
+  }
 
   //   formulas:{
   //     currentAzienda:{
@@ -54,6 +55,6 @@ Ext.define('VegaUi.view.azdest.azienda.AziendaModel', {
   //       } // eo function get
   //     } // eo status
   // } // eo formulas
-  }
+
 
 });

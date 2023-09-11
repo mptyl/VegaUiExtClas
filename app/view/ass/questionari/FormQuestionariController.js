@@ -11,7 +11,7 @@ Ext.define('VegaUi.view.ass.questionari.FormQuestionariController', {
   },
 
   onSave() {
-    this._saveWithoutAttachment('questionnaire');
+    this._saveWithAttachment('questionnaire/uploadImage?');
   },
 
   onFormDirtyChange(basic, dirty, eOpts) {
@@ -23,11 +23,19 @@ Ext.define('VegaUi.view.ass.questionari.FormQuestionariController', {
     Ext.Msg.confirm(
       'Conferma cancellazione', 'Confermi la cancellazione dell\'immagine?', function (btn) {
         if (btn === 'yes') {
-          me._removeImage(companyDirectController)
+          me._removeAttachment(questionnaireDirectController)
         }
       }
     );
   },
+
+  onTabChange(tabPanel, newCard, oldCard, eOpts){
+    const me=this;
+    if(newCard.itemId==='Tempi')
+      me.getViewModel().set('imageLoaderHidden',false)
+    else
+      me.getViewModel().set('imageLoaderHidden',true)
+  }
 
 
 });

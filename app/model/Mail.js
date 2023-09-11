@@ -4,7 +4,7 @@ Ext.define('VegaUi.model.Mail', {
   fields: [
     {name: 'id', type: 'integer'},
     {name: 'assessmentId', type: 'integer'},
-    {name: 'assessmentDescription', type: 'string'},
+    {name: 'assessmentTitle', type: 'string'},
     {name: 'description', type: 'string'},
     {name: 'text', type: 'string'},
     {name: 'htmlText', type: 'string'},

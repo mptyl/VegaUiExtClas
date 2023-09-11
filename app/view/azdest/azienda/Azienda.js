@@ -11,7 +11,7 @@ Ext.define('VegaUi.view.azdest.azienda.Azienda', {
   viewModel: {
     type: 'azdest-azienda-azienda'
   },
-
+itemId:'mainContainer',
   layout: {
     type: 'vbox',
     align: 'stretch'

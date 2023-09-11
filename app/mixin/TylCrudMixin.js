@@ -23,7 +23,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
   _add(model) {
     const record = Ext.create(model);
     const entityPanel = this.getView().up();
-    const form = entityPanel.down('form')
+    const form = entityPanel.down('#mainForm');
     record.set('id', null);
     form.getForm().loadRecord(record);
     this.__setModelForAdd(entityPanel);
@@ -32,8 +32,8 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
   _addWithAttachment(model) {
     let record = Ext.create(model);
     const entityPanel = this.getView().up();
-    const logoForm = entityPanel.down('#logoForm');
-    logoForm.getForm().setValues({'logoFile': null})
+    const attachmentForm = entityPanel.down('#attachmentForm');
+    attachmentForm.getForm().setValues({'attachment': null})
     const vm = entityPanel.getViewModel();
     vm.set('record', record);
     this.__setModelForAdd(entityPanel);
@@ -52,6 +52,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
   _rowDblClick: function (tableview, record, element, rowIndex, e, eOpts) {
     const entityPanel = tableview.up().up(); //tableview->gridPanel->entityPanel
     const vm = entityPanel.getViewModel();
+    //const vm= this.getViewModel();
     vm.set('record', record);
     this.__setModelForModify()
     this.__resetFormToNotDirty(record)
@@ -127,22 +128,27 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
 
   //region Private Methods
   __setModelForModify() {
-    const entityPanel = this.getView().up();
-    const viewModel = entityPanel.getViewModel();
+    // const entityPanel = this.getView().up('#gridContainer');
+    // const viewModel = entityPanel.getViewModel();
+    const viewModel=this.getViewModel();
     viewModel.set('gridHidden', true);
     viewModel.set('formHidden', false);
     viewModel.set('hiddenId', false)
   },
 
   __resetFormToNotDirty(record) {
-    const entityPanel = this.getView().up();
-    const form = entityPanel.down('form');
+    const me=this;
+    const view_=me.getView();
+    const entityPanel = view_.up();
+    const form = entityPanel.down('#mainForm');
+    //form.setValues(record.data);
     form.getForm().setValues(record.data)
     form.reset();
   },
 
   __setModelForAdd(entityPanel) {
-    const viewModel = entityPanel.getViewModel();
+    //const viewModel = entityPanel.getViewModel();
+    const viewModel= this.getViewModel();
     viewModel.set('gridHidden', true);
     viewModel.set('formHidden', false);
     viewModel.set('hiddenId', true)
@@ -153,22 +159,18 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //                               New - Gestione Form
 /////////////////////////////////////////////////////////////////////////////////////////////////
-
-  _saveWithAttachment(mainFormId, endpoint) {
+  _save(endpoint) {
     const me = this;
-    //const form = this.getView().down('#mainForm').getForm();
-    const form = this.getView().down(mainFormId).getForm();
-    form.submit({
-      success: function (form, action) {
-        const file = me.__getFile();  // Get the file from the form
-        if (file) { // If the file is present, save it
-          me.__saveAttachment(endpoint, action.result.id, file)
-        } else { // Otherwise just reload the grid
+    const form = this.getView().down('#mainForm').getForm();
+    if (!form.isValid()) {
+      Ext.Msg.alert('Errore nella validazione del form', 'Form invalido o incompleto. \nVerificare che tutti i campi obbligatori siano stati compilati')
+    } else {
+      form.submit({
+        success: function (form, action) {
           me.__reloadStore()
           me._showGrid();
-        }
-      },
-      failure: function (form, action) {
+        },
+        failure: function (form, action) {
           switch (action.failureType) {
             case Ext.form.action.Action.CLIENT_INVALID:
               Ext.Msg.alert(
@@ -183,13 +185,52 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
               Ext.Msg.alert('Failure', action.result.msg);
           }
         }
-    });
+      });
+    }
+  },
+
+  _saveWithAttachment(endpoint) {
+    const me = this;
+    const form = this.getView().down('#mainForm').getForm();
+    //const form = this.getView().down(mainFormId).getForm();
+    if (!form.isValid()) {
+      Ext.Msg.alert('Errore nella validazione del form', 'Form invalido o incompleto. \nVerificare che tutti i campi obbligatori siano stati compilati')
+    } else {
+      form.submit({
+        success: function (form, action) {
+          const file = me.__getFile();  // Get the file from the form
+          if (file) { // If the file is present, save it
+            me.__saveAttachment(endpoint, action.result.id, file)
+          } else { // Otherwise just reload the grid
+            me.__reloadStore()
+            me._showGrid();
+          }
+        },
+        failure: function (form, action) {
+          switch (action.failureType) {
+            case Ext.form.action.Action.CLIENT_INVALID:
+              Ext.Msg.alert(
+                'Failure',
+                'Form fields may not be submitted with invalid values'
+              );
+              break;
+            case Ext.form.action.Action.CONNECT_FAILURE:
+              Ext.Msg.alert('Failure', 'Ajax communication failed');
+              break;
+            case Ext.form.action.Action.SERVER_INVALID:
+              Ext.Msg.alert('Failure', action.result.msg);
+          }
+        }
+      });
+    }
   },
 
   _saveWithoutAttachment(entityName) {
     const me = this;
-    const form = me.getView();
-    const store = form.up().down('grid').getStore();
+    const form = me.getView().up().down('#mainForm');
+    const view=me.getView();
+    const mainContainer= view.up();
+    const store=mainContainer.down('grid').getStore();
     if (!form.isValid()) {
       Ext.Msg.alert('Errore nella validazione del form', 'Form invalido o incompleto. \nVerificare che tutti i campi obbligatori siano stati compilati')
     } else {
@@ -226,13 +267,14 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
 
   _removeAttachment(controller) {
     const me = this;
-    const entityPanel = me.getView().up();
-    const vm = entityPanel.getViewModel();
+    // const entityPanel = me.getView().up();
+    // const vm = entityPanel.getViewModel();
+    const vm= this.getViewModel();
     const id = vm.get('record.id');
-    controller.removeLogo(id);
+    controller.removeAttachment(id);
     me.__reloadStore()
     me._showGrid();
-    console.log('Logo removed');
+    console.log('Attachment removed');
   },
 
   _formDirtyChange(basic, dirty) {
@@ -242,13 +284,10 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
       this.__disableSaveButton();
   },
 
-  _removeImage() {
-    console.log('remove image')
-  },
-
   _showGrid() {
     const me = this;
-    const viewModel = me.getView().up().getViewModel();
+    //const viewModel = me.getView().up().getViewModel();
+    const viewModel = me.getViewModel();
     viewModel.set('formHidden', true);
     viewModel.set('gridHidden', false);
   },
@@ -268,7 +307,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
     const me = this;
 
     if (file) {
-      var formData = new FormData();
+      const formData = new FormData();
       formData.append('file', file);
       fetch(url, {
         method: 'POST',
@@ -304,7 +343,7 @@ Ext.define('VegaUi.mixin.TylCrudMixin', {
   },
 
    __getFile() {
-    const formPanel = this.getView().down('#logoForm');
+    const formPanel = this.getView().down('#attachmentForm');
     const fileField = formPanel.down('filefield');
     return fileField.fileInputEl.dom.files[0];
   },

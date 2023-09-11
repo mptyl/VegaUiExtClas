@@ -9,6 +9,7 @@ Ext.define('VegaUi.view.ass.questionari.QuestionariModel', {
     formHidden:true,
     questEditorHidden:true,
     saveButtonDisabled: true,
+    imageLoaderHidden:true
   },
   stores: {
     queststore: {

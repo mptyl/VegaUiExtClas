@@ -7,6 +7,11 @@ Ext.define('VegaUi.view.ass.mail.MailModel', {
     gridHidden: false,
     hiddenId:false,
     removeButtonDisabled:true
+  },
+  stores: {
+    mails: {
+      type: 'mails'
+    },
   }
 
 });

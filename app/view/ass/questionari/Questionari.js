@@ -7,6 +7,7 @@ Ext.define('VegaUi.view.ass.questionari.Questionari', {
     'VegaUi.view.ass.questionari.QuestionariModel'
   ],
 
+  reference:'mainContainer',
   controller: 'ass-questionari-questionari',
   viewModel: {
     type: 'ass-questionari-questionari'
