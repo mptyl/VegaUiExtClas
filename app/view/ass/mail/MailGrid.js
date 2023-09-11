@@ -52,13 +52,13 @@ Ext.define('VegaUi.view.ass.mail.MailGrid', {
       text: 'Assessment'
     },
     {
-      xtype: 'booleancolumn',
+      xtype: 'checkcolumn',
       flex: 2,
       dataIndex: 'cc',
       text: 'Cc'
     },
     {
-      xtype: 'booleancolumn',
+      xtype: 'checkcolumn',
       flex: 2,
       dataindex: 'bcc',
       text: 'Bcc'
